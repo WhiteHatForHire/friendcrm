@@ -29,23 +29,24 @@ Turn the current local-first Vite React MVP into a trustworthy private relations
 
 # Active Tasks
 
-## 1. Plan Real AI Integration Boundary
+## 1. Strengthen Source-Backed Review Workflow
 
 **Status:** Ready  
 **Priority:** P0  
-**Type:** AI / architecture
+**Type:** App / AI readiness
 
 ### Goal
 
-Specify how server-side AI should enter the product without weakening privacy or source-backed confirmation.
+Make the review workflow strong enough that future AI output can plug into it safely.
 
 ### Acceptance Criteria
 
-- AI extractor route contract is documented before implementation.
-- Validation schema and failure behavior are specified.
-- Prompt logging policy is explicit.
-- User confirmation remains required for durable memories/open loops.
-- No real API keys or secrets are added.
+- Proposed memories and open loops can be edited before save.
+- Every proposed durable item displays its source basis.
+- Accepted items retain source note IDs.
+- Rejected suggestions do not persist.
+- Sensitive/private suggestions remain visibly labeled before save.
+- Tests cover accepted, edited, and rejected suggestions.
 
 ---
 
@@ -57,6 +58,7 @@ None yet.
 
 # Recently Moved Out
 
+- 2026-06-22: Plan Real AI Integration Boundary completed; see `docs/AI_INTEGRATION_BOUNDARY.md` and `docs/06-decisions/0005-server-side-ai-boundary.md`.
 - 2026-06-22: Add Explicit Note and Person Export/Delete UX Pass completed; see `src/App.tsx`, `src/lib/crm.ts`, and `src/styles.css`.
 - 2026-06-22: Tighten Local CRUD and Delete Coverage completed; see `src/lib/crm.ts` and `src/lib/crm.test.ts`.
 - 2026-06-22: Audit Project Brain completed; see `docs/07-ops/PROJECT-BRAIN-AUDIT.md`.

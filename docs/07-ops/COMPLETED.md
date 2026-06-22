@@ -32,6 +32,30 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-06-22 — Real AI Integration Boundary Planned
+
+**Type:** AI / Architecture  
+**Source:** Human + Agent  
+**Related Files:**
+
+- `docs/AI_INTEGRATION_BOUNDARY.md`
+- `docs/06-decisions/0005-server-side-ai-boundary.md`
+- `docs/06-decisions/README.md`
+- `docs/ARCHITECTURE.md`
+- `PROJECT.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+- `docs/07-ops/FUTURE-TODO.md`
+- `docs/07-ops/PROJECT-PLAN.md`
+
+**Summary:**
+
+Documented the future server-side AI boundary, including the Memory Extractor route contract, validation rules, failure behavior, prompt logging policy, secret-handling rules, and the requirement that durable memories/open loops remain source-backed and user-confirmed.
+
+**Follow-Ups:**
+
+- [ ] Strengthen the source-backed review workflow before wiring provider calls.
+- [ ] Add validation schema tests when implementation begins.
+
 ## 2026-06-22 — Export And Delete Privacy UX Added
 
 **Type:** App / Privacy  

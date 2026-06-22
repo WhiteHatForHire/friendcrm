@@ -44,6 +44,8 @@ As of 2026-06-22:
 - Individual note deletion exists and removes source-backed memories/open loops from that note.
 - Person deletion shows related-data consequences and detaches shared notes/interactions.
 - Export actions show counts for private people and sensitive/private notes and memories.
+- The server-side AI integration boundary is documented in `docs/AI_INTEGRATION_BOUNDARY.md`.
+- ADR 0005 captures the server-side AI boundary decision.
 - Vitest covers radar, extraction behavior, person add/update/delete, note capture contact updates, note deletion, accepted suggestions, open loop status, and next move status.
 - Real server-side AI is not wired yet.
 - Initial ADRs exist under `docs/06-decisions/`.
@@ -131,10 +133,8 @@ Introduce server-side AI extraction without weakening privacy, traceability, or 
 
 ## Key Work
 
-- Document the AI route contract.
-- Add schema validation for extractor output.
-- Add failure and fallback behavior.
-- Add prompt logging policy.
+- Implement schema validation for extractor output.
+- Implement failure and fallback behavior.
 - Add server-only API key handling.
 - Wire the UI review surface to AI suggestions.
 - Keep deterministic fallback available for local/demo use.

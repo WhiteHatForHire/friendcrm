@@ -100,6 +100,8 @@ type NextMove = {
 
 ## AI workflow
 
+See `docs/AI_INTEGRATION_BOUNDARY.md` for the implementation boundary, route contract, validation rules, prompt logging policy, and secret-handling rules for future server-side AI work.
+
 ### Add note
 
 1. User writes raw note.
@@ -143,4 +145,3 @@ Minimum tests:
 - Brief generation route handles missing data.
 - Export includes all records.
 - Delete person removes or detaches related records safely.
-

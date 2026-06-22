@@ -50,6 +50,7 @@ Reference docs:
 - [`START_HERE.md`](docs/START_HERE.md)
 - [`MVP_SPEC.md`](docs/MVP_SPEC.md)
 - [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`AI_INTEGRATION_BOUNDARY.md`](docs/AI_INTEGRATION_BOUNDARY.md)
 - [`DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md)
 - [`PROMPTS.md`](docs/PROMPTS.md)
 - [`BUILD_PLAN.md`](docs/BUILD_PLAN.md)
@@ -66,6 +67,7 @@ Current accepted decisions:
 - [`ADR 0002 - Deterministic Core Before AI`](docs/06-decisions/0002-deterministic-core-before-ai.md)
 - [`ADR 0003 - Source-Backed User-Confirmed Memory`](docs/06-decisions/0003-source-backed-user-confirmed-memory.md)
 - [`ADR 0004 - No Scraping, Automated Sending, Or Hidden Scoring`](docs/06-decisions/0004-no-scraping-automated-sending-hidden-scoring.md)
+- [`ADR 0005 - Server-Side AI Integration Boundary`](docs/06-decisions/0005-server-side-ai-boundary.md)
 
 ---
 

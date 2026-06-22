@@ -12,6 +12,7 @@ Read these before changing architecture, privacy posture, AI behavior, product d
 - [ADR 0002 - Deterministic Core Before AI](0002-deterministic-core-before-ai.md)
 - [ADR 0003 - Source-Backed User-Confirmed Memory](0003-source-backed-user-confirmed-memory.md)
 - [ADR 0004 - No Scraping, Automated Sending, Or Hidden Scoring](0004-no-scraping-automated-sending-hidden-scoring.md)
+- [ADR 0005 - Server-Side AI Integration Boundary](0005-server-side-ai-boundary.md)
 
 ---
 

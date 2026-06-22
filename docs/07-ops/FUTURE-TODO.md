@@ -29,18 +29,11 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 ## Milestone 2 — Source-Backed Review Workflow
 
 - Improve deterministic extraction suggestions.
-- Add edit-before-save for suggested memories and open loops.
-- Show source note basis near every proposed durable record.
-- Add sensitivity flags to review flow.
-- Add tests for accepted and rejected suggestions.
 - Add rejected-suggestion behavior if needed for auditability.
 
 ## Milestone 3 — Real AI Extraction Boundary
 
-- Document server-side Memory Extractor route contract.
 - Add extractor schema validation.
-- Specify failure and fallback behavior for invalid AI output.
-- Document prompt logging policy.
 - Add server-only API key handling with no real secrets.
 - Wire AI extractor output into the existing review surface.
 - Keep deterministic fallback available for local/demo use.
