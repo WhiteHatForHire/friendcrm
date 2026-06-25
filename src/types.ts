@@ -14,7 +14,7 @@ export type Warmth = "cold" | "cool" | "neutral" | "warm" | "hot";
 export type Sensitivity = "normal" | "sensitive" | "private";
 
 export type ContactMethod = {
-  type: "phone" | "email" | "instagram" | "twitter" | "signal" | "whatsapp" | "other";
+  type: "phone" | "email" | "instagram" | "twitter" | "x" | "linkedin" | "website" | "signal" | "whatsapp" | "other";
   value: string;
 };
 
@@ -26,6 +26,7 @@ export type Person = {
   city?: string;
   timezone?: string;
   contactMethods: ContactMethod[];
+  profilePhotoUrl?: string;
   importance: 1 | 2 | 3 | 4 | 5;
   warmth: Warmth;
   trust: 1 | 2 | 3 | 4 | 5;
@@ -66,6 +67,7 @@ export type OpenLoop = {
   title: string;
   description?: string;
   dueAt?: string;
+  sensitivity: Sensitivity;
   status: "open" | "planned" | "done" | "dropped";
 };
 

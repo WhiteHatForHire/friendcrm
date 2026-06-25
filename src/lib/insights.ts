@@ -9,10 +9,13 @@ import type {
 } from "../types";
 import { makeId, today } from "./storage";
 
-const sensitivePattern = /\b(health|recovery|sex|money|family conflict|legal|trauma|private|diagnosis|therapy)\b/i;
+const sensitivePattern =
+  /\b(health|medical|recovery|sex|money|budget|family conflict|legal|trauma|private|diagnosis|therapy|grief|sobriety|divorce|visa|immigration)\b/i;
 const boundaryPattern = /\b(avoid|boundary|do not|don't|private|sensitive|not repeat)\b/i;
-const promisePattern = /\b(promised|promise|follow up|send|owe|need to|asked for|by friday|this week|next week)\b/i;
-const preferencePattern = /\b(prefers|likes|hates|loves|wants|doesn't like|does not like|remember)\b/i;
+const promisePattern =
+  /\b(promised|promise|follow up|circle back|send|share|draft|book|schedule|invite|introduce|owe|owed|need to|asked for|by friday|this week|next week|next month)\b/i;
+const preferencePattern =
+  /\b(prefers|likes|hates|loves|wants|appreciates|needs|works better|responds better|doesn't like|does not like|remember)\b/i;
 
 export function daysBetween(date: string) {
   const from = new Date(`${date}T00:00:00`);
@@ -86,7 +89,10 @@ function dueDateFromText(text: string) {
   return iso?.[1];
 }
 
-export function extractSuggestions(note: RelationshipNote, people: Person[]): ExtractionSuggestion[] {
+export function extractSuggestions(
+  note: Pick<RelationshipNote, "personIds" | "rawText" | "sensitivity">,
+  people: Array<{ id: string; name: string }>
+): ExtractionSuggestion[] {
   const sentences = note.rawText
     .split(/(?<=[.!?])\s+|\n+/)
     .map((sentence) => sentence.trim())
@@ -153,6 +159,7 @@ export function acceptSuggestion(suggestion: ExtractionSuggestion, sourceNoteId:
     title: suggestion.title,
     description: suggestion.body,
     dueAt: suggestion.dueAt,
+    sensitivity: suggestion.sensitivity,
     status: "open"
   };
 }

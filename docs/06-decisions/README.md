@@ -13,6 +13,8 @@ Read these before changing architecture, privacy posture, AI behavior, product d
 - [ADR 0003 - Source-Backed User-Confirmed Memory](0003-source-backed-user-confirmed-memory.md)
 - [ADR 0004 - No Scraping, Automated Sending, Or Hidden Scoring](0004-no-scraping-automated-sending-hidden-scoring.md)
 - [ADR 0005 - Server-Side AI Integration Boundary](0005-server-side-ai-boundary.md)
+- [ADR 0006 - AI Backend Shape](0006-ai-backend-shape.md)
+- [ADR 0007 - Local-First Persistence Before Hosted Backend](0007-local-first-persistence-before-hosted-backend.md)
 
 ---
 

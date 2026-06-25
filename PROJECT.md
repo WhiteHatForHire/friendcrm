@@ -30,8 +30,16 @@ Phase 1 / early Phase 2:
 - Vite React TypeScript app exists.
 - Seeded fake people exist.
 - Local browser storage exists.
-- People, Person Detail, Radar, Plot Board, Reflection Log, Settings, export/reset, deterministic extraction suggestions, and deterministic briefs exist.
-- Real server-side AI is not wired yet.
+- People, Person Detail, Radar, Plot Board, Reflection Log, Settings, export/reset, validated extraction shell, deterministic fallback, and deterministic briefs exist.
+- Browser UI can use development AI HTTP routes for extraction, briefs, and generated next moves, with local fallback behavior.
+- OpenAI-compatible server-side provider adapters exist for development/server use when a server-side key is configured.
+- Desktop, mobile, and tablet browser regression checks are part of the local demo readiness baseline.
+- A repeatable synthetic real-use trial can exercise 25 fake notes across the seed people through the core logic paths.
+- A browser-level synthetic trial can exercise a fake 10-person / 25-note dataset through the playable UI.
+- Mobile person detail opens as a drawer instead of a permanently stacked rail on narrow screens.
+- Mobile People editing is grouped into compact profile sections on narrow screens.
+- Briefs and next-move drafts handle sparse/private context more gracefully, with direct, warmer, and careful next-move options.
+- Real provider-backed AI is not deployed to a production route yet.
 - Durable AI-generated memory still must require explicit user confirmation.
 
 ---
@@ -41,7 +49,9 @@ Phase 1 / early Phase 2:
 - Frontend: Vite React TypeScript.
 - Styling: custom CSS for the current MVP.
 - Data: local browser storage for the current prototype.
-- AI: deterministic source-backed suggestions for now; real AI should be server-side only when implemented.
+- Export/import: schema-versioned JSON envelopes with backward-compatible raw-data import and an explicit migration registry.
+- Persistence: stay local-first; add backup/restore before hosted persistence.
+- AI: deterministic source-backed suggestions plus validated route shells and Vite development HTTP transport; real provider calls must stay server-side and keep deterministic fallback.
 - Auth: none for local demo.
 - Tests: Vitest for focused logic coverage.
 
@@ -51,6 +61,8 @@ Reference docs:
 - [`MVP_SPEC.md`](docs/MVP_SPEC.md)
 - [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 - [`AI_INTEGRATION_BOUNDARY.md`](docs/AI_INTEGRATION_BOUNDARY.md)
+- [`AI_HTTP_TRANSPORT.md`](docs/AI_HTTP_TRANSPORT.md)
+- [`BACKUP_RESTORE.md`](docs/BACKUP_RESTORE.md)
 - [`DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md)
 - [`PROMPTS.md`](docs/PROMPTS.md)
 - [`BUILD_PLAN.md`](docs/BUILD_PLAN.md)
@@ -68,6 +80,8 @@ Current accepted decisions:
 - [`ADR 0003 - Source-Backed User-Confirmed Memory`](docs/06-decisions/0003-source-backed-user-confirmed-memory.md)
 - [`ADR 0004 - No Scraping, Automated Sending, Or Hidden Scoring`](docs/06-decisions/0004-no-scraping-automated-sending-hidden-scoring.md)
 - [`ADR 0005 - Server-Side AI Integration Boundary`](docs/06-decisions/0005-server-side-ai-boundary.md)
+- [`ADR 0006 - AI Backend Shape`](docs/06-decisions/0006-ai-backend-shape.md)
+- [`ADR 0007 - Local-First Persistence Before Hosted Backend`](docs/06-decisions/0007-local-first-persistence-before-hosted-backend.md)
 
 ---
 
@@ -101,6 +115,9 @@ Current accepted decisions:
 
 - [`OPERATING-MANUAL.md`](docs/07-ops/OPERATING-MANUAL.md) — how to use the repo as an agentic project brain and shipping system.
 - [`PROJECT-PLAN.md`](docs/07-ops/PROJECT-PLAN.md) — whole-project roadmap and milestone plan.
+- [`DEMO-PR-RUN-PLAN.md`](docs/07-ops/DEMO-PR-RUN-PLAN.md) — PR-sized path to a fully functional local demo product.
+- [`DEMO-CHECKLIST.md`](docs/07-ops/DEMO-CHECKLIST.md) — local demo validation command and human demo checklist.
+- [`NEXT-LEVEL-MULTI-AGENT-SWARM-DIRECTIVE.md`](docs/07-ops/NEXT-LEVEL-MULTI-AGENT-SWARM-DIRECTIVE.md) — goal-based swarm directive for a self-checking launch-demo push.
 - [`PROMPT-TEMPLATE.md`](docs/07-ops/PROMPT-TEMPLATE.md) — reusable prompt templates for agent runs.
 - [`SKILLS.md`](docs/07-ops/SKILLS.md) — master index of reusable project skills.
 - [`NEXT-IN-HOPPER.md`](docs/07-ops/NEXT-IN-HOPPER.md) — active near-term build queue.

@@ -2,7 +2,7 @@
 
 This document defines how real AI may enter Friend CRM.
 
-It is a contract for future implementation. It does not add production infrastructure, real API keys, or a provider dependency.
+It is a contract for implementation. It does not add production infrastructure or real API keys.
 
 ---
 
@@ -41,9 +41,9 @@ Not allowed:
 
 ## `POST /api/ai/extract-memory`
 
-Future server-side route for extracting source-backed suggestions from one note.
+Future HTTP route for extracting source-backed suggestions from one note.
 
-The exact framework is undecided. In Vite, this may require a small backend or migration to a framework with server routes. Do not add that infrastructure until the persistence/backend decision is made.
+The framework-neutral route/controller shell exists in `src/lib/aiExtractorRoute.ts`. Local development HTTP transport exists in Vite middleware; production deployment/backend shape remains undecided.
 
 ### Request
 
@@ -218,19 +218,43 @@ AI_PROVIDER_MODEL=
 
 Before implementation is considered complete:
 
-- Schema validation accepts a valid extractor response.
-- Schema validation rejects malformed dates and unknown person IDs.
-- Schema validation rejects invalid enum values.
-- Route handles provider failure without data loss.
+- Schema validation accepts a valid extractor response. Implemented in `src/lib/aiExtractorSchema.ts`.
+- Schema validation rejects malformed dates and unknown person IDs. Covered in `src/lib/aiExtractorSchema.test.ts`.
+- Schema validation rejects invalid enum values. Covered in `src/lib/aiExtractorSchema.test.ts`.
+- Route handles provider failure without data loss. Covered in `src/lib/aiExtractorRoute.test.ts`.
+- OpenAI-compatible provider adapter reads server-only config and is tested with mocked fetch in `src/lib/serverAiProvider.test.ts`.
 - UI saves only accepted suggestions.
 - Rejected suggestions do not persist.
 - No tests require real API keys.
 
 ---
 
+# Brief And Next-Move Generation
+
+Provider-backed briefs and next moves are prepared as route/controller shells in `src/lib/aiGenerationRoute.ts`.
+
+Rules:
+
+- Use confirmed memories, open loops, recent notes, and minimal person context.
+- Do not send contact values.
+- Do not automatically send or save generated next moves.
+- Validate generated output before display.
+- Fall back to deterministic local behavior on provider failure or invalid output.
+- Keep sensitive/private warnings visible.
+
+Tests live in `src/lib/aiGenerationRoute.test.ts`.
+
+HTTP-style development transport is mounted through Vite middleware in `vite.config.ts` and implemented in `src/lib/aiHttpTransport.ts`. The browser UI now uses this development transport with local fallback behavior. See `docs/AI_HTTP_TRANSPORT.md`.
+
+---
+
 # Open Questions
 
-- Which backend shape should host server-side AI: small standalone backend, Vite-adjacent server, Next.js migration, or hosted function?
 - Which provider/model should be used first?
-- Should deterministic local suggestions remain always available as fallback?
 - Should rejected suggestions be stored for auditability or discarded?
+
+# Resolved Questions
+
+- Backend shape: start with a framework-neutral extractor route/controller core, then prefer a small standalone Node API when HTTP transport is needed. See `docs/06-decisions/0006-ai-backend-shape.md`.
+- Deterministic local suggestions remain available as fallback.
+- Persistence path: stay local-first and add backup/restore before hosted backend. See `docs/06-decisions/0007-local-first-persistence-before-hosted-backend.md`.

@@ -51,25 +51,41 @@ Use after:
 
     Run the Shipping Update Skill from `docs/07-ops/SHIPPING-UPDATE-SKILL.md` based on the work just completed.
 
----
+## 2. Project Brain Audit Skill
 
-# Planned Skills
+**File:** `docs/07-ops/PROJECT-BRAIN-AUDIT-SKILL.md`
 
-## Project Brain Audit Skill
+**Purpose:**
 
 Audits the repo brain for missing docs, stale docs, contradictions, malformed markdown, broken links, and unclear instructions.
 
-Potential file:
+**When to use:**
 
-`docs/07-ops/PROJECT-BRAIN-AUDIT-SKILL.md`
+Use after large implementation runs, major decisions, docs reorganizations, or moments when future agents may be confused about current truth.
 
-## ADR Creation Skill
+**Invocation:**
 
-Creates or updates ADRs for major product, architecture, design, privacy, monetization, or AI decisions.
+    Run the Project Brain Audit Skill from `docs/07-ops/PROJECT-BRAIN-AUDIT-SKILL.md`.
 
-Potential file:
+## 3. ADR Creation Skill
 
-`docs/07-ops/ADR-CREATION-SKILL.md`
+**File:** `docs/07-ops/ADR-CREATION-SKILL.md`
+
+**Purpose:**
+
+Creates or updates ADRs for major product, architecture, design, privacy, monetization, persistence, or AI decisions.
+
+**When to use:**
+
+Use when changing architecture, persistence, AI/provider behavior, privacy posture, deployment, authentication, or product constraints.
+
+**Invocation:**
+
+    Run the ADR Creation Skill from `docs/07-ops/ADR-CREATION-SKILL.md`.
+
+---
+
+# Planned Skills
 
 ## Design Foundation Skill
 

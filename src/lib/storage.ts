@@ -1,5 +1,6 @@
 import { seedData } from "../data/seed";
 import type { CrmData, Person } from "../types";
+import { createCrmDataExport, parseCrmDataExport } from "./dataValidation";
 
 const STORAGE_KEY = "friend-crm:data:v1";
 
@@ -10,7 +11,8 @@ export function loadData(): CrmData {
   }
 
   try {
-    return JSON.parse(stored) as CrmData;
+    const result = parseCrmDataExport(JSON.parse(stored));
+    return result.ok ? result.value : seedData;
   } catch {
     return seedData;
   }
@@ -60,15 +62,22 @@ export function exportMarkdown(data: CrmData) {
         person.summary ?? "No summary.",
         "",
         `- City: ${person.city ?? "Unknown"}`,
+        person.profilePhotoUrl ? `- Profile photo: ${person.profilePhotoUrl}` : "- Profile photo: Not set",
         `- Warmth: ${person.warmth}`,
         `- Importance: ${person.importance}`,
         `- Sensitivity: ${person.sensitivity}`,
+        "- Contacts:",
+        person.contactMethods.length
+          ? person.contactMethods.map((method) => `  - ${method.type}: ${method.value}`).join("\n")
+          : "  - None",
         "",
         "### Memories",
         memories.length ? memories.map((memory) => `- ${memory.text}`).join("\n") : "No confirmed memories.",
         "",
         "### Open Loops",
-        loops.length ? loops.map((loop) => `- [${loop.status}] ${loop.title}`).join("\n") : "No open loops.",
+        loops.length
+          ? loops.map((loop) => `- [${loop.status}] (${loop.sensitivity}) ${loop.title}`).join("\n")
+          : "No open loops.",
         "",
         "### Next Moves",
         moves.length ? moves.map((move) => `- [${move.status}] ${move.draft}`).join("\n") : "No next moves.",
@@ -82,6 +91,10 @@ export function exportMarkdown(data: CrmData) {
     .join("\n\n");
 
   return `# Friend CRM Export\n\nGenerated ${new Date().toISOString()}\n\n${personSections}\n`;
+}
+
+export function exportJson(data: CrmData) {
+  return JSON.stringify(createCrmDataExport(data), null, 2);
 }
 
 export function newPerson(name: string): Person {

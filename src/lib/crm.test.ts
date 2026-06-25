@@ -99,6 +99,7 @@ describe("person records", () => {
             id: "o-test",
             personId: "p-ada",
             title: "Ada loop",
+            sensitivity: "normal",
             status: "open"
           },
           ...data.openLoops
@@ -197,7 +198,7 @@ describe("review suggestions", () => {
         title: "Send two names",
         body: "Promised to send two names.",
         basis: "Promised to send two names.",
-        sensitivity: "normal"
+        sensitivity: "private"
       },
       {
         id: "s-rejected",
@@ -224,9 +225,54 @@ describe("review suggestions", () => {
       personId: "p-ada",
       sourceNoteId: "n-source",
       title: "Send two names",
+      sensitivity: "private",
       status: "open"
     });
     expect(updated.memories.some((memory) => memory.text === "This should not persist.")).toBe(false);
+  });
+
+  it("persists edited accepted suggestions with their source note", () => {
+    const data = cloneSeed();
+    const suggestions: ExtractionSuggestion[] = [
+      {
+        id: "s-edited-memory",
+        kind: "memory",
+        personId: "p-ada",
+        title: "Preference",
+        body: "Edited memory text.",
+        basis: "Original basis from the note.",
+        sensitivity: "sensitive",
+        category: "boundary",
+        confidence: "medium"
+      },
+      {
+        id: "s-edited-loop",
+        kind: "openLoop",
+        personId: "p-ada",
+        title: "Edited open loop",
+        body: "Edited loop description.",
+        basis: "Original loop basis from the note.",
+        dueAt: "2026-06-30",
+        sensitivity: "sensitive"
+      }
+    ];
+
+    const updated = saveAcceptedSuggestions(data, suggestions, ["s-edited-memory", "s-edited-loop"], "n-edited");
+
+    expect(updated.memories[0]).toMatchObject({
+      sourceNoteId: "n-edited",
+      text: "Edited memory text.",
+      category: "boundary",
+      sensitivity: "sensitive",
+      confirmed: true
+    });
+    expect(updated.openLoops[0]).toMatchObject({
+      sourceNoteId: "n-edited",
+      title: "Edited open loop",
+      description: "Edited loop description.",
+      dueAt: "2026-06-30",
+      sensitivity: "sensitive"
+    });
   });
 });
 

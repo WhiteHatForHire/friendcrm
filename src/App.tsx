@@ -1,39 +1,39 @@
 import {
   Archive,
   Brain,
-  Check,
   ClipboardList,
-  Download,
-  FileText,
   Gauge,
   LayoutDashboard,
-  Lock,
   Plus,
   Radar,
-  RotateCcw,
   Search,
   Shield,
-  Trash2,
-  UsersRound,
-  X
+  UsersRound
 } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, type RefObject, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
+import { Avatar } from "./components/Avatar";
+import { PersonRail } from "./components/PersonRail";
+import { PlotBoard } from "./components/PlotBoard";
+import { ReflectionLog } from "./components/ReflectionLog";
+import { ReviewPanel, type PendingReview as ReviewPanelState } from "./components/ReviewPanel";
+import { SettingsView } from "./components/SettingsView";
+import { extractMemorySuggestionsViaHttp } from "./lib/browserAiClient";
 import {
   addNextMoveRecord,
   addPersonRecord,
   addRelationshipNote,
   deletePersonRecord,
   deleteRelationshipNote,
-  getPersonDeleteImpact,
   saveAcceptedSuggestions as saveAcceptedSuggestionsToData,
   updateLoopStatus,
   updateNextMoveStatus,
   upsertPersonRecord
 } from "./lib/crm";
-import { buildBrief, daysBetween, extractSuggestions, personName, radar } from "./lib/insights";
-import { download, exportMarkdown, loadData, makeId, newPerson, resetData, saveData, today } from "./lib/storage";
+import { daysBetween, personName, radar } from "./lib/insights";
+import { loadData, makeId, newPerson, resetData, saveData } from "./lib/storage";
 import type {
   CrmData,
+  ContactMethod,
   ExtractionSuggestion,
   NextMove,
   OpenLoop,
@@ -61,28 +61,63 @@ const relationshipTypes: RelationshipType[] = [
 
 const warmthOptions: Warmth[] = ["cold", "cool", "neutral", "warm", "hot"];
 const sensitivityOptions: Sensitivity[] = ["normal", "sensitive", "private"];
+const ratingOptions = [1, 2, 3, 4, 5] as const;
+const contactTypes: Array<{ type: ContactMethod["type"]; label: string; placeholder: string }> = [
+  { type: "linkedin", label: "LinkedIn", placeholder: "https://linkedin.com/in/..." },
+  { type: "instagram", label: "Instagram", placeholder: "@handle or URL" },
+  { type: "x", label: "X / Twitter", placeholder: "@handle or URL" },
+  { type: "website", label: "Website", placeholder: "https://..." },
+  { type: "email", label: "Email", placeholder: "name@example.com" },
+  { type: "phone", label: "Phone", placeholder: "Phone number" },
+  { type: "signal", label: "Signal", placeholder: "Signal name/number" },
+  { type: "whatsapp", label: "WhatsApp", placeholder: "WhatsApp name/number" },
+  { type: "other", label: "Other contact", placeholder: "Anything user-entered" }
+];
+const maxProfilePhotoBytes = 350_000;
 
 const navItems = [
-  { id: "people" as const, label: "People", icon: UsersRound },
-  { id: "radar" as const, label: "Radar", icon: Radar },
+  { id: "people" as const, label: "The People", icon: UsersRound },
+  { id: "radar" as const, label: "The Radar", icon: Radar },
   { id: "plot" as const, label: "Plot Board", icon: LayoutDashboard },
-  { id: "reflection" as const, label: "Reflection Log", icon: ClipboardList },
-  { id: "settings" as const, label: "Settings", icon: Archive }
+  { id: "reflection" as const, label: "Debrief Booth", icon: ClipboardList },
+  { id: "settings" as const, label: "Evidence Locker", icon: Archive }
 ];
 
-type PendingReview = {
+const brandTaglines = [
+  "Private friend intel",
+  "Definitely not weird",
+  "Social debt department",
+  "Feelings, filed badly",
+  "Classified-ish"
+];
+
+const viewLabels: Record<View, string> = {
+  people: "people files",
+  radar: "attention radar",
+  plot: "soft schemes",
+  reflection: "debrief booth",
+  settings: "evidence locker"
+};
+
+type PendingReview = ReviewPanelState & {
   note: RelationshipNote;
-  suggestions: ExtractionSuggestion[];
-  acceptedIds: string[];
 };
 
 function App() {
   const [data, setData] = useState<CrmData>(() => loadData());
   const [view, setView] = useState<View>("people");
   const [selectedPersonId, setSelectedPersonId] = useState(data.people[0]?.id ?? "");
+  const [mobileRailOpen, setMobileRailOpen] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [railResetSignal, setRailResetSignal] = useState(0);
   const [pendingReview, setPendingReview] = useState<PendingReview | null>(null);
+  const [taglineIndex, setTaglineIndex] = useState(0);
+  const [reflectionFocusSignal, setReflectionFocusSignal] = useState(0);
+  const quickAddRef = useRef<HTMLInputElement>(null);
 
   const selectedPerson = data.people.find((person) => person.id === selectedPersonId) ?? data.people[0];
+  const shouldShowPersonRail = selectedPerson && view !== "settings";
+  const isMobileRailActive = Boolean(isMobileViewport && mobileRailOpen && shouldShowPersonRail);
 
   useEffect(() => {
     saveData(data);
@@ -93,6 +128,78 @@ function App() {
       setSelectedPersonId(data.people[0].id);
     }
   }, [data.people, selectedPersonId]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 840px)");
+    const updateViewport = () => setIsMobileViewport(media.matches);
+    updateViewport();
+    media.addEventListener("change", updateViewport);
+    return () => media.removeEventListener("change", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    const shouldLock = isMobileViewport && mobileRailOpen && selectedPerson && view !== "settings";
+    document.body.classList.toggle("drawer-scroll-locked", Boolean(shouldLock));
+    return () => document.body.classList.remove("drawer-scroll-locked");
+  }, [isMobileViewport, mobileRailOpen, selectedPerson, view]);
+
+  useEffect(() => {
+    if (!isMobileRailActive) return;
+
+    function closeMobileRailOnEscape(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      setMobileRailOpen(false);
+    }
+
+    document.addEventListener("keydown", closeMobileRailOnEscape, true);
+    return () => document.removeEventListener("keydown", closeMobileRailOnEscape, true);
+  }, [isMobileRailActive]);
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape" && isMobileViewport && mobileRailOpen) {
+        event.preventDefault();
+        setMobileRailOpen(false);
+        return;
+      }
+
+      if (event.metaKey || event.ctrlKey || event.altKey || isEditableTarget(event.target)) return;
+
+      const shortcutViews: Record<string, View> = {
+        "1": "people",
+        "2": "radar",
+        "3": "plot",
+        "4": "reflection",
+        "5": "settings"
+      };
+
+      if (shortcutViews[event.key]) {
+        event.preventDefault();
+        changeView(shortcutViews[event.key]);
+        setMobileRailOpen(false);
+        return;
+      }
+
+      if (event.key.toLowerCase() === "n") {
+        event.preventDefault();
+        changeView("people");
+        setMobileRailOpen(false);
+        window.setTimeout(() => quickAddRef.current?.focus(), 0);
+        return;
+      }
+
+      if (event.key.toLowerCase() === "c") {
+        event.preventDefault();
+        changeView("reflection");
+        setMobileRailOpen(false);
+        setReflectionFocusSignal((current) => current + 1);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMobileViewport, mobileRailOpen, view]);
 
   function patchData(updater: (current: CrmData) => CrmData) {
     setData((current) => updater(current));
@@ -106,27 +213,35 @@ function App() {
     const person = newPerson(name);
     patchData((current) => addPersonRecord(current, person));
     setSelectedPersonId(person.id);
+    setMobileRailOpen(true);
     setView("people");
   }
 
   function deletePerson(personId: string) {
     patchData((current) => deletePersonRecord(current, personId));
     setSelectedPersonId(data.people.find((person) => person.id !== personId)?.id ?? "");
+    setMobileRailOpen(false);
   }
 
   function deleteNote(noteId: string) {
     patchData((current) => deleteRelationshipNote(current, noteId));
   }
 
-  function addNote(note: Omit<RelationshipNote, "id" | "createdAt">) {
+  async function addNote(note: Omit<RelationshipNote, "id" | "createdAt">) {
     const created: RelationshipNote = {
       ...note,
       id: makeId("n"),
       createdAt: new Date().toISOString()
     };
-    const suggestions = extractSuggestions(created, data.people);
     patchData((current) => addRelationshipNote(current, created));
-    setPendingReview({ note: created, suggestions, acceptedIds: suggestions.map((suggestion) => suggestion.id) });
+    const extraction = await extractMemorySuggestionsViaHttp(created, data.people);
+    setPendingReview({
+      note: created,
+      suggestions: extraction.suggestions,
+      acceptedIds: extraction.suggestions.map((suggestion) => suggestion.id),
+      source: extraction.source,
+      errors: extraction.errors
+    });
   }
 
   function saveAcceptedSuggestions() {
@@ -142,6 +257,19 @@ function App() {
     setPendingReview(null);
   }
 
+  function editPendingSuggestion(id: string, patch: Partial<ExtractionSuggestion>) {
+    setPendingReview((current) =>
+      current
+        ? {
+            ...current,
+            suggestions: current.suggestions.map((suggestion) =>
+              suggestion.id === id ? { ...suggestion, ...patch } : suggestion
+            )
+          }
+        : current
+    );
+  }
+
   function updateLoop(loopId: string, status: OpenLoop["status"]) {
     patchData((current) => updateLoopStatus(current, loopId, status));
   }
@@ -155,19 +283,56 @@ function App() {
   }
 
   function clearAndSeed() {
+    if (
+      !window.confirm(
+        "Restore the built-in fake sample dataset? This replaces the current local browser data. Export first if anything here matters."
+      )
+    ) {
+      return;
+    }
     const seeded = resetData();
     setData(seeded);
     setSelectedPersonId(seeded.people[0]?.id ?? "");
+    setMobileRailOpen(false);
+    changeView("people");
+  }
+
+  function importData(nextData: CrmData) {
+    setData(nextData);
+    setSelectedPersonId(nextData.people[0]?.id ?? "");
+    setMobileRailOpen(false);
+    changeView("settings");
+  }
+
+  function selectPerson(personId: string, openRail = true) {
+    setSelectedPersonId(personId);
+    setMobileRailOpen(openRail);
+  }
+
+  function changeView(nextView: View) {
+    if (nextView !== view) {
+      setRailResetSignal((current) => current + 1);
+    }
+    setView(nextView);
+    setMobileRailOpen(false);
   }
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell view-${view}`}>
+      <AppChrome data={data} view={view} />
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-mark">F</div>
+          <button
+            className="brand-mark"
+            type="button"
+            aria-label="Cycle classified tagline"
+            onClick={() => setTaglineIndex((current) => (current + 1) % brandTaglines.length)}
+          >
+            F
+          </button>
           <div>
             <strong>Friend CRM</strong>
-            <span>Private desk</span>
+            <span>{brandTaglines[taglineIndex]}</span>
           </div>
         </div>
         <nav>
@@ -177,7 +342,7 @@ function App() {
               <button
                 key={item.id}
                 className={view === item.id ? "nav-item active" : "nav-item"}
-                onClick={() => setView(item.id)}
+                onClick={() => changeView(item.id)}
                 type="button"
               >
                 <Icon size={17} />
@@ -186,7 +351,7 @@ function App() {
             );
           })}
         </nav>
-        <QuickAddPerson onAdd={addPerson} />
+        <QuickAddPerson inputRef={quickAddRef} onAdd={addPerson} />
       </aside>
 
       <main className="workspace">
@@ -194,7 +359,7 @@ function App() {
           <PeopleView
             data={data}
             selectedPersonId={selectedPerson?.id}
-            onSelect={(personId) => setSelectedPersonId(personId)}
+            onSelect={(personId) => selectPerson(personId)}
             onPatch={upsertPerson}
           />
         )}
@@ -202,17 +367,33 @@ function App() {
           <RadarView
             data={data}
             onSelect={(personId) => {
-              setSelectedPersonId(personId);
-              setView("people");
+              selectPerson(personId);
+              changeView("people");
             }}
           />
         )}
-        {view === "plot" && <PlotBoard data={data} onSelect={setSelectedPersonId} onUpdateMove={updateMove} />}
-        {view === "reflection" && <ReflectionLog data={data} onAddNote={addNote} onDeleteNote={deleteNote} />}
-        {view === "settings" && <SettingsView data={data} onReset={clearAndSeed} />}
+        {view === "plot" && <PlotBoard data={data} onSelect={(personId) => selectPerson(personId)} onUpdateMove={updateMove} />}
+        {view === "reflection" && (
+          <ReflectionLog
+            data={data}
+            focusSignal={reflectionFocusSignal}
+            onAddNote={addNote}
+            onDeleteNote={deleteNote}
+          />
+        )}
+        {view === "settings" && <SettingsView data={data} onReset={clearAndSeed} onImport={importData} />}
       </main>
 
-      {selectedPerson && (
+      {isMobileRailActive && (
+        <button
+          className="person-rail-backdrop"
+          type="button"
+          aria-label="Close person file"
+          onClick={() => setMobileRailOpen(false)}
+        />
+      )}
+
+      {shouldShowPersonRail && (
         <PersonRail
           data={data}
           person={selectedPerson}
@@ -222,6 +403,9 @@ function App() {
           onAddNote={addNote}
           onUpdateLoop={updateLoop}
           onAddNextMove={addNextMove}
+          isMobileDrawerOpen={isMobileRailActive}
+          resetSignal={railResetSignal}
+          onClose={() => setMobileRailOpen(false)}
         />
       )}
 
@@ -241,15 +425,23 @@ function App() {
                 : current
             )
           }
+          onAcceptAll={() =>
+            setPendingReview((current) =>
+              current ? { ...current, acceptedIds: current.suggestions.map((suggestion) => suggestion.id) } : current
+            )
+          }
+          onRejectAll={() => setPendingReview((current) => (current ? { ...current, acceptedIds: [] } : current))}
           onDismiss={() => setPendingReview(null)}
+          onEdit={editPendingSuggestion}
           onSave={saveAcceptedSuggestions}
         />
       )}
+      <CursorTrail />
     </div>
   );
 }
 
-function QuickAddPerson({ onAdd }: { onAdd: (name: string) => void }) {
+function QuickAddPerson({ inputRef, onAdd }: { inputRef: RefObject<HTMLInputElement>; onAdd: (name: string) => void }) {
   const [name, setName] = useState("");
 
   function submit(event: FormEvent) {
@@ -261,12 +453,18 @@ function QuickAddPerson({ onAdd }: { onAdd: (name: string) => void }) {
 
   return (
     <form className="quick-add" onSubmit={submit}>
-      <input value={name} onChange={(event) => setName(event.target.value)} placeholder="New person" />
-      <button type="submit" title="Add person">
+      <input ref={inputRef} value={name} onChange={(event) => setName(event.target.value)} placeholder="Add a suspect" />
+      <button type="submit" title="Add suspect">
         <Plus size={16} />
       </button>
     </form>
   );
+}
+
+function isEditableTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false;
+  const tagName = target.tagName.toLowerCase();
+  return tagName === "input" || tagName === "textarea" || tagName === "select" || target.isContentEditable;
 }
 
 function PeopleView({
@@ -291,8 +489,7 @@ function PeopleView({
         person.city?.toLowerCase().includes(query.toLowerCase()) ||
         person.summary?.toLowerCase().includes(query.toLowerCase());
       const matchesType = type === "all" || person.relationshipTypes.includes(type);
-      const hasOpenLoop = data.openLoops.some((loop) => loop.personId === person.id && loop.status !== "done");
-      return matchesQuery && matchesType && (!needsAction || hasOpenLoop || Boolean(person.nextContactAt));
+      return matchesQuery && matchesType && (!needsAction || needsAttention(data, person));
     });
   }, [data, needsAction, query, type]);
 
@@ -300,16 +497,19 @@ function PeopleView({
     <section className="view">
       <header className="view-header">
         <div>
-          <h1>People</h1>
-          <p>{data.people.length} people, {data.openLoops.filter((loop) => loop.status !== "done").length} open loops.</p>
+          <h1>The People</h1>
+          <p>
+            {data.people.length} people, {data.openLoops.filter((loop) => loop.status !== "done").length} unresolved
+            social debts.
+          </p>
         </div>
         <div className="filters">
           <label className="search-field">
             <Search size={15} />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search" />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the social files" />
           </label>
           <select value={type} onChange={(event) => setType(event.target.value as "all" | RelationshipType)}>
-            <option value="all">All types</option>
+            <option value="all">All flavors</option>
             {relationshipTypes.map((option) => (
               <option key={option} value={option}>
                 {label(option)}
@@ -322,21 +522,21 @@ function PeopleView({
               checked={needsAction}
               onChange={(event) => setNeedsAction(event.target.checked)}
             />
-            Action
+            Needs a little attention
           </label>
         </div>
       </header>
 
       <div className="people-table">
         <div className="table-head">
-          <span>Name</span>
-          <span>Warmth</span>
-          <span>Importance</span>
-          <span>Last contact</span>
-          <span>Open loops</span>
+          <span>Person of Interest</span>
+          <span>Vibe</span>
+          <span>Do Not Fumble</span>
+          <span>Last Seen</span>
+          <span>Why Now</span>
         </div>
         {filtered.map((person) => {
-          const loops = data.openLoops.filter((loop) => loop.personId === person.id && loop.status !== "done");
+          const signal = whyNowSignal(data, person);
           return (
             <button
               key={person.id}
@@ -345,19 +545,46 @@ function PeopleView({
               onClick={() => onSelect(person.id)}
             >
               <span>
-                <strong>{person.name}</strong>
-                <small>{person.city ?? "No city"} · {person.relationshipTypes.map(label).join(", ")}</small>
+                <span className="person-name-cell">
+                  <Avatar person={person} size="small" />
+                  <span>
+                    <strong>{person.name}</strong>
+                    <small>{person.city ?? "No city"} · {person.relationshipTypes.map(label).join(", ")}</small>
+                  </span>
+                </span>
               </span>
-              <WarmthChip warmth={person.warmth} />
-              <ImportanceDots value={person.importance} />
-              <span>{person.lastContactAt ? `${daysBetween(person.lastContactAt)}d ago` : "Never"}</span>
-              <span>{loops.length || "None"}</span>
+              <span className="person-card-field" data-label="Vibe">
+                <span className="mobile-field-label">Vibe</span>
+                <WarmthChip warmth={person.warmth} />
+              </span>
+              <span className="person-card-field" data-label="Do Not Fumble">
+                <span className="mobile-field-label">Do Not Fumble</span>
+                <ImportanceDots value={person.importance} />
+              </span>
+              <span className="person-card-field" data-label="Last Seen">
+                <span className="mobile-field-label">Last Seen</span>
+                {person.lastContactAt ? `${daysBetween(person.lastContactAt)}d ago` : "Never"}
+              </span>
+              <span className="person-card-field" data-label="Why Now">
+                <span className="mobile-field-label">Why Now</span>
+                <span className={`why-now ${signal.tone}`}>{signal.label}</span>
+              </span>
             </button>
           );
         })}
       </div>
 
-      {filtered.length === 0 && <div className="empty-state">Add the first person.</div>}
+      {filtered.length === 0 && (
+        <ClassifiedEmptyState
+          title={data.people.length === 0 ? "WANTED: First Person Of Interest" : "PUBLIC NOTICE: Nobody Matches"}
+          copy={
+            data.people.length === 0
+              ? "Add one friend, collaborator, mentor, or suspiciously memorable human to begin the dossier."
+              : "Either they are hiding or your filters are doing community theater."
+          }
+          stamp={data.people.length === 0 ? "OPEN A FILE" : "CHECK ALIBI"}
+        />
+      )}
 
       {selectedPersonId && (
         <InlineProfileEditor
@@ -370,52 +597,290 @@ function PeopleView({
 }
 
 function InlineProfileEditor({ person, onPatch }: { person?: Person; onPatch: (person: Person) => void }) {
+  const latestPersonRef = useRef<Person | undefined>(person);
+  const [isCompactEditor, setIsCompactEditor] = useState(false);
+  const [openEditorSections, setOpenEditorSections] = useState({
+    basics: true,
+    timing: false,
+    photo: false,
+    labels: false,
+    contacts: false,
+    story: false
+  });
+
+  useEffect(() => {
+    latestPersonRef.current = person;
+  }, [person]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 840px)");
+    const update = () => setIsCompactEditor(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
   if (!person) return null;
+  const currentPerson = person;
+
+  function patchPerson(patch: Partial<Person>) {
+    const latestPerson = latestPersonRef.current;
+    if (!latestPerson) return;
+    onPatch({ ...latestPerson, ...patch, updatedAt: new Date().toISOString() });
+  }
+
+  function toggleRelationshipType(type: RelationshipType, checked: boolean) {
+    const nextTypes = checked
+      ? Array.from(new Set([...currentPerson.relationshipTypes, type]))
+      : currentPerson.relationshipTypes.filter((candidate) => candidate !== type);
+
+    patchPerson({ relationshipTypes: nextTypes.length ? nextTypes : ["other"] });
+  }
+
+  function contactValue(type: ContactMethod["type"]) {
+    return currentPerson.contactMethods.find((method) => method.type === type)?.value ?? "";
+  }
+
+  function patchContactMethod(type: ContactMethod["type"], value: string) {
+    const trimmed = value.trim();
+    const withoutType = currentPerson.contactMethods.filter((method) => method.type !== type);
+    patchPerson({ contactMethods: trimmed ? [...withoutType, { type, value: trimmed }] : withoutType });
+  }
+
+  function uploadProfilePhoto(file?: File) {
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      window.alert("Profile photo blocked. Images only; the dossier refuses mystery files.");
+      return;
+    }
+
+    if (file.size > maxProfilePhotoBytes) {
+      window.alert("Profile photo blocked. Keep it under 350KB so exports do not become luggage.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      if (typeof reader.result === "string") {
+        patchPerson({ profilePhotoUrl: reader.result });
+      }
+    });
+    reader.readAsDataURL(file);
+  }
+
+  function editorSectionProps(section: keyof typeof openEditorSections) {
+    return {
+      open: !isCompactEditor || openEditorSections[section],
+      onToggle: (event: SyntheticEvent<HTMLDetailsElement>) => {
+        if (!isCompactEditor) return;
+        const isOpen = event.currentTarget.open;
+        setOpenEditorSections((current) => ({ ...current, [section]: isOpen }));
+      }
+    };
+  }
 
   return (
     <section className="editor-band">
-      <input
-        value={person.name}
-        onChange={(event) => onPatch({ ...person, name: event.target.value, updatedAt: new Date().toISOString() })}
-        aria-label="Name"
-      />
-      <input
-        value={person.city ?? ""}
-        onChange={(event) => onPatch({ ...person, city: event.target.value, updatedAt: new Date().toISOString() })}
-        placeholder="City"
-        aria-label="City"
-      />
-      <select
-        value={person.warmth}
-        onChange={(event) => onPatch({ ...person, warmth: event.target.value as Warmth, updatedAt: new Date().toISOString() })}
-        aria-label="Warmth"
-      >
-        {warmthOptions.map((option) => (
-          <option key={option} value={option}>
-            {label(option)}
-          </option>
-        ))}
-      </select>
-      <select
-        value={person.sensitivity}
-        onChange={(event) =>
-          onPatch({ ...person, sensitivity: event.target.value as Sensitivity, updatedAt: new Date().toISOString() })
-        }
-        aria-label="Sensitivity"
-      >
-        {sensitivityOptions.map((option) => (
-          <option key={option} value={option}>
-            {label(option)}
-          </option>
-        ))}
-      </select>
-      <textarea
-        value={person.summary ?? ""}
-        onChange={(event) => onPatch({ ...person, summary: event.target.value, updatedAt: new Date().toISOString() })}
-        placeholder="Summary"
-      />
+      <details className="editor-section" {...editorSectionProps("basics")}>
+        <summary>Identity And Privacy</summary>
+        <div className="editor-field">
+          <span>Name</span>
+          <input value={person.name} onChange={(event) => patchPerson({ name: event.target.value })} aria-label="Name" />
+        </div>
+        <div className="editor-field">
+          <span>City</span>
+          <input value={person.city ?? ""} onChange={(event) => patchPerson({ city: event.target.value })} placeholder="City" aria-label="City" />
+        </div>
+        <label className="editor-field">
+          <span>Vibe</span>
+          <select value={person.warmth} onChange={(event) => patchPerson({ warmth: event.target.value as Warmth })} aria-label="Warmth">
+            {warmthOptions.map((option) => (
+              <option key={option} value={option}>
+                {label(option)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="editor-field">
+          <span>Privacy</span>
+          <select
+            value={person.sensitivity}
+            onChange={(event) => patchPerson({ sensitivity: event.target.value as Sensitivity })}
+            aria-label="Sensitivity"
+          >
+            {sensitivityOptions.map((option) => (
+              <option key={option} value={option}>
+                {label(option)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="editor-field">
+          <span>Importance</span>
+          <select
+            value={person.importance}
+            onChange={(event) => patchPerson({ importance: Number(event.target.value) as Person["importance"] })}
+            aria-label="Importance"
+          >
+            {ratingOptions.map((option) => (
+              <option key={option} value={option}>
+                {option} / 5
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="editor-field">
+          <span>Trust</span>
+          <select
+            value={person.trust}
+            onChange={(event) => patchPerson({ trust: Number(event.target.value) as Person["trust"] })}
+            aria-label="Trust"
+          >
+            {ratingOptions.map((option) => (
+              <option key={option} value={option}>
+                {option} / 5
+              </option>
+            ))}
+          </select>
+        </label>
+      </details>
+
+      <details className="editor-section" {...editorSectionProps("timing")}>
+        <summary>Timing Alibis</summary>
+        <label className="editor-field">
+          <span>Last seen</span>
+          <input
+            type="date"
+            value={person.lastContactAt ?? ""}
+            onChange={(event) => patchPerson({ lastContactAt: event.target.value || undefined })}
+            aria-label="Last contact"
+          />
+        </label>
+        <label className="editor-field">
+          <span>Next nudge</span>
+          <input
+            type="date"
+            value={person.nextContactAt ?? ""}
+            onChange={(event) => patchPerson({ nextContactAt: event.target.value || undefined })}
+            aria-label="Next contact"
+          />
+        </label>
+      </details>
+
+      <details className="editor-section" {...editorSectionProps("photo")}>
+        <summary>Mugshot Desk</summary>
+        <label className="editor-field editor-field-wide">
+          <span>Profile photo</span>
+          <input
+            value={person.profilePhotoUrl ?? ""}
+            onChange={(event) => patchPerson({ profilePhotoUrl: event.target.value || undefined })}
+            placeholder="Image URL or local reference"
+            aria-label="Profile photo URL"
+          />
+        </label>
+        <div className="profile-photo-tools">
+          <label className="file-import-button">
+            Upload tiny mugshot
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+              aria-label="Upload profile photo"
+              onChange={(event) => {
+                uploadProfilePhoto(event.target.files?.[0]);
+                event.target.value = "";
+              }}
+            />
+          </label>
+          <button type="button" onClick={() => patchPerson({ profilePhotoUrl: undefined })} disabled={!person.profilePhotoUrl}>
+            Remove photo
+          </button>
+          <small>
+            Local uploads are stored as data URLs in browser data and included in JSON export. Keep it under 350KB.
+          </small>
+        </div>
+      </details>
+
+      <details className="editor-section editor-section-wide" {...editorSectionProps("labels")}>
+        <summary>Social Labels</summary>
+        <fieldset className="relationship-editor">
+          <legend>Social labels</legend>
+          {relationshipTypes.map((option) => (
+            <label key={option} className="relationship-check">
+              <input
+                type="checkbox"
+                checked={person.relationshipTypes.includes(option)}
+                onChange={(event) => toggleRelationshipType(option, event.target.checked)}
+              />
+              {label(option)}
+            </label>
+          ))}
+        </fieldset>
+      </details>
+
+      <details className="editor-section editor-section-wide" {...editorSectionProps("contacts")}>
+        <summary>Socials And Contacts</summary>
+        <fieldset className="contact-editor">
+          <legend>Socials and contacts</legend>
+          {contactTypes.map((contact) => (
+            <label key={contact.type} className="editor-field">
+              <span>{contact.label}</span>
+              <input
+                value={contactValue(contact.type)}
+                onChange={(event) => patchContactMethod(contact.type, event.target.value)}
+                placeholder={contact.placeholder}
+                aria-label={contact.label}
+              />
+            </label>
+          ))}
+        </fieldset>
+      </details>
+
+      <details className="editor-section editor-section-wide" {...editorSectionProps("story")}>
+        <summary>Official Story</summary>
+        <textarea
+          value={person.summary ?? ""}
+          onChange={(event) => patchPerson({ summary: event.target.value })}
+          placeholder="Official story"
+          aria-label="Summary"
+        />
+      </details>
     </section>
   );
+}
+
+function needsAttention(data: CrmData, person: Person) {
+  const signal = whyNowSignal(data, person);
+  return signal.tone !== "quiet";
+}
+
+function whyNowSignal(data: CrmData, person: Person): { label: string; tone: "danger" | "warn" | "signal" | "private" | "quiet" } {
+  const activeLoops = data.openLoops.filter((loop) => loop.personId === person.id && loop.status !== "done" && loop.status !== "dropped");
+  const overdueLoop = activeLoops.find((loop) => loop.dueAt && isPastOrToday(loop.dueAt));
+
+  if (overdueLoop) return { label: "Debt overdue", tone: "danger" };
+  if (activeLoops.length > 0) return { label: `${activeLoops.length} social debt${activeLoops.length === 1 ? "" : "s"}`, tone: "warn" };
+  if (person.nextContactAt && isPastOrToday(person.nextContactAt)) return { label: "Nudge due", tone: "signal" };
+  if (person.nextContactAt && isWithinDays(person.nextContactAt, 7)) return { label: "Nudge soon", tone: "signal" };
+  if (person.importance >= 4 && (!person.lastContactAt || daysBetween(person.lastContactAt) >= 45)) return { label: "Going cold", tone: "warn" };
+  if (person.sensitivity !== "normal") return { label: "Handle gently", tone: "private" };
+  if (person.importance >= 4) return { label: "Do not fumble", tone: "signal" };
+  return { label: "All quiet", tone: "quiet" };
+}
+
+function isPastOrToday(date: string) {
+  return date <= todayString();
+}
+
+function isWithinDays(date: string, days: number) {
+  const now = new Date(todayString());
+  const then = new Date(date);
+  const diff = Math.ceil((then.getTime() - now.getTime()) / 86_400_000);
+  return diff >= 0 && diff <= days;
+}
+
+function todayString() {
+  return new Date().toISOString().slice(0, 10);
 }
 
 function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: string) => void }) {
@@ -425,16 +890,19 @@ function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: str
     <section className="view">
       <header className="view-header">
         <div>
-          <h1>Radar</h1>
-          <p>{signal.neglected.length} neglected, {signal.overdueLoops.length} overdue, {signal.protect.length} protected.</p>
+          <h1>The Radar</h1>
+          <p>
+            {signal.neglected.length} going cold, {signal.overdueLoops.length} social debts overdue,{" "}
+            {signal.protect.length} protected files.
+          </p>
         </div>
       </header>
       <div className="radar-grid">
-        <SignalList title="Neglected" icon={<Gauge size={17} />} tone="warn">
+        <SignalList title="Going Cold" icon={<Gauge size={17} />} tone="warn">
           {signal.neglected.map((person) => (
             <button key={person.id} className="signal-row" onClick={() => onSelect(person.id)} type="button">
               <strong>{person.name}</strong>
-              <span>{person.lastContactAt ? `${daysBetween(person.lastContactAt)}d` : "No contact"}</span>
+              <span>{person.lastContactAt ? `${daysBetween(person.lastContactAt)}d` : "Vanished"}</span>
             </button>
           ))}
         </SignalList>
@@ -446,7 +914,7 @@ function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: str
             </button>
           ))}
         </SignalList>
-        <SignalList title="Overdue Promises" icon={<ClipboardList size={17} />} tone="danger">
+        <SignalList title="Promises You Shouldn't Have Made" icon={<ClipboardList size={17} />} tone="danger">
           {signal.overdueLoops.map((loop) => (
             <button key={loop.id} className="signal-row" onClick={() => onSelect(loop.personId)} type="button">
               <strong>{loop.title}</strong>
@@ -454,7 +922,7 @@ function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: str
             </button>
           ))}
         </SignalList>
-        <SignalList title="Fragile" icon={<Brain size={17} />} tone="warn">
+        <SignalList title="Handle With Gloves" icon={<Brain size={17} />} tone="warn">
           {signal.fragile.map((person) => (
             <button key={person.id} className="signal-row" onClick={() => onSelect(person.id)} type="button">
               <strong>{person.name}</strong>
@@ -462,7 +930,7 @@ function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: str
             </button>
           ))}
         </SignalList>
-        <SignalList title="People To Protect" icon={<Shield size={17} />} tone="green">
+        <SignalList title="Protected Files" icon={<Shield size={17} />} tone="green">
           {signal.protect.map((person) => (
             <button key={person.id} className="signal-row" onClick={() => onSelect(person.id)} type="button">
               <strong>{person.name}</strong>
@@ -470,7 +938,7 @@ function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: str
             </button>
           ))}
         </SignalList>
-        <SignalList title="Social Opportunities" icon={<Plus size={17} />} tone="blue">
+        <SignalList title="Openings" icon={<Plus size={17} />} tone="blue">
           {signal.opportunities.slice(0, 6).map((move) => (
             <button key={move.id} className="signal-row" onClick={() => onSelect(move.personId)} type="button">
               <strong>{personName(data, move.personId)}</strong>
@@ -480,6 +948,33 @@ function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: str
         </SignalList>
       </div>
     </section>
+  );
+}
+
+function AppChrome({ data, view }: { data: CrmData; view: View }) {
+  const activeLoops = data.openLoops.filter((loop) => loop.status !== "done" && loop.status !== "dropped").length;
+
+  return (
+    <div className="app-chrome" aria-label="Local private desk status">
+      <span className="chrome-badge">FRIEND CRM 3000</span>
+      <span>USER: LOCAL_OPERATOR</span>
+      <span>MODE: {viewLabels[view].toUpperCase()}</span>
+      <span>SYNC: LOCAL ONLY</span>
+      <span>NO SCRAPING DETECTED</span>
+      <span className="chrome-hide-sm">{activeLoops} UNFINISHED SOCIAL RECEIPTS</span>
+      <span className="chrome-marquee">TODAY'S ALIBI: ACT NORMAL, THEN WRITE IT DOWN</span>
+    </div>
+  );
+}
+
+function ClassifiedEmptyState({ title, copy, stamp }: { title: string; copy: string; stamp: string }) {
+  return (
+    <div className="empty-state classified-empty">
+      <span className="classified-kicker">Classified Ad Dept.</span>
+      <strong>{title}</strong>
+      <p>{copy}</p>
+      <span className="classified-stamp">{stamp}</span>
+    </div>
   );
 }
 
@@ -505,507 +1000,6 @@ function SignalList({
   );
 }
 
-function PlotBoard({
-  data,
-  onSelect,
-  onUpdateMove
-}: {
-  data: CrmData;
-  onSelect: (personId: string) => void;
-  onUpdateMove: (moveId: string, status: NextMove["status"]) => void;
-}) {
-  const columns: NextMove["status"][] = ["idea", "queued", "done", "dismissed"];
-
-  return (
-    <section className="view">
-      <header className="view-header">
-        <div>
-          <h1>Plot Board</h1>
-          <p>{data.nextMoves.filter((move) => move.status !== "dismissed").length} live next moves.</p>
-        </div>
-      </header>
-      <div className="board">
-        {columns.map((status) => (
-          <section key={status} className="board-column">
-            <h2>{label(status)}</h2>
-            {data.nextMoves
-              .filter((move) => move.status === status)
-              .map((move) => (
-                <article key={move.id} className={`move-card risk-${move.risk}`}>
-                  <button className="link-button" onClick={() => onSelect(move.personId)} type="button">
-                    {personName(data, move.personId)}
-                  </button>
-                  <p>{move.draft}</p>
-                  <small>{move.rationale}</small>
-                  <div className="card-actions">
-                    {columns.map((option) => (
-                      <button key={option} type="button" onClick={() => onUpdateMove(move.id, option)}>
-                        {option === status ? <Check size={14} /> : label(option)}
-                      </button>
-                    ))}
-                  </div>
-                </article>
-              ))}
-          </section>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function ReflectionLog({
-  data,
-  onAddNote,
-  onDeleteNote
-}: {
-  data: CrmData;
-  onAddNote: (note: Omit<RelationshipNote, "id" | "createdAt">) => void;
-  onDeleteNote: (noteId: string) => void;
-}) {
-  const [selectedIds, setSelectedIds] = useState<string[]>(data.people[0] ? [data.people[0].id] : []);
-  const [text, setText] = useState("");
-  const [sourceType, setSourceType] = useState<RelationshipNote["sourceType"]>("manual");
-  const [sensitivity, setSensitivity] = useState<Sensitivity>("normal");
-
-  function submit(event: FormEvent) {
-    event.preventDefault();
-    if (!text.trim() || selectedIds.length === 0) return;
-    onAddNote({
-      personIds: selectedIds,
-      occurredAt: today(),
-      sourceType,
-      rawText: text.trim(),
-      sensitivity
-    });
-    setText("");
-  }
-
-  return (
-    <section className="view">
-      <header className="view-header">
-        <div>
-          <h1>Reflection Log</h1>
-          <p>{data.notes.length} captured notes.</p>
-        </div>
-      </header>
-
-      <form className="reflection-grid" onSubmit={submit}>
-        <div className="person-picker">
-          {data.people.map((person) => (
-            <label key={person.id} className="person-check">
-              <input
-                type="checkbox"
-                checked={selectedIds.includes(person.id)}
-                onChange={(event) =>
-                  setSelectedIds((current) =>
-                    event.target.checked ? [...current, person.id] : current.filter((id) => id !== person.id)
-                  )
-                }
-              />
-              {person.name}
-            </label>
-          ))}
-        </div>
-        <div className="composer">
-          <div className="form-row">
-            <select value={sourceType} onChange={(event) => setSourceType(event.target.value as RelationshipNote["sourceType"])}>
-              {["manual", "call", "dinner", "meeting", "text_summary", "memory"].map((option) => (
-                <option key={option} value={option}>
-                  {label(option)}
-                </option>
-              ))}
-            </select>
-            <select value={sensitivity} onChange={(event) => setSensitivity(event.target.value as Sensitivity)}>
-              {sensitivityOptions.map((option) => (
-                <option key={option} value={option}>
-                  {label(option)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <textarea
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-            placeholder="What happened? What mattered? What was promised?"
-          />
-          <button className="primary-button" type="submit">
-            <Brain size={16} />
-            Capture and Review
-          </button>
-        </div>
-      </form>
-
-      <section className="timeline">
-        {data.notes.slice(0, 12).map((note) => (
-          <article key={note.id} className="timeline-item">
-            <div className="note-head">
-              <span>{note.occurredAt}</span>
-              <button
-                className="icon-button danger-icon"
-                type="button"
-                title="Delete note and source-backed records"
-                onClick={() => {
-                  if (window.confirm("Delete this note and any memories or open loops sourced from it?")) {
-                    onDeleteNote(note.id);
-                  }
-                }}
-              >
-                <Trash2 size={14} />
-              </button>
-            </div>
-            <strong>{note.personIds.map((id) => personName(data, id)).join(", ")}</strong>
-            <p>{note.rawText}</p>
-            <SensitivityBadge sensitivity={note.sensitivity} />
-          </article>
-        ))}
-      </section>
-    </section>
-  );
-}
-
-function SettingsView({ data, onReset }: { data: CrmData; onReset: () => void }) {
-  const sensitiveNotes = data.notes.filter((note) => note.sensitivity !== "normal").length;
-  const sensitiveMemories = data.memories.filter((memory) => memory.sensitivity !== "normal").length;
-  const privatePeople = data.people.filter((person) => person.sensitivity === "private").length;
-
-  return (
-    <section className="view">
-      <header className="view-header">
-        <div>
-          <h1>Settings</h1>
-          <p>{data.people.length} people, {data.notes.length} notes, {data.memories.length} memories.</p>
-        </div>
-      </header>
-      <section className="export-warning">
-        <Shield size={18} />
-        <div>
-          <strong>Exports include private relationship data.</strong>
-          <p>
-            Current data includes {privatePeople} private people, {sensitiveNotes} sensitive/private notes, and{" "}
-            {sensitiveMemories} sensitive/private memories. JSON and Markdown exports preserve those labels.
-          </p>
-        </div>
-      </section>
-      <div className="settings-actions">
-        <button
-          className="primary-button"
-          type="button"
-          onClick={() => download("friend-crm-export.json", JSON.stringify(data, null, 2), "application/json")}
-        >
-          <Download size={16} />
-          JSON
-        </button>
-        <button className="primary-button muted" type="button" onClick={() => download("friend-crm-export.md", exportMarkdown(data))}>
-          <FileText size={16} />
-          Markdown
-        </button>
-        <button className="danger-button" type="button" onClick={onReset}>
-          <RotateCcw size={16} />
-          Reset Seed
-        </button>
-      </div>
-    </section>
-  );
-}
-
-function PersonRail({
-  data,
-  person,
-  onPatch,
-  onDelete,
-  onDeleteNote,
-  onAddNote,
-  onUpdateLoop,
-  onAddNextMove
-}: {
-  data: CrmData;
-  person: Person;
-  onPatch: (person: Person) => void;
-  onDelete: (personId: string) => void;
-  onDeleteNote: (noteId: string) => void;
-  onAddNote: (note: Omit<RelationshipNote, "id" | "createdAt">) => void;
-  onUpdateLoop: (loopId: string, status: OpenLoop["status"]) => void;
-  onAddNextMove: (move: Omit<NextMove, "id" | "status">) => void;
-}) {
-  const [note, setNote] = useState("");
-  const [briefOpen, setBriefOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [moveDraft, setMoveDraft] = useState("");
-  const personNotes = data.notes.filter((candidate) => candidate.personIds.includes(person.id));
-  const memories = data.memories.filter((memory) => memory.personId === person.id && memory.confirmed);
-  const loops = data.openLoops.filter((loop) => loop.personId === person.id);
-  const moves = data.nextMoves.filter((move) => move.personId === person.id);
-  const brief = buildBrief(data, person);
-  const deleteImpact = getPersonDeleteImpact(data, person.id);
-
-  function submitNote(event: FormEvent) {
-    event.preventDefault();
-    if (!note.trim()) return;
-    onAddNote({
-      personIds: [person.id],
-      occurredAt: today(),
-      sourceType: "manual",
-      rawText: note.trim(),
-      sensitivity: person.sensitivity
-    });
-    setNote("");
-  }
-
-  function submitMove(event: FormEvent) {
-    event.preventDefault();
-    if (!moveDraft.trim()) return;
-    onAddNextMove({
-      personId: person.id,
-      type: "check_in",
-      draft: moveDraft.trim(),
-      rationale: "Manually added from the dossier.",
-      risk: person.sensitivity === "private" ? "medium" : "low"
-    });
-    setMoveDraft("");
-  }
-
-  return (
-    <aside className="person-rail">
-      <header>
-        <div className="avatar">{person.name.slice(0, 1)}</div>
-        <div>
-          <h2>{person.name}</h2>
-          <span>{person.city ?? "No city"} · {person.relationshipTypes.map(label).join(", ")}</span>
-        </div>
-      </header>
-
-      <div className="rail-stats">
-        <span>
-          <small>Warmth</small>
-          <WarmthChip warmth={person.warmth} />
-        </span>
-        <span>
-          <small>Trust</small>
-          <ImportanceDots value={person.trust} />
-        </span>
-        <span>
-          <small>Privacy</small>
-          <SensitivityBadge sensitivity={person.sensitivity} />
-        </span>
-      </div>
-
-      <div className="rail-actions">
-        <button type="button" onClick={() => setBriefOpen((open) => !open)}>
-          <Brain size={15} />
-          Brief
-        </button>
-        <button className="danger-link" type="button" onClick={() => setDeleteOpen((open) => !open)}>
-          <Trash2 size={15} />
-          Delete
-        </button>
-      </div>
-
-      {deleteOpen && (
-        <section className="delete-panel">
-          <h3>Delete Consequences</h3>
-          <p>
-            Deleting {deleteImpact.personName} removes their person record and related private context. Shared notes and
-            interactions are detached, not deleted.
-          </p>
-          <ul>
-            <li>{deleteImpact.notesRemoved} solo notes removed</li>
-            <li>{deleteImpact.sharedNotesDetached} shared notes detached</li>
-            <li>{deleteImpact.memoriesRemoved} memories removed</li>
-            <li>{deleteImpact.openLoopsRemoved} open loops removed</li>
-            <li>{deleteImpact.nextMovesRemoved} next moves removed</li>
-            <li>{deleteImpact.interactionsRemoved} solo interactions removed</li>
-            <li>{deleteImpact.sharedInteractionsDetached} shared interactions detached</li>
-          </ul>
-          <div className="delete-actions">
-            <button type="button" onClick={() => setDeleteOpen(false)}>
-              Cancel
-            </button>
-            <button className="danger-button" type="button" onClick={() => onDelete(person.id)}>
-              <Trash2 size={15} />
-              Delete Person
-            </button>
-          </div>
-        </section>
-      )}
-
-      {briefOpen && (
-        <section className="brief-panel">
-          <h3>Pre-Meeting Brief</h3>
-          <BriefSection title="Snapshot" items={[brief.snapshot]} />
-          <BriefSection title="Remember" items={brief.remember} />
-          <BriefSection title="Open Loops" items={brief.loops} />
-          <BriefSection title="Avoid" items={brief.avoid} />
-          <BriefSection title="Good Next Move" items={[brief.nextMove]} />
-        </section>
-      )}
-
-      <section className="rail-section">
-        <h3>Summary</h3>
-        <textarea
-          value={person.summary ?? ""}
-          onChange={(event) => onPatch({ ...person, summary: event.target.value, updatedAt: new Date().toISOString() })}
-          placeholder="Source-backed context"
-        />
-      </section>
-
-      <section className="rail-section">
-        <h3>Memories</h3>
-        {memories.slice(0, 5).map((memory) => (
-          <article key={memory.id} className="memory-item">
-            <p>{memory.text}</p>
-            <SensitivityBadge sensitivity={memory.sensitivity} />
-          </article>
-        ))}
-        {memories.length === 0 && <div className="empty-state small">No confirmed memories.</div>}
-      </section>
-
-      <section className="rail-section">
-        <h3>Open Loops</h3>
-        {loops.map((loop) => (
-          <article key={loop.id} className="loop-item">
-            <strong>{loop.title}</strong>
-            <span>{loop.dueAt ?? "No date"}</span>
-            <select value={loop.status} onChange={(event) => onUpdateLoop(loop.id, event.target.value as OpenLoop["status"])}>
-              {["open", "planned", "done", "dropped"].map((status) => (
-                <option key={status} value={status}>
-                  {label(status)}
-                </option>
-              ))}
-            </select>
-          </article>
-        ))}
-        {loops.length === 0 && <div className="empty-state small">No open loops.</div>}
-      </section>
-
-      <section className="rail-section">
-        <h3>Next Moves</h3>
-        {moves.slice(0, 4).map((move) => (
-          <article key={move.id} className={`next-move risk-${move.risk}`}>
-            <p>{move.draft}</p>
-            <small>{label(move.status)} · {label(move.risk)} risk</small>
-          </article>
-        ))}
-        <form className="mini-form" onSubmit={submitMove}>
-          <input value={moveDraft} onChange={(event) => setMoveDraft(event.target.value)} placeholder="Next move" />
-          <button type="submit" title="Add next move">
-            <Plus size={15} />
-          </button>
-        </form>
-      </section>
-
-      <section className="rail-section">
-        <h3>Capture</h3>
-        <form className="mini-form stacked" onSubmit={submitNote}>
-          <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Add note" />
-          <button className="primary-button" type="submit">
-            <Brain size={15} />
-            Review
-          </button>
-        </form>
-      </section>
-
-      <section className="rail-section timeline compact">
-        <h3>Timeline</h3>
-        {personNotes.slice(0, 5).map((item) => (
-          <article key={item.id} className="timeline-item">
-            <div className="note-head">
-              <span>{item.occurredAt}</span>
-              <button
-                className="icon-button danger-icon"
-                type="button"
-                title="Delete note and source-backed records"
-                onClick={() => {
-                  if (window.confirm("Delete this note and any memories or open loops sourced from it?")) {
-                    onDeleteNote(item.id);
-                  }
-                }}
-              >
-                <Trash2 size={14} />
-              </button>
-            </div>
-            <p>{item.rawText}</p>
-            <SensitivityBadge sensitivity={item.sensitivity} />
-          </article>
-        ))}
-      </section>
-    </aside>
-  );
-}
-
-function BriefSection({ title, items }: { title: string; items: string[] }) {
-  return (
-    <div>
-      <strong>{title}</strong>
-      {items.length ? (
-        <ul>
-          {items.map((item, index) => (
-            <li key={`${title}-${index}`}>{item}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>None.</p>
-      )}
-    </div>
-  );
-}
-
-function ReviewPanel({
-  pendingReview,
-  people,
-  onToggle,
-  onDismiss,
-  onSave
-}: {
-  pendingReview: PendingReview;
-  people: Person[];
-  onToggle: (id: string) => void;
-  onDismiss: () => void;
-  onSave: () => void;
-}) {
-  return (
-    <div className="review-overlay">
-      <section className="review-panel">
-        <header>
-          <div>
-            <h2>Review Suggestions</h2>
-            <p>{pendingReview.suggestions.length} source-backed items.</p>
-          </div>
-          <button type="button" onClick={onDismiss} title="Close">
-            <X size={17} />
-          </button>
-        </header>
-        <div className="review-list">
-          {pendingReview.suggestions.length === 0 && <div className="empty-state">Nothing extracted.</div>}
-          {pendingReview.suggestions.map((suggestion) => (
-            <label key={suggestion.id} className="review-item">
-              <input
-                type="checkbox"
-                checked={pendingReview.acceptedIds.includes(suggestion.id)}
-                onChange={() => onToggle(suggestion.id)}
-              />
-              <span>
-                <strong>{suggestion.kind === "memory" ? "Memory" : "Open loop"} · {personLabel(people, suggestion.personId)}</strong>
-                <p>{suggestion.body}</p>
-                <small>Basis: {suggestion.basis}</small>
-              </span>
-              <SensitivityBadge sensitivity={suggestion.sensitivity} />
-            </label>
-          ))}
-        </div>
-        <footer>
-          <button type="button" onClick={onDismiss}>
-            Reject
-          </button>
-          <button className="primary-button" type="button" onClick={onSave}>
-            <Check size={16} />
-            Save Accepted
-          </button>
-        </footer>
-      </section>
-    </div>
-  );
-}
-
 function WarmthChip({ warmth }: { warmth: Warmth }) {
   return <span className={`warmth warmth-${warmth}`}>{label(warmth)}</span>;
 }
@@ -1020,22 +1014,45 @@ function ImportanceDots({ value }: { value: number }) {
   );
 }
 
-function SensitivityBadge({ sensitivity }: { sensitivity: Sensitivity }) {
-  const Icon = sensitivity === "normal" ? Check : sensitivity === "sensitive" ? Shield : Lock;
-  return (
-    <span className={`sensitivity ${sensitivity}`}>
-      <Icon size={12} />
-      {label(sensitivity)}
-    </span>
-  );
-}
-
 function label(value: string) {
   return value.replace(/_/g, " ").replace(/\b\w/g, (letter: string) => letter.toUpperCase());
 }
 
-function personLabel(people: Person[], personId: string) {
-  return people.find((person) => person.id === personId)?.name ?? "Unknown";
+function CursorTrail() {
+  const [points, setPoints] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const nextPointId = useRef(0);
+
+  useEffect(() => {
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!finePointer || reducedMotion) return;
+
+    function handlePointerMove(event: PointerEvent) {
+      nextPointId.current += 1;
+      setPoints((current) => [{ id: nextPointId.current, x: event.clientX, y: event.clientY }, ...current].slice(0, 9));
+    }
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handlePointerMove);
+  }, []);
+
+  if (points.length === 0) return null;
+
+  return (
+    <div className="cursor-trail" aria-hidden="true">
+      {points.map((point, index) => (
+        <span
+          key={`${point.id}-${index}`}
+          style={{
+            left: point.x,
+            top: point.y,
+            opacity: Math.max(0, 1 - index * 0.11),
+            transform: `translate(-50%, -50%) scale(${Math.max(0.28, 1 - index * 0.08)})`
+          }}
+        />
+      ))}
+    </div>
+  );
 }
 
 export default App;

@@ -1,0 +1,64 @@
+{
+  "baseUrl": "http://127.0.0.1:5176",
+  "viewports": [
+    {
+      "name": "tablet-768x1024",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "name": "tablet-834x1112",
+      "width": 834,
+      "height": 1112
+    }
+  ],
+  "screenshots": [
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-768x1024-people.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-768x1024-person-drawer.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-768x1024-people-editor.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-768x1024-plot-board.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-768x1024-review-panel.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-768x1024-settings.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-834x1112-people.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-834x1112-person-drawer.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-834x1112-people-editor.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-834x1112-plot-board.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-834x1112-review-panel.png",
+    "docs/07-ops/tablet-breakpoint-regression-2026-06-25/tablet-834x1112-settings.png"
+  ],
+  "findings": [],
+  "checks": [
+    {
+      "name": "tablet-768x1024 People, drawer, and compact editor",
+      "ok": true
+    },
+    {
+      "name": "tablet-768x1024 Plot Board remains reachable",
+      "ok": true
+    },
+    {
+      "name": "tablet-768x1024 Review Panel fits",
+      "ok": true
+    },
+    {
+      "name": "tablet-768x1024 Settings safety controls fit",
+      "ok": true
+    },
+    {
+      "name": "tablet-834x1112 People, drawer, and compact editor",
+      "ok": true
+    },
+    {
+      "name": "tablet-834x1112 Plot Board remains reachable",
+      "ok": true
+    },
+    {
+      "name": "tablet-834x1112 Review Panel fits",
+      "ok": true
+    },
+    {
+      "name": "tablet-834x1112 Settings safety controls fit",
+      "ok": true
+    }
+  ]
+}

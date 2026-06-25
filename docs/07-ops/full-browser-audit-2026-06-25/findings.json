@@ -1,0 +1,43 @@
+{
+  "baseUrl": "http://127.0.0.1:5185",
+  "screenshots": [
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-people.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-person-brief.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-generated-moves.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-poster-lab.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-delete-panel.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-radar.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-plot-board-before-drag.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-plot-board-after-drag.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-reflection-log.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-review-panel.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-settings.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/desktop-import-preview.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-people-closed-drawer.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-person-drawer.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-person-brief-drawer.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-people-after-close.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-radar.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-plot-board.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-reflection-log.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-review-panel.png",
+    "docs/07-ops/full-browser-audit-2026-06-25/mobile-settings.png"
+  ],
+  "findings": [
+    {
+      "severity": "medium",
+      "screen": "desktop-generated-moves",
+      "message": "Control text/content may be clipped: \"input\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "desktop-poster-lab",
+      "message": "Control text/content may be clipped: \"input\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "desktop-delete-panel",
+      "message": "Control text/content may be clipped: \"input\"."
+    }
+  ]
+}

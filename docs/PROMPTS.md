@@ -21,6 +21,48 @@ People known in this note:
 Return:
 {
   "summary": "short summary of the note",
+  "suggestions": [
+    {
+      "kind": "memory",
+      "personId": "known person id",
+      "text": "durable memory",
+      "category": "preference | life_context | boundary | history | interest | risk | other",
+      "basis": "short source-backed reason",
+      "confidence": "low | medium | high",
+      "sensitivity": "normal | sensitive | private"
+    },
+    {
+      "kind": "openLoop",
+      "personId": "known person id",
+      "title": "open loop",
+      "description": "what needs to happen",
+      "dueAt": "YYYY-MM-DD when known",
+      "basis": "source-backed reason",
+      "sensitivity": "normal | sensitive | private"
+    }
+  ],
+  "dates": [
+    {
+      "label": "event or deadline",
+      "date": "YYYY-MM-DD when known",
+      "confidence": "low | medium | high"
+    }
+  ],
+  "safetyFlags": [
+    {
+      "type": "sensitive | private | risky_suggestion",
+      "reason": "string"
+    }
+  ]
+}
+```
+
+## Legacy Memory Extractor Shape
+
+Older prompt drafts used this split shape. Prefer the `suggestions` union above in implementation code.
+
+```text
+{
   "memories": [
     {
       "personName": "string",
@@ -99,6 +141,12 @@ Rules:
 - Avoid corporate sales language.
 - Make every option editable and human.
 - Include risk.
+- When possible, provide distinct options:
+  - one direct option,
+  - one warmer option,
+  - one careful low-pressure option.
+- Sensitive/private context should make the risk reason more cautious, not more dramatic.
+- Keep the voice specific and lightly cheeky without pretending to know facts outside the supplied context.
 
 Person:
 {{person}}
@@ -122,4 +170,3 @@ Return JSON:
   ]
 }
 ```
-

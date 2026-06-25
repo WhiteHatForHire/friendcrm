@@ -313,6 +313,7 @@ export const seedOpenLoops: OpenLoop[] = [
     title: "Send two founder intros",
     description: "Ada asked for names for her advisory group.",
     dueAt: daysAgo(3),
+    sensitivity: "normal",
     status: "open"
   },
   {
@@ -322,6 +323,7 @@ export const seedOpenLoops: OpenLoop[] = [
     title: "Send one-paragraph context note",
     description: "Unlock two operator intros.",
     dueAt: daysFromNow(2),
+    sensitivity: "normal",
     status: "planned"
   },
   {
@@ -331,6 +333,7 @@ export const seedOpenLoops: OpenLoop[] = [
     title: "Small check-in",
     description: "Ask about the garden without making it a project.",
     dueAt: daysAgo(1),
+    sensitivity: "private",
     status: "open"
   }
 ];

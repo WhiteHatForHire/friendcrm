@@ -4,15 +4,17 @@
 
 The database owns facts. The AI proposes structure and language. The user confirms anything that becomes durable memory.
 
-## Recommended stack
+## Current stack direction
 
-For a fast standalone repo:
+- Frontend: Vite React TypeScript.
+- Styling: custom CSS for the current MVP.
+- Data: local-first browser storage for the current prototype.
+- Next persistence step: JSON import/restore, then IndexedDB if repeated use outgrows `localStorage`.
+- AI: framework-neutral route/controller cores, Vite development HTTP middleware, and server-only provider adapters.
+- Auth: none for local demo; single-user login only if hosted persistence becomes necessary.
 
-- Frontend: Next.js App Router or Vite React.
-- Styling: Tailwind plus a small component layer.
-- Data: SQLite with Prisma, or Supabase Postgres if remote access matters.
-- AI: server route calling OpenAI or Anthropic.
-- Auth: none for local demo; single-user login later.
+See `docs/PERSISTENCE_BACKUP_PLAN.md` and `docs/06-decisions/0007-local-first-persistence-before-hosted-backend.md`.
+See `docs/AI_HTTP_TRANSPORT.md` for the current local AI transport boundary.
 
 ## Data model
 
@@ -74,6 +76,7 @@ type Memory = {
   text: string;
   category: "preference" | "life_context" | "boundary" | "history" | "interest" | "risk" | "other";
   confidence: "low" | "medium" | "high";
+  sensitivity: Sensitivity;
   confirmed: boolean;
 };
 
@@ -84,6 +87,7 @@ type OpenLoop = {
   title: string;
   description?: string;
   dueAt?: string;
+  sensitivity: Sensitivity;
   status: "open" | "planned" | "done" | "dropped";
 };
 

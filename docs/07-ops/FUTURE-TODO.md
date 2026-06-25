@@ -16,13 +16,12 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 ## Milestone 0 — Project Brain And Decisions
 
-- Add Project Brain Audit Skill.
-- Add ADR Creation Skill.
+- Add Design Foundation Skill.
+- Add App Scaffold Skill.
 
 ## Milestone 1 — Deterministic Local Core
 
 - Extract state transition helpers from large UI components where useful.
-- Add UI-level integration coverage for the most important CRUD flows after the UI settles.
 - Add export coverage for people, notes, memories, open loops, next moves, and interactions.
 - Add optional export filtering for sensitive/private records if real use shows it is needed.
 
@@ -30,41 +29,30 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 - Improve deterministic extraction suggestions.
 - Add rejected-suggestion behavior if needed for auditability.
+- Consider making review suggestions unselected by default if real use shows preselection weakens trust.
 
 ## Milestone 3 — Real AI Extraction Boundary
 
-- Add extractor schema validation.
-- Add server-only API key handling with no real secrets.
-- Wire AI extractor output into the existing review surface.
-- Keep deterministic fallback available for local/demo use.
+- Add production transport only after deployment/backend target is ready.
 
 ## Milestone 4 — Briefs And Next Moves
 
-- Add server-side pre-meeting brief route.
-- Add server-side next-move generator route.
-- Add copy/edit flow for next moves.
-- Add risk reasons and warmer/more direct alternatives.
-- Add sensitive context warnings in briefs and next moves.
-- Test brief behavior when context is sparse or missing.
+- Continue improving brief and next-move quality after the active quality pass lands.
 
 ## Milestone 5 — Demo Polish And Real-Use Trial
 
-- Improve visual polish and scanning density.
-- Add basic keyboard shortcuts.
-- Add better empty states.
-- Improve responsive behavior.
-- Add sample dataset reset flow if current reset is not enough.
-- Run the MVP success test with 25 notes across 10 people.
+- Explore richer profile media only after the current local upload path proves useful.
+- Consider download-as-image for BuddyScan posters if users want to keep joke artifacts outside app data.
+- Explore alternate visual skins after MVP usability is proven.
+- Restack review modal items earlier if mobile trial review feels cramped.
 - Log real-use friction into hopper or future backlog.
+- Run a private real-data trial after the simulated trial findings are addressed.
 
 ## Milestone 6 — Persistence And Deployment Decision
 
-- Compare IndexedDB, SQLite, Supabase/Postgres, and local file/database options.
-- Decide whether remote access matters.
-- Decide whether auth is needed.
-- Record persistence decision in an ADR.
+- Add the first non-v1 schema migration when a breaking data shape change actually occurs.
 - Add deployment notes after the MVP is worth sharing.
-- Document backup/export path for local-only use.
+- Revisit IndexedDB, SQLite, Supabase/Postgres, and local file/database options after more use.
 
 ## Milestone 7 — Post-MVP Expansion
 
@@ -79,6 +67,18 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 ## Product
 
+- Explore richer profile media after local uploads prove useful:
+  - Consider crop/resize controls if real users upload awkward images.
+  - Consider a small photo-compression helper if exported JSON becomes too large.
+  - Keep initials fallback for people without photos.
+  - Preserve explicit local/export privacy behavior.
+- Explore optional provider-backed AI dossier visuals after the local Poster Lab proves useful:
+  - Keep the current local BuddyScan 3000 poster as fallback.
+  - Require an explicit context picker before any provider call.
+  - Exclude private/sensitive notes unless the user explicitly includes individual items.
+  - Do not send contact/social values.
+  - Treat generated images as playful artifacts, not durable facts.
+  - Add size/export warnings before any generated raster artifact can be saved.
 - Add calendar/email integrations after the local MVP proves useful.
 - Consider multi-user accounts only after the single-user private workflow works.
 - Explore a simple social graph view after the Plot Board is useful.
@@ -86,21 +86,44 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 ## Design
 
-- Polish dense table/list scanning states after core CRUD is stable.
-- Add keyboard shortcuts for fast capture and navigation.
+- Continue mobile-specific UX hardening after the first mobile usability pass:
+  - Consider a mobile-specific bottom nav if real use shows the current compact top nav still consumes too much space.
+  - Consider collapsing Settings secondary panels after repeated mobile use.
+- Continue full-browser audit polish after the 2026-06-25 sweep:
+  - Add an optional Plot Board focus mode or rail-collapse affordance.
+  - Consider a wider/stickier desktop Poster Lab preview column if visual review still feels too paperwork-heavy.
+  - Collapse lower-priority Review Panel suggestion groups on mobile if dense reviews feel tiring.
+  - Reduce remaining audit scanner false positives around generic input clipping while preserving real clipping checks.
+- Continue the controlled CityDesk-inspired main app zany pass after the shell/classified run:
+  - Consider more rotating parody widgets for side surfaces.
+  - Add more low-risk stamps to metadata/status chips where readability stays strong.
+  - Push Evidence Locker styling further without weakening export/import/delete clarity.
+  - Keep trust-critical review, privacy, export/import, delete, and provider surfaces plain enough to understand immediately.
+  - Use `docs/07-ops/MAIN-SITE-ZANY-CITYDESK-PROPOSAL.md` as the proposal source.
+- Add more low-risk easter eggs:
+  - Occasional cheeky stamps on empty states or completed actions.
+  - A hidden "classified mode" visual flourish that does not change data.
+  - Achievement-style toasts for harmless milestones such as adding 10 people or exporting a backup.
+- Explore alternate visual skins:
+  - Keep the current retro dossier style as the default.
+  - Park a future "art deco steampunk private desk" skin as a theme-token exercise.
+  - Do not build theme switching until core usability and trust feedback are stronger.
+- Create a deeper design foundation after the first branded shell pass.
+- Add a compact "Today's Signals" strip if real use confirms it helps orientation.
+- Polish dense table/list scanning states after the first UI/UX audit fixes land.
 - Refine empty states around real use, not marketing copy.
 
 ## Engineering
 
-- Move local browser storage to SQLite, IndexedDB, or a small backend once persistence needs are clearer.
+- Move local browser storage to IndexedDB, SQLite, or a small backend once persistence needs are clearer.
 - Split large UI components into focused modules when behavior stabilizes.
-- Add broader tests for export, delete, and review flows.
+- Expand UI-level tests when new flows land.
+- Add more component-level tests for `ReviewPanel`, `ReflectionLog`, and `SettingsView` after the first `PlotBoard` and `PersonRail` coverage pass.
 
 ## AI / Automation
 
-- Add server-side Memory Extractor with schema validation.
-- Add pre-meeting brief generation using confirmed context.
-- Add next-move generation with risk explanations.
+- Add production AI transport after deployment/backend direction is explicit.
+- Add client-side AI response validation as defense-in-depth if routes move beyond trusted local development transport.
 - Add drift detection using interaction history.
 
 ## Backend / Infra
@@ -110,13 +133,11 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 ## Research
 
-- Test whether the app answers the MVP questions after 25 notes across 10 people.
-- Compare local storage, IndexedDB, SQLite, and Supabase for the next persistence step.
+- Repeat the synthetic real-use trial after major brief, next-move, persistence, or mobile workflow changes.
+- Run a manual real-data trial after provider-backed extraction or persistence changes land. Parked by user direction on 2026-06-23; do not move back into the active hopper until explicitly requested.
 
 ## Ops
 
-- Add Project Brain Audit Skill.
-- Add ADR Creation Skill.
 - Add Design Foundation Skill.
 - Add App Scaffold Skill.
 
@@ -127,6 +148,7 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 - Private relationship recovery checklist for neglected important people.
 - Lightweight trip/dinner planning mode.
 - Relationship-specific boundaries and "do not repeat" review surface.
+- A richer Plot Board planning mode for dinners, introductions, trips, soft asks, support, and repair conversations.
 
 ---
 

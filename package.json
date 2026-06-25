@@ -7,6 +7,15 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc && vite build",
     "preview": "vite preview --host 127.0.0.1",
+    "demo:check": "node scripts/demo-readiness-check.mjs",
+    "regression:browser": "node scripts/browser-regression.mjs",
+    "regression:mobile": "node scripts/mobile-browser-regression.mjs",
+    "regression:tablet": "node scripts/tablet-browser-regression.mjs",
+    "audit:browser": "node scripts/full-browser-audit.mjs",
+    "smoke:ui": "node scripts/ui-regression-smoke.mjs",
+    "trial:synthetic": "vitest run src/lib/prototypeTrial.test.ts",
+    "trial:synthetic:browser": "node scripts/browser-synthetic-trial.mjs",
+    "trial:provider": "node scripts/provider-local-trial.mjs",
     "test": "vitest run"
   },
   "dependencies": {
@@ -17,8 +26,11 @@
     "vite": "^8.0.16"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "jsdom": "^29.1.1",
+    "playwright": "^1.61.0",
     "typescript": "^5.7.2",
     "vitest": "^4.1.9"
   }
