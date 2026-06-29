@@ -1,0 +1,10 @@
+<svg width="1600" height="420" viewBox="0 0 1600 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Friend CRM logo lockup">
+  <title>Friend CRM logo lockup</title>
+  <rect x="26" y="26" width="1548" height="368" rx="44" fill="white"/>
+  <rect x="26" y="26" width="1548" height="368" rx="44" stroke="#E5E7EB" stroke-width="2"/>
+  <g transform="translate(82 152)">
+    <circle cx="36.92" cy="0" r="19.88" fill="#6D5EF7"/><circle cx="159.04" cy="0" r="19.88" fill="#14B8A6"/><path d="M59.64 0h76.67999999999999" stroke="#6D5EF7" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <text x="360" y="198" fill="#111827" font-family="Inter, Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="104" font-weight="820" letter-spacing="0">Friend CRM</text>
+  <text x="366" y="264" fill="#64748B" font-family="Inter, Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="34" font-weight="650" letter-spacing="0">Private relationship intelligence, kept human.</text>
+</svg>

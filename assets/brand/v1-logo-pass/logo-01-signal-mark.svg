@@ -1,0 +1,14 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Friend CRM logo 01</title>
+  <desc id="desc">Signal mark V1</desc>
+  <rect width="1024" height="1024" rx="176" fill="#161225"/>
+  <circle cx="512" cy="432" r="270" fill="#A98BFF" opacity="0.09"/>
+  <circle cx="512" cy="432" r="210" fill="#3FE1D0" opacity="0.12"/>
+  
+  <g transform="translate(256 126)">
+    <circle cx="160" cy="242" r="38" fill="#3FE1D0" stroke="#A98BFF" stroke-width="16"/><circle cx="256" cy="160" r="38" fill="none" stroke="#A98BFF" stroke-width="16"/><circle cx="352" cy="242" r="38" fill="none" stroke="#A98BFF" stroke-width="16"/><circle cx="256" cy="326" r="38" fill="#3FE1D0" stroke="#A98BFF" stroke-width="16"/><path d="M190 218l36-34M286 184l36 34M190 266l36 34M322 266l-36 34" stroke="#A98BFF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="512" y="786" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="120" font-weight="800" fill="#3FE1D0">FC</text>
+  <path d="M328 832H696" stroke="#A98BFF" stroke-width="18" stroke-linecap="round"/>
+
+</svg>

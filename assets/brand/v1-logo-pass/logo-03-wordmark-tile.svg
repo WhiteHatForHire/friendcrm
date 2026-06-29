@@ -1,0 +1,16 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Friend CRM logo 03</title>
+  <desc id="desc">Wordmark tile V1</desc>
+  <rect width="1024" height="1024" rx="176" fill="#161225"/>
+  <circle cx="512" cy="432" r="270" fill="#A98BFF" opacity="0.09"/>
+  <circle cx="512" cy="432" r="210" fill="#3FE1D0" opacity="0.12"/>
+  
+  <rect x="112" y="196" width="800" height="632" rx="96" fill="#A98BFF" opacity="0.10" stroke="#A98BFF" stroke-width="16"/>
+  <g transform="translate(100 130) scale(.68)">
+    <circle cx="160" cy="242" r="38" fill="#3FE1D0" stroke="#A98BFF" stroke-width="16"/><circle cx="256" cy="160" r="38" fill="none" stroke="#A98BFF" stroke-width="16"/><circle cx="352" cy="242" r="38" fill="none" stroke="#A98BFF" stroke-width="16"/><circle cx="256" cy="326" r="38" fill="#3FE1D0" stroke="#A98BFF" stroke-width="16"/><path d="M190 218l36-34M286 184l36 34M190 266l36 34M322 266l-36 34" stroke="#A98BFF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="512" y="514" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="76" font-weight="850" fill="#3FE1D0">Friend CRM</text>
+  <text x="512" y="612" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="50" font-weight="700" fill="#A98BFF">FC</text>
+  <path d="M250 674H774" stroke="#A98BFF" stroke-width="14" stroke-linecap="round"/>
+
+</svg>

@@ -1,0 +1,8 @@
+<svg width="1800" height="620" viewBox="0 0 1800 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Friend CRM logotype">
+  <rect width="1800" height="620" rx="72" fill="#101022"/>
+  <circle cx="1530" cy="114" r="260" fill="#9C8CFF" opacity=".08"/>
+  <circle cx="164" cy="506" r="240" fill="#35E4D2" opacity=".055"/>
+  <text x="130" y="288" fill="#F5F0FF" font-family="Avenir Next, Inter, Helvetica Neue, Arial, sans-serif" font-size="140" font-weight="850" letter-spacing="0">Friend CRM</text>
+  <text x="136" y="370" fill="#9C8CFF" font-family="Avenir Next, Inter, Helvetica Neue, Arial, sans-serif" font-size="36" font-weight="760" letter-spacing="0">Private relationship intelligence</text>
+  <circle cx="196" cy="418" r="14" fill="#35E4D2"/><circle cx="266" cy="392" r="10" fill="#9C8CFF"/><circle cx="336" cy="418" r="14" fill="#35E4D2"/><path d="M210 414C242 384 290 384 324 414M386 418H1116" stroke="#9C8CFF" stroke-width="9" stroke-linecap="round" fill="none"/>
+</svg>
