@@ -328,7 +328,7 @@ function App() {
             aria-label="Cycle classified tagline"
             onClick={() => setTaglineIndex((current) => (current + 1) % brandTaglines.length)}
           >
-            F
+            <img src="/brand-logo.png" alt="Friend CRM logo" />
           </button>
           <div>
             <strong>Friend CRM</strong>

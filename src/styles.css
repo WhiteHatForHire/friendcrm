@@ -232,7 +232,7 @@ textarea:focus {
 
 .brand-mark {
   display: grid;
-  width: 44px;
+  width: 56px;
   height: 44px;
   place-items: center;
   border: 2px solid var(--paper-0);
@@ -244,6 +244,15 @@ textarea:focus {
   font-weight: 900;
   box-shadow: 4px 4px 0 var(--taxi), 0 12px 28px rgba(17, 85, 255, 0.32);
   text-shadow: 1px 1px 0 var(--ink-950);
+}
+
+.brand-mark img {
+  width: 48px;
+  height: 36px;
+  border-radius: 4px;
+  object-fit: contain;
+  background: rgba(255, 253, 244, 0.9);
+  padding: 3px;
 }
 
 .brand span,
