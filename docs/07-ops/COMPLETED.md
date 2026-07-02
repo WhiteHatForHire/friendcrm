@@ -32,6 +32,37 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-01 - Portfolio Screenshot Package Captured
+
+**Type:** Design / QA / Portfolio
+**Source:** Human + Codex
+**Related Files:**
+
+- `docs/07-ops/portfolio-screenshots-2026-06-29/SHOT-LIST.md`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/01-desktop-people-desk.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/02-desktop-person-brief.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/03-desktop-review-panel.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/04-desktop-plot-board.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/05-desktop-poster-lab.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/06-desktop-evidence-locker.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/07-mobile-people-drawer.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/08-mobile-plot-board.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/09-tablet-people-editor.png`
+
+**Summary:**
+
+Booted the local Friend CRM Vite app and captured the missing nine-shot
+portfolio screenshot package requested for the Symposium Studios Friend CRM
+product page. The package covers desktop People Desk, person briefing, review
+panel, Plot Board, Poster Lab, Evidence Locker, mobile dossier, mobile Plot
+Board, and tablet people editor. Browser audit scripts completed with no
+blocker findings; medium warnings remain around a mobile tagline control that
+may clip vertically.
+
+**Follow-Ups:**
+
+- [ ] Fix or soften the mobile classified-tagline control clipping warning in a future UI polish pass.
+
 ## 2026-06-25 — Launch-Demo Confidence Swarm Completed
 
 **Type:** App / Design / QA / AI / Ops  
