@@ -15,7 +15,25 @@ Move toward a local-first relationship desk using synthetic/contact-safe fixture
 
 ## Active Tasks
 
-## 1. Define Local Source Model
+## 1. Resolve Full App QA Medium UI Warnings
+
+**Status:** Ready
+**Priority:** P0
+**Type:** QA fix pass
+
+### Goal
+
+Complete the narrow UI polish follow-up from `docs/07-ops/full-app-qa-2026-07-07.md` before any private real-data trial.
+
+### Acceptance Criteria
+
+- [ ] Mobile classified-tagline/top-strip control no longer clips at `390px`.
+- [ ] Right-rail generated next-move objective/input row has a more forgiving responsive layout.
+- [ ] Mobile Review Panel density is inspected and either improved or explicitly deferred with rationale.
+- [ ] Validation reruns include `npm run audit:browser`, `npm run regression:mobile`, and `npm run trial:synthetic:browser`.
+- [ ] Private raw source, credentials, exports, financial/legal/health material, and client-sensitive data stay out of Git unless explicitly redacted and approved.
+
+## 2. Define Local Source Model
 
 **Status:** Ready
 **Priority:** P0
@@ -31,7 +49,7 @@ Complete `Define Local Source Model` as the next practical move for this project
 - [ ] The output says what it unlocks next, or it moves the next hopper item into an obvious ready/blocked state.
 - [ ] Private raw source, credentials, exports, financial/legal/health material, and client-sensitive data stay out of Git unless explicitly redacted and approved.
 
-## 2. Create Synthetic Relationship Fixtures
+## 3. Create Synthetic Relationship Fixtures
 
 **Status:** Ready
 **Priority:** P0
@@ -47,7 +65,7 @@ Complete `Create Synthetic Relationship Fixtures` as the next practical move for
 - [ ] The output says what it unlocks next, or it moves the next hopper item into an obvious ready/blocked state.
 - [ ] Private raw source, credentials, exports, financial/legal/health material, and client-sensitive data stay out of Git unless explicitly redacted and approved.
 
-## 3. Build Next-Move Planner Contract
+## 4. Build Next-Move Planner Contract
 
 **Status:** Ready
 **Priority:** P1
@@ -63,7 +81,7 @@ Complete `Build Next-Move Planner Contract` as the next practical move for this 
 - [ ] The output says what it unlocks next, or it moves the next hopper item into an obvious ready/blocked state.
 - [ ] Private raw source, credentials, exports, financial/legal/health material, and client-sensitive data stay out of Git unless explicitly redacted and approved.
 
-## 4. Sketch Local UI Workflow
+## 5. Sketch Local UI Workflow
 
 **Status:** Ready
 **Priority:** P1
@@ -79,7 +97,7 @@ Complete `Sketch Local UI Workflow` as the next practical move for this project.
 - [ ] The output says what it unlocks next, or it moves the next hopper item into an obvious ready/blocked state.
 - [ ] Private raw source, credentials, exports, financial/legal/health material, and client-sensitive data stay out of Git unless explicitly redacted and approved.
 
-## 5. Decide Import Order
+## 6. Decide Import Order
 
 **Status:** Ready
 **Priority:** P1

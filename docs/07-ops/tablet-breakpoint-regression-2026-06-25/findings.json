@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://127.0.0.1:5176",
+  "baseUrl": "http://127.0.0.1:5174",
   "viewports": [
     {
       "name": "tablet-768x1024",

@@ -1,0 +1,133 @@
+{
+  "baseUrl": "http://127.0.0.1:5174",
+  "screenshots": [
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-people.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-person-brief.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-generated-moves.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-poster-lab.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-delete-panel.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-radar.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-plot-board-before-drag.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-plot-board-after-drag.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-reflection-log.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-review-panel.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-settings.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/desktop-import-preview.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-people-closed-drawer.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-person-drawer.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-person-brief-drawer.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-people-after-close.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-radar.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-plot-board.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-reflection-log.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-review-panel.png",
+    "docs/07-ops/full-app-qa-2026-07-07-screens/mobile-settings.png"
+  ],
+  "findings": [
+    {
+      "severity": "medium",
+      "screen": "desktop-generated-moves",
+      "message": "Control text/content may be clipped: \"input\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "desktop-poster-lab",
+      "message": "Control text/content may be clipped: \"input\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "desktop-delete-panel",
+      "message": "Control text/content may be clipped: \"input\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-people-closed-drawer",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-people-closed-drawer",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-person-drawer",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-person-drawer",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-person-brief-drawer",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-person-brief-drawer",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-people-after-close",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-people-after-close",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-radar",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-radar",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-plot-board",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-plot-board",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-reflection-log",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-reflection-log",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-review-panel",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-review-panel",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-settings",
+      "message": "Control text/content may be clipped: \"Cycle classified tagline\"."
+    },
+    {
+      "severity": "medium",
+      "screen": "mobile-settings",
+      "message": "Button content may be vertically clipped: \"Cycle classified tagline\"."
+    }
+  ]
+}

@@ -32,6 +32,28 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-08 - Full App QA Self-Audit Completed
+
+**Type:** QA / Ops
+**Source:** Human + Codex
+**Related Files:**
+
+- `docs/07-ops/FULL_APP_QA_SELF_AUDIT_DIRECTIVE_2026-07-07.md`
+- `docs/07-ops/full-app-qa-2026-07-07.md`
+- `docs/07-ops/full-app-qa-2026-07-07-screens/`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+- `docs/07-ops/COMPLETED.md`
+
+**Summary:**
+
+Ran the full local app QA self-audit requested by the 2026-07-07 directive using seeded fake people and synthetic data only. Static/unit, build, demo readiness, desktop/mobile/tablet browser regressions, full browser audit, UI smoke, logic-level synthetic trial, and browser-level synthetic trial all passed. The temporary local Vite server was started with provider env vars unset and stopped after QA.
+
+The audit found no blockers, no source/privacy violations, and no provider-backed AI run. Medium UI follow-ups remain around the narrow mobile classified tagline/top strip and the cramped right-rail generated next-move input row.
+
+**Follow-Ups:**
+
+- [ ] Resolve the full-app QA medium UI warnings before a private real-data trial.
+
 ## 2026-07-01 - Portfolio Screenshot Package Captured
 
 **Type:** Design / QA / Portfolio
