@@ -1,0 +1,3 @@
+-- Intentionally empty.
+-- Friend CRM keeps public/demo seed data in the app so no fake or private relationship data
+-- is inserted into hosted databases by default.

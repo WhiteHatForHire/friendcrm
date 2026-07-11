@@ -67,6 +67,21 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 ## Product
 
+- Explore Bureau Oath first-run onboarding:
+  - Explain the product's joke without making the privacy model ambiguous.
+  - State that Friend CRM does not scrape messages, contacts, social accounts, or send outreach.
+  - Let the user choose Demo Bureau or Blank Desk.
+- Explore Mobile BuddyScan Lite:
+  - Generate a playful local-only dossier card from selected person fields.
+  - Keep it as parody artifact, not a factual score or hidden analysis.
+  - Do not send contact or social values to an external provider.
+- Explore Relationship Receipt:
+  - Create a shareable/exportable local receipt after a debrief or review session.
+  - Include only user-approved facts, open loops, and next moves.
+  - Make the output funny but clearly generated from the user's own local notes.
+- Explore Fake Data Tour Mode:
+  - Provide a one-tap fake-data walkthrough for App Store reviewers and portfolio visitors.
+  - Keep fake sample data visibly marked as demo content.
 - Explore richer profile media after local uploads prove useful:
   - Consider crop/resize controls if real users upload awkward images.
   - Consider a small photo-compression helper if exported JSON becomes too large.
@@ -86,6 +101,15 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 ## Design
 
+- Add an App Store-safe parody copy pass:
+  - Keep primary actions clear and review-safe.
+  - Move edgier jokes into secondary labels, empty states, badges, receipts, and flavor text.
+  - Use `docs/07-ops/COPY-AUDIT-APP-STORE-PARODY-2026-07-11.md` as the source.
+- Explore optional tone packs after the base voice stabilizes:
+  - `Bureau Clerk`
+  - `Gentle Human`
+  - `Maximum Nonsense`
+  - Keep any theme toggle purely presentational.
 - Continue mobile-specific UX hardening after the first mobile usability pass:
   - Consider a mobile-specific bottom nav if real use shows the current compact top nav still consumes too much space.
   - Consider collapsing Settings secondary panels after repeated mobile use.
@@ -122,6 +146,10 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 ## AI / Automation
 
+- Explore a Clerk Desk review queue:
+  - Keep all AI-generated durable records source-backed and user-approved.
+  - Frame suggestions as draft clerical paperwork rather than automated judgment.
+  - Avoid hidden scoring or unexplainable relationship rankings.
 - Add production AI transport after deployment/backend direction is explicit.
 - Add client-side AI response validation as defense-in-depth if routes move beyond trusted local development transport.
 - Add drift detection using interaction history.
@@ -138,6 +166,11 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 
 ## Ops
 
+- Finalize App Store Review Notes before submission:
+  - Explain fake-data demo path.
+  - State local-first behavior.
+  - State no scraping, no automated outreach, and no hidden scoring.
+  - Point reviewers to Evidence/Settings for export/delete/reset controls.
 - Add Design Foundation Skill.
 - Add App Scaffold Skill.
 

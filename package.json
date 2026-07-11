@@ -7,7 +7,12 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc && vite build",
     "preview": "vite preview --host 127.0.0.1",
+    "mobile:start": "npm --prefix apps/mobile start",
+    "mobile:ios": "npm --prefix apps/mobile run ios",
+    "mobile:web": "npm --prefix apps/mobile run web",
+    "mobile:check": "npm --prefix apps/mobile run check",
     "demo:check": "node scripts/demo-readiness-check.mjs",
+    "portfolio:screenshots": "node scripts/portfolio-screenshots.mjs",
     "regression:browser": "node scripts/browser-regression.mjs",
     "regression:mobile": "node scripts/mobile-browser-regression.mjs",
     "regression:tablet": "node scripts/tablet-browser-regression.mjs",
@@ -19,6 +24,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.0",
     "@vitejs/plugin-react": "^6.0.2",
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",

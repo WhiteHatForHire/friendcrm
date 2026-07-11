@@ -32,6 +32,401 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-11 — App Store-Safe Parody Copy Audit
+
+**Type:** Docs / UX / Product
+**Source:** Human + Codex
+**Related Files:**
+
+- `docs/07-ops/COPY-AUDIT-APP-STORE-PARODY-2026-07-11.md`
+- `docs/07-ops/FUTURE-TODO.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Audited Friend CRM's current web and mobile copy against the desired tongue-in-cheek retro bureau voice and App Store review guardrails. Created a replacement-copy matrix, identified safer wording for risky primary labels such as `suspect`, `interrogate`, `snooping`, and `target`, drafted App Store review note language, and proposed originality features including Bureau Oath, Mobile BuddyScan Lite, Relationship Receipt, Clerk Desk review queue, and Fake Data Tour Mode.
+
+**Follow-Ups:**
+
+- [ ] Run the Mobile App Store Copy Safety Pass.
+- [ ] Decide which originality feature should ship first for the next TestFlight/App Store candidate.
+
+## 2026-07-10 — Mobile Debrief Save And Return Flow Fixed
+
+**Type:** Mobile / UX
+**Source:** Human + Codex
+**Related Files:**
+
+- `apps/mobile/App.tsx`
+
+**Summary:**
+
+Fixed the mobile Debrief Booth flow so capturing a debrief explicitly saves the note, returns to the selected person's Dossier, and shows saved notes in a new `Recent Debriefs` section. This makes the debrief receipt visible immediately instead of leaving the user stranded on the capture screen wondering whether anything happened.
+
+Validation passed:
+
+- `cd apps/mobile && npm run check`
+- `cd apps/mobile && npm run ios:device:dev`
+
+**Follow-Ups:**
+
+- [ ] Human-smoke one new fake-person debrief on-device and confirm it appears under `Recent Debriefs`.
+
+## 2026-07-10 — Mobile Clear Data Stays On People
+
+**Type:** Mobile / UX
+**Source:** Human + Codex
+**Related Files:**
+
+- `apps/mobile/App.tsx`
+
+**Summary:**
+
+Fixed the mobile clear-demo-data flow so clearing local dummy data no longer forces the user into Evidence. The app now keeps the user on the current People/home context, empties the desk in place, and leaves Evidence as the optional home for reset/import/export controls.
+
+Validation passed:
+
+- `cd apps/mobile && npm run check`
+- `cd apps/mobile && npm run ios:device:dev`
+
+**Follow-Ups:**
+
+- [ ] Human-smoke the clear-data path on-device and confirm the app remains on People.
+
+## 2026-07-10 — Mobile Demo Data Control Placement Cleaned Up
+
+**Type:** Mobile / UX
+**Source:** Human + Codex
+**Related Files:**
+
+- `apps/mobile/App.tsx`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Moved mobile demo-data reset behavior into the Evidence tab as the durable control home. The People homepage now shows a temporary `Clear Demo Data` action only while local data exists, points reset/import/export users to Evidence, and removes the clear-data prompt automatically once local data is cleared. The empty Dossier fallback no longer exposes a fake-friend reload action outside Evidence.
+
+Validation passed:
+
+- `cd apps/mobile && npm run check`
+
+**Follow-Ups:**
+
+- [ ] Human-smoke the clear-data path on the local iPhone build.
+
+## 2026-07-09 — Mobile Next-Stage Native Build And Demo Path Receipt
+
+**Type:** Mobile / QA / Ops
+**Source:** Codex
+**Related Files:**
+
+- `docs/07-ops/MOBILE-REAL-USE-DEVICE-SMOKE-2026-07-09.md`
+- `docs/07-ops/MOBILE-REAL-USE-REPAIR-INITIATIVE-2026-07-08.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+- `docs/SUPABASE_BACKEND.md`
+
+**Summary:**
+
+Ran the approved next-stage mobile directive through the local-safe path. Verified the repaired mobile new-person/Dossier workflow at code level, confirmed local AsyncStorage persistence and schema-versioned JSON export paths are present, scanned mobile UI language for forbidden sales-CRM terms, passed `npm run mobile:check`, and passed a fresh local iPhone build/install/launch with `cd apps/mobile && npm run ios:device:dev`. Added a fake-data relationship desk demo path receipt for future video/GIF capture or human smoke.
+
+The remaining touch-by-touch physical iPhone smoke is blocked because Codex cannot inspect or tap the connected phone screen/native share sheet from the workspace. Supabase/RLS remains a separate gated fake-account task because no confirmed fake test credentials or service-role credential were available in the directive context.
+
+**Follow-Ups:**
+
+- [ ] Human-smoke the launched `Friend CRM Dev` build on iPhone using only fake data.
+- [ ] Complete the confirmed fake-account Supabase/RLS smoke after the auth/account decision.
+
+## 2026-07-09 — Full Goal-Based QA And Visual Audit Pass
+
+**Type:** App / QA / UX / Ops
+**Source:** Codex
+**Related Files:**
+
+- `src/components/SettingsView.tsx`
+- `src/styles.css`
+- `scripts/full-browser-audit.mjs`
+- `docs/07-ops/full-qa-2026-07-09/REPORT.md`
+- `docs/07-ops/full-qa-2026-07-09/`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Completed a full provider-disabled QA pass across the local-first web app, synthetic browser trial, visual audit, mobile browser viewport, tablet breakpoints, and Expo mobile build path. Fixed mobile Evidence Locker ordering so local export/restore controls stay ahead of optional hosted sync, stacked the person-rail next-move objective input to prevent cramped/clipped controls, and reduced full-browser-audit input clipping noise while preserving real clipping detection.
+
+Validation passed:
+
+- `FRIEND_CRM_DISABLE_PROVIDER=1 npm run demo:check`
+- `npm test`
+- `npm run build`
+- `npm audit --audit-level=moderate`
+- `npm run mobile:check`
+- Dated `audit:browser`, `trial:synthetic:browser`, `regression:mobile`, and `regression:tablet` runs against `http://127.0.0.1:5188`
+
+Expo iOS build/install completed, but runtime content verification is blocked by existing non-Friend CRM Metro servers occupying ports `8081` and `8083`; screenshots and details are recorded in the QA receipt.
+
+**Follow-Ups:**
+
+- [ ] Rerun iOS simulator smoke with a clean Friend CRM Metro server/port and capture real Friend CRM app screens.
+- [ ] Complete Supabase confirmed fake-user RLS smoke.
+- [ ] Do a commit/PR readiness review for the already-dirty worktree.
+
+## 2026-07-08 — Mobile Real-Use Repair Implemented Locally
+
+**Type:** Mobile / App / UX
+**Source:** Human + Agent
+**Related Files:**
+
+- `apps/mobile/App.tsx`
+- `apps/mobile/src/core/insights.ts`
+- `docs/07-ops/MOBILE-REAL-USE-REPAIR-INITIATIVE-2026-07-08.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Implemented the P0 mobile repair pass from real-device feedback. The Expo app now gives newly created people actionable Dossier states, manual quick-add paths for confirmed memories, loose threads/open loops, and next moves, source-backed notes for manually created memories/loops, clearer sparse-profile recommended approach copy, keyboard-aware scrolling, visible `Done Typing` controls, one-line compact privacy/status labels, and clearer local JSON share/export status.
+
+Validation passed:
+
+- `cd apps/mobile && npm run check`
+- `cd apps/mobile && npm run ios:device:dev`
+
+The latest `Friend CRM Dev` build installed and launched on the connected iPhone with bundle `com.symposiumstudios.friendcrm.dev`.
+
+**Follow-Ups:**
+
+- [ ] Human-smoke the repaired flow on iPhone with a new fake person.
+- [ ] Decide whether to cut a new TestFlight build after the smoke pass.
+
+## 2026-07-08 — Mobile Real-Use Repair Initiative Created
+
+**Type:** Ops / Mobile / UX
+**Source:** Human + Agent
+**Related Files:**
+
+- `docs/07-ops/MOBILE-REAL-USE-REPAIR-INITIATIVE-2026-07-08.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Captured real-device mobile feedback into a focused repair initiative covering new-person empty states, manual memory/open-loop/next-move creation, debrief-to-review clarity, keyboard dismissal, compact privacy label wrapping, and export/share confirmation. Moved the initiative into the active hopper as the next P0 mobile repair task.
+
+**Follow-Ups:**
+
+- [ ] Implement the mobile real-use repair initiative.
+- [ ] Validate on local iPhone dev build as `Friend CRM Dev`.
+
+## 2026-07-06 — Mobile Evidence Clear And Plot Board Fix Submitted
+
+**Type:** Mobile / App / Release
+**Source:** Human + Agent
+**Related Files:**
+
+- `apps/mobile/App.tsx`
+- `docs/07-ops/MOBILE-TESTFLIGHT-RUNBOOK-2026-07-06.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Fixed the TestFlight mobile bug where Evidence Locker `Clear Local Evidence` left the app stuck on `Loading private bureau...`. The root cause was that the app treated an intentionally empty people list as if it were still loading. The app now treats only unloaded data as loading, recovers from load failures into an explicit empty desk, confirms the destructive clear action, and keeps the user on Evidence Locker after local data is cleared.
+
+Also upgraded mobile Plot Board so it has a real on-device planning entry point: users can choose a person, create a next move, add rationale/risk, file it into `Bad Idea?`, and reclassify cards through desktop-matching labels. Built and uploaded iOS build `1.0.0 (11)` to App Store Connect/TestFlight. EAS build ID: `c22199f4-7cde-4622-a1ba-58739536e81d`; EAS submit ID: `3673b203-0049-4bcf-bc32-660e47ff6da2`.
+
+**Follow-Ups:**
+
+- [ ] Confirm Apple finishes processing build `1.0.0 (11)`.
+- [ ] Verify Evidence Locker clear flow on a real TestFlight install.
+- [ ] Verify mobile Plot Board create/reclassify flow on a real TestFlight install.
+
+## 2026-07-06 — TestFlight App Icon Refresh Submitted
+
+**Type:** Mobile / Design / Release
+**Source:** Human + Agent
+**Related Files:**
+
+- `.easignore`
+- `apps/mobile/assets/icon.png`
+- `apps/mobile/assets/splash-icon.png`
+- `apps/mobile/assets/favicon.png`
+- `apps/mobile/assets/android-icon-background.png`
+- `apps/mobile/assets/android-icon-foreground.png`
+- `apps/mobile/assets/android-icon-monochrome.png`
+- `apps/mobile/package.json`
+- `apps/mobile/package-lock.json`
+- `docs/07-ops/MOBILE-TESTFLIGHT-RUNBOOK-2026-07-06.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Replaced the default Expo placeholder with branded Friend CRM app icon assets, fixed EAS archive filtering for the mobile app, updated Expo to the SDK-expected patch version, rebuilt the iOS app as `1.0.0 (10)`, and uploaded the icon-refresh binary to App Store Connect/TestFlight. EAS build ID: `62462331-4f4a-4e94-8f15-48afe2c76e4d`; EAS submit ID: `c9f771bc-b70c-4093-91dd-50f5a0a3029c`. This build was later superseded by Evidence/Plot Board fix build `1.0.0 (11)`.
+
+**Follow-Ups:**
+
+- [x] Submit Evidence/Plot Board fix build `1.0.0 (11)`.
+- [ ] Confirm the branded app icon appears in App Store Connect/TestFlight.
+- [ ] Verify internal TestFlight install on a device using the current build.
+
+## 2026-07-06 — Expo TestFlight Build Submitted
+
+**Type:** Mobile / Release / Ops
+**Source:** Human + Agent
+**Related Files:**
+
+- `apps/mobile/app.json`
+- `apps/mobile/eas.json`
+- `apps/mobile/.easignore`
+- `docs/07-ops/MOBILE-TESTFLIGHT-RUNBOOK-2026-07-06.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Completed the Friend CRM iOS production EAS build and uploaded the binary to App Store Connect/TestFlight. The build used bundle ID `com.symposiumstudios.friendcrm`, EAS project `@symposiumstudios/friend-crm-mobile`, ASC app ID `6787891531`, EAS build ID `4d107817-7fbf-467d-bea8-01d8779f6945`, and EAS submit ID `6e8d4eca-0d3a-4300-ac0d-c46ea13f6ecf`. EAS also created the App Store Connect app record, registered/linked the bundle identifier, created the `Team (Expo)` TestFlight group, and enabled TestFlight access for `stephensm2011@gmail.com`.
+
+This initial binary was later superseded by icon-refresh build `1.0.0 (10)`.
+
+**Follow-Ups:**
+
+- [x] Submit icon-refresh build `1.0.0 (10)` so App Store Connect/TestFlight has a branded app icon.
+- [ ] Verify internal TestFlight install using the current build.
+- [ ] Rename App Store Connect listing from generated `Friend CRM (c0b031)` if desired.
+- [ ] Add additional internal testers and beta test notes.
+
+## 2026-07-06 — Expo TestFlight Setup Started
+
+**Type:** Mobile / Release / Ops
+**Source:** Human + Agent
+**Related Files:**
+
+- `apps/mobile/app.json`
+- `apps/mobile/eas.json`
+- `docs/07-ops/MOBILE-TESTFLIGHT-RUNBOOK-2026-07-06.md`
+- `docs/07-ops/testflight-2026-07-06/ios-smoke-home.png`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Configured the Expo mobile prototype for iOS/TestFlight using the Anchor EAS/App Store pattern. Added bundle ID `com.symposiumstudios.friendcrm`, EAS build/submit profiles, EAS owner/project metadata, and a TestFlight runbook. Created and linked EAS project `@symposiumstudios/friend-crm-mobile`, ran local validation, launched the app in iOS Simulator through Expo Go, bundled successfully, and captured a smoke screenshot. The Apple 2FA/signing blocker was resolved in the follow-up TestFlight build submission run.
+
+**Follow-Ups:**
+
+- [x] Resume `eas build --platform ios --profile production` with Apple 2FA code available.
+- [x] Let EAS manage iOS signing credentials for `com.symposiumstudios.friendcrm`.
+- [x] Submit the finished build to TestFlight.
+- [x] Add App Store Connect app ID, EAS build ID, submit ID, and TestFlight URL to the runbook.
+
+## 2026-07-02 — Supabase Auth And Sync Mode UI
+
+**Type:** App / Backend / Ops
+**Source:** Human + Agent
+**Related Files:**
+
+- `src/components/HostedSyncPanel.tsx`
+- `src/components/SettingsView.tsx`
+- `src/App.tsx`
+- `src/lib/supabaseSync.ts`
+- `src/lib/supabaseSync.test.ts`
+- `src/styles.css`
+- `docs/SUPABASE_BACKEND.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Added a guarded hosted sync panel to Evidence Locker. The app now shows Supabase configuration/session state, supports sign-in/sign-up/sign-out, keeps local mode as the default, requires synced mode plus an explicit write arming checkbox before hosted writes, and can push/pull through the existing Supabase sync helpers. Hosted sync now filters out unconfirmed durable memories before upload.
+
+A public-client signup smoke succeeded, but the project currently requires email confirmation and returned no session, so authenticated RLS write verification still needs a confirmed fake test account or an auth-settings decision.
+
+**Follow-Ups:**
+
+- [ ] Complete authenticated fake-user RLS write/read smoke.
+- [ ] Decide whether fake trial accounts should require email confirmation.
+- [ ] Add mobile hosted sync controls only if the Expo app continues toward a hosted trial.
+
+## 2026-07-02 — Supabase Cloud Project And Migration Push
+
+**Type:** Backend / Ops
+**Source:** Human + Agent
+**Related Files:**
+
+- `supabase/migrations/20260701123500_initial_friendcrm_schema.sql`
+- `docs/SUPABASE_BACKEND.md`
+- `docs/06-decisions/0008-optional-supabase-hosted-persistence.md`
+- `PROJECT.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Created and linked the hosted Supabase project `friendcrm` with project ref `mjrqxmcicoreeovitscy`, pushed the initial Friend CRM schema/RLS migration, verified local and remote migration versions match, and configured gitignored local web/mobile env files with public client values. No service-role key, database password, private data, or real user data was committed.
+
+**Follow-Ups:**
+
+- [ ] Verify RLS with authenticated fake users before any real-data trial.
+- [ ] Move the generated database password into a password manager or reset it from Supabase.
+
+## 2026-07-01 — Supabase Hosted Persistence Foundation
+
+**Type:** Backend / Docs / Decision
+**Source:** Human + Agent
+**Related Files:**
+
+- `supabase/config.toml`
+- `supabase/migrations/20260701123500_initial_friendcrm_schema.sql`
+- `supabase/seed.sql`
+- `src/lib/supabaseClient.ts`
+- `src/lib/supabaseSync.ts`
+- `apps/mobile/src/core/supabaseClient.ts`
+- `docs/SUPABASE_BACKEND.md`
+- `docs/06-decisions/0008-optional-supabase-hosted-persistence.md`
+- `.env.example`
+
+**Summary:**
+
+Added an optional Supabase hosted persistence foundation while preserving local-first demo behavior. The migration defines user-owned tables for profiles, people, notes, memories, open loops, next moves, interactions, and sync events with RLS policies keyed by `auth.uid()`. Added optional Supabase clients/sync helpers for web and mobile and documented the hosted persistence boundary.
+
+Cloud project creation was completed in the follow-up 2026-07-02 Supabase cloud project run.
+
+**Follow-Ups:**
+
+- [ ] Add auth UI and a visible local/synced mode switch before enabling hosted sync in the app.
+
+## 2026-07-01 — Expo Mobile Prototype Port
+
+**Type:** App / Mobile / Docs
+**Source:** Human + Agent
+**Related Files:**
+
+- `apps/mobile/`
+- `apps/mobile/App.tsx`
+- `apps/mobile/src/core/storage.ts`
+- `docs/07-ops/MOBILE-EXPO-PORT-2026-07-01.md`
+- `docs/07-ops/mobile-expo-port-2026-07-01-web-smoke.png`
+- `PROJECT.md`
+- `README.md`
+- `package.json`
+
+**Summary:**
+
+Added a first usable Expo TypeScript mobile prototype for Friend CRM under `apps/mobile/`. The mobile app includes People, Dossier, Debrief, Review, Plot Board, and Evidence Locker flows with fake seeded data, reset/clear controls, local AsyncStorage persistence, deterministic source-backed suggestion review, JSON export/share, paste-based import, and retro private-bureau styling.
+
+Validation passed:
+
+- `npm --prefix apps/mobile run check`
+- `npm run build`
+- Expo web smoke through Playwright
+
+**Follow-Ups:**
+
+- [ ] Re-run `npm run mobile:ios` with Expo Go/simulator fully available and capture iOS screenshots.
+- [ ] Add document-picker/file-system import/export if the mobile prototype continues.
+- [ ] Extract shared core package if web and mobile both keep evolving.
+
+## 2026-06-29 — Portfolio README And Case Study
+
+**Type:** Docs / Portfolio
+**Source:** Human + Agent
+**Related Files:**
+
+- `README.md`
+- `docs/PORTFOLIO_CASE_STUDY.md`
+
 ## 2026-07-08 - Full App QA Self-Audit Completed
 
 **Type:** QA / Ops
@@ -40,11 +435,57 @@ Use this format for each completed item:
 
 - `docs/07-ops/FULL_APP_QA_SELF_AUDIT_DIRECTIVE_2026-07-07.md`
 - `docs/07-ops/full-app-qa-2026-07-07.md`
-- `docs/07-ops/full-app-qa-2026-07-07-screens/`
+- `docs/07-ops/full-app-qa-2026-07-07-screens/`- `docs/07-ops/NEXT-IN-HOPPER.md`
+- `docs/07-ops/COMPLETED.md`
+
+**Summary:**
+
+Reworked the public repo front door and added a repo-native portfolio case study so Friend CRM reads as a Symposium-ready product artifact: a tongue-in-cheek retro relationship desk with modern local-first behavior, AI-aware workflows, browser QA, and privacy-first boundaries.
+
+**Follow-Ups:**
+
+- [ ] Add hosted demo URL once available.
+- [ ] Record a short walkthrough video or GIF.
+
+## 2026-06-29 — Symposium Portfolio Page Package
+
+**Type:** Docs / Portfolio
+**Source:** Human + Agent
+**Related Files:**
+
+- `docs/07-ops/SYMPOSIUM-PORTFOLIO-PAGE-PACKAGE.md`
 - `docs/07-ops/NEXT-IN-HOPPER.md`
 - `docs/07-ops/COMPLETED.md`
 
 **Summary:**
+
+Created a ready-to-paste Symposium Studios portfolio page package for Friend CRM, including hero copy, product overview, walkthrough sections, screenshot mapping, AI/privacy framing, engineering notes, postmortem copy, metadata, CTA copy, alt text, and implementation notes.
+
+**Follow-Ups:**
+
+- [ ] Update the public README and repo-native case study.
+- [ ] Publish a hosted fake-data demo link before adding final CTA URLs.
+
+## 2026-06-29 — Symposium Portfolio Plan And Screenshot Gallery
+
+**Type:** Docs / Design / Ops
+**Source:** Human + Agent
+**Related Files:**
+
+- `docs/07-ops/PORTFOLIO-CASE-STUDY-PLAN.md`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/`
+- `scripts/portfolio-screenshots.mjs`
+- `package.json`
+
+**Summary:**
+
+Created a Symposium Studios portfolio plan that positions Friend CRM as a tongue-in-cheek retro relationship desk with modern local-first functionality, AI-aware workflows, and privacy-first boundaries. Added a repeatable portfolio screenshot capture script and generated a curated nine-image gallery covering desktop, mobile, and tablet states.
+
+**Follow-Ups:**
+
+- [ ] Convert the plan into final Symposium Studios page copy.
+- [ ] Create or update the public README and repo-native case study.
+- [ ] Pick a hosted demo target and publish the deterministic fake-data demo.
 
 Ran the full local app QA self-audit requested by the 2026-07-07 directive using seeded fake people and synthetic data only. Static/unit, build, demo readiness, desktop/mobile/tablet browser regressions, full browser audit, UI smoke, logic-level synthetic trial, and browser-level synthetic trial all passed. The temporary local Vite server was started with provider env vars unset and stopped after QA.
 
@@ -84,11 +525,10 @@ may clip vertically.
 **Follow-Ups:**
 
 - [ ] Fix or soften the mobile classified-tagline control clipping warning in a future UI polish pass.
-
 ## 2026-06-25 — Launch-Demo Confidence Swarm Completed
 
-**Type:** App / Design / QA / AI / Ops  
-**Source:** Human + Agent Swarm  
+**Type:** App / Design / QA / AI / Ops
+**Source:** Human + Agent Swarm
 **Related Files:**
 
 - `src/App.tsx`
@@ -130,8 +570,8 @@ Validation passed:
 
 ## 2026-06-25 — Audit Fix, Backup Restore Confidence, And Swarm Directive Completed
 
-**Type:** App / Mobile UX / Data Safety / QA / Ops  
-**Source:** Human + Agent  
+**Type:** App / Mobile UX / Data Safety / QA / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -172,8 +612,8 @@ Validation passed:
 
 ## 2026-06-25 — Full Browser UI Audit Completed
 
-**Type:** QA / Design / Ops  
-**Source:** Human + Agent  
+**Type:** QA / Design / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `scripts/full-browser-audit.mjs`
@@ -201,8 +641,8 @@ Validation passed:
 
 ## 2026-06-25 — Mobile Person Detail Drawer Completed
 
-**Type:** App / Mobile UX / Browser QA / Ops  
-**Source:** Human + Agent  
+**Type:** App / Mobile UX / Browser QA / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -237,8 +677,8 @@ Validation passed:
 
 ## 2026-06-25 — Browser-Level Synthetic Trial Harness Completed
 
-**Type:** QA / Browser Automation / Demo Readiness / Ops  
-**Source:** Human + Agent  
+**Type:** QA / Browser Automation / Demo Readiness / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `scripts/browser-synthetic-trial.mjs`
@@ -270,8 +710,8 @@ Validation passed:
 
 ## 2026-06-25 — Briefs And Next Moves Quality Pass Completed
 
-**Type:** AI / Product UX / Tests / Ops  
-**Source:** Human + Agent  
+**Type:** AI / Product UX / Tests / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/lib/aiGenerationRoute.ts`
@@ -304,8 +744,8 @@ Validation passed:
 
 ## 2026-06-25 — Synthetic Real-Use Trial And Fallback Parser Pass Completed
 
-**Type:** App / AI / Tests / Ops  
-**Source:** Human + Agent  
+**Type:** App / AI / Tests / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/lib/insights.ts`
@@ -338,8 +778,8 @@ Validation passed:
 
 ## 2026-06-24 — Mobile Usability Audit And Touch Pass Completed
 
-**Type:** App / Design / QA / Ops  
-**Source:** Human + Agent Swarm  
+**Type:** App / Design / QA / Ops
+**Source:** Human + Agent Swarm
 **Related Files:**
 
 - `src/App.tsx`
@@ -375,8 +815,8 @@ Validation passed:
 
 ## 2026-06-23 — Sample Dataset Reset Flow Completed
 
-**Type:** App / Demo UX / Data Safety / Tests  
-**Source:** Human + Agent  
+**Type:** App / Demo UX / Data Safety / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -406,8 +846,8 @@ Validation passed:
 
 ## 2026-06-23 — Review Panel Edited / Rejected Browser Coverage Completed
 
-**Type:** Engineering / Tests / Trust UX  
-**Source:** Human + Agent  
+**Type:** Engineering / Tests / Trust UX
+**Source:** Human + Agent
 **Related Files:**
 
 - `scripts/browser-regression.mjs`
@@ -434,8 +874,8 @@ Validation passed:
 
 ## 2026-06-23 — Main Site Zany Shell And Classified States Completed
 
-**Type:** App / Design / Ops  
-**Source:** Human + Agent  
+**Type:** App / Design / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -469,8 +909,8 @@ Validation passed:
 
 ## 2026-06-23 — Component-Level Test Coverage Completed
 
-**Type:** Engineering / Tests  
-**Source:** Human + Agent  
+**Type:** Engineering / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `package.json`
@@ -502,8 +942,8 @@ Validation passed:
 
 ## 2026-06-23 — BuddyScan 3000 Poster Lab Completed
 
-**Type:** App / Design / Product / Privacy UX / Tests  
-**Source:** Human + Agent  
+**Type:** App / Design / Product / Privacy UX / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/components/DossierPosterLab.tsx`
@@ -543,8 +983,8 @@ Validation passed:
 
 ## 2026-06-23 — Actual Profile Photo Upload Pass Completed
 
-**Type:** App / Product / Privacy UX / Tests  
-**Source:** Human + Agent  
+**Type:** App / Product / Privacy UX / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -575,8 +1015,8 @@ Validation passed:
 
 ## 2026-06-23 — Non-Trial Product Polish Sweep Completed
 
-**Type:** App / Product / UX / Tests  
-**Source:** Human + Agent  
+**Type:** App / Product / UX / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -604,8 +1044,8 @@ Validation passed:
 
 ## 2026-06-23 — Profile Photos And Social Links Completed
 
-**Type:** App / Product / UX / Tests  
-**Source:** Human + Agent  
+**Type:** App / Product / UX / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/types.ts`
@@ -640,8 +1080,8 @@ Validation passed:
 
 ## 2026-06-23 — Private Trial Parked And Non-Trial Hopper Refilled
 
-**Type:** Ops / Product  
-**Source:** Human + Agent  
+**Type:** Ops / Product
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/07-ops/NEXT-IN-HOPPER.md`
@@ -657,8 +1097,8 @@ Parked the private real-data trial by user direction and refilled the active hop
 
 ## 2026-06-23 — Relationship Setup And People List Playability Completed
 
-**Type:** App / UX / Tests  
-**Source:** Human + Agent  
+**Type:** App / UX / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -685,8 +1125,8 @@ Validation passed:
 
 ## 2026-06-23 — Trustworthy Feedback States Completed
 
-**Type:** App / UX / Tests  
-**Source:** Human + Agent  
+**Type:** App / UX / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/components/PersonRail.tsx`
@@ -716,8 +1156,8 @@ Validation passed:
 
 ## 2026-06-23 — Cheeky Copy And Interaction Pass Completed
 
-**Type:** Design / App / UX / Tests  
-**Source:** Human + Agent  
+**Type:** Design / App / UX / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -750,8 +1190,8 @@ Validation passed:
 
 ## 2026-06-23 — Extreme Retro Visual Pass Completed
 
-**Type:** Design / App / UX  
-**Source:** Human + Agent  
+**Type:** Design / App / UX
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/styles.css`
@@ -775,8 +1215,8 @@ Validation passed:
 
 ## 2026-06-23 — Cheekier 90s/Early-2000s Visual Pass Completed
 
-**Type:** Design / App / UX  
-**Source:** Human + Agent  
+**Type:** Design / App / UX
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/styles.css`
@@ -801,8 +1241,8 @@ Validation passed:
 
 ## 2026-06-23 — Branded Shell And Responsive Foundation Completed
 
-**Type:** Design / App / UX  
-**Source:** Human + Agent Swarm  
+**Type:** Design / App / UX
+**Source:** Human + Agent Swarm
 **Related Files:**
 
 - `src/styles.css`
@@ -830,8 +1270,8 @@ Validation passed:
 
 ## 2026-06-23 — Plot Board Drag/Drop And Planning Polish Completed
 
-**Type:** App / UX / Tests  
-**Source:** Human + Agent  
+**Type:** App / UX / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/components/PlotBoard.tsx`
@@ -856,8 +1296,8 @@ Validation passed:
 
 ## 2026-06-23 — Full UI/UX And Functionality Audit Completed
 
-**Type:** Design / App / Tests / Ops  
-**Source:** Human + Agent Swarm  
+**Type:** Design / App / Tests / Ops
+**Source:** Human + Agent Swarm
 **Related Files:**
 
 - `docs/07-ops/UI-UX-AUDIT-2026-06-23.md`
@@ -885,8 +1325,8 @@ Validation passed:
 
 ## 2026-06-23 — Balanced Trust, Coverage, And Trial Rehearsal Run Completed
 
-**Type:** App / Tests / Privacy / Docs / Ops  
-**Source:** Human + Agent Swarm  
+**Type:** App / Tests / Privacy / Docs / Ops
+**Source:** Human + Agent Swarm
 **Related Files:**
 
 - `src/components/SettingsView.tsx`
@@ -914,8 +1354,8 @@ Validation passed:
 
 ## 2026-06-23 — Multi-Agent Demo Readiness Pass Completed
 
-**Type:** App / AI / Tests / Privacy / Docs  
-**Source:** Human + Agent Swarm  
+**Type:** App / AI / Tests / Privacy / Docs
+**Source:** Human + Agent Swarm
 **Related Files:**
 
 - `src/types.ts`
@@ -955,8 +1395,8 @@ Validation passed:
 
 ## 2026-06-23 — PR 2 Person Rail Component Boundary Completed
 
-**Type:** App / Tests / Maintainability  
-**Source:** Human + Agent  
+**Type:** App / Tests / Maintainability
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/components/PersonRail.tsx`
@@ -979,8 +1419,8 @@ Validation passed:
 
 ## 2026-06-23 — PR 4 Private Trial Run Kit Finalization Completed
 
-**Type:** Research / Product / Privacy / Docs  
-**Source:** Human + Agent  
+**Type:** Research / Product / Privacy / Docs
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/07-ops/PRIVATE-REAL-DATA-TRIAL-KIT.md`
@@ -1002,8 +1442,8 @@ Validation passed:
 
 ## 2026-06-23 — PR 3 Demo Readiness Command And Checklist Completed
 
-**Type:** Ops / QA / Docs  
-**Source:** Human + Agent  
+**Type:** Ops / QA / Docs
+**Source:** Human + Agent
 **Related Files:**
 
 - `scripts/demo-readiness-check.mjs`
@@ -1031,8 +1471,8 @@ Validation passed:
 
 ## 2026-06-23 — PR 1 Provider Trial Hardening Completed
 
-**Type:** AI / Backend / Tests / Docs  
-**Source:** Human + Agent  
+**Type:** AI / Backend / Tests / Docs
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/lib/aiExtractorSchema.ts`
@@ -1065,8 +1505,8 @@ Validation passed:
 
 ## 2026-06-23 — Demo PR Run Plan And Real-Key Provider Trial Recorded
 
-**Type:** AI / Ops / Docs  
-**Source:** Human + Agent  
+**Type:** AI / Ops / Docs
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/07-ops/DEMO-PR-RUN-PLAN.md`
@@ -1087,8 +1527,8 @@ Packaged the remaining fully functional demo work into PR-sized runs and attempt
 
 ## 2026-06-23 — Eighth Ten-Chunk Hardening Run Completed
 
-**Type:** App / Tests / Docs / Ops  
-**Source:** Human + Agent  
+**Type:** App / Tests / Docs / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/components/PlotBoard.tsx`
@@ -1109,8 +1549,8 @@ Extracted Plot Board into a focused component, added empty states for board colu
 
 ## 2026-06-23 — Seventh Ten-Chunk Hardening Run Completed
 
-**Type:** App / Design / Tests / Docs / Ops  
-**Source:** Human + Agent  
+**Type:** App / Design / Tests / Docs / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/components/ReflectionLog.tsx`
@@ -1132,8 +1572,8 @@ Extracted Reflection Log into a focused component, added person picker quick con
 
 ## 2026-06-23 — Sixth Ten-Chunk Hardening Run Completed
 
-**Type:** App / Persistence / Tests / Docs / Ops  
-**Source:** Human + Agent  
+**Type:** App / Persistence / Tests / Docs / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/components/SettingsView.tsx`
@@ -1157,8 +1597,8 @@ Added backup-before-replace JSON export from the import preview, extracted Revie
 
 ## 2026-06-23 — Fifth Ten-Chunk Hardening Run Completed
 
-**Type:** App / Persistence / AI / Tests / Docs / Ops  
-**Source:** Human + Agent  
+**Type:** App / Persistence / AI / Tests / Docs / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/components/SettingsView.tsx`
@@ -1188,8 +1628,8 @@ Improved JSON import preview confidence with sample people, note range, and priv
 
 ## 2026-06-23 — Fourth Ten-Chunk Hardening Run Completed
 
-**Type:** App / Persistence / Tests / Docs / Research  
-**Source:** Human + Agent  
+**Type:** App / Persistence / Tests / Docs / Research
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/lib/dataValidation.ts`
@@ -1219,8 +1659,8 @@ Added an explicit CRM data schema migration registry while keeping unversioned r
 
 ## 2026-06-23 — Third Ten-Chunk Hardening Run Completed
 
-**Type:** App / AI / Backend / Persistence / Tests / Docs / Research  
-**Source:** Human + Agent  
+**Type:** App / AI / Backend / Persistence / Tests / Docs / Research
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/lib/browserAiClient.ts`
@@ -1249,8 +1689,8 @@ Wired browser UI calls through the development AI HTTP routes with local fallbac
 
 ## 2026-06-23 — Second Ten-Chunk Hardening Run Completed
 
-**Type:** App / AI / Backend / Privacy / Tests / Docs / Ops  
-**Source:** Human + Agent  
+**Type:** App / AI / Backend / Privacy / Tests / Docs / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `vite.config.ts`
@@ -1279,8 +1719,8 @@ Added Vite development HTTP transport for AI route shells, strengthened JSON imp
 
 ## 2026-06-23 — Ten-Chunk Prototype Hardening Run Completed
 
-**Type:** App / AI / Backend / Privacy / Tests / Docs / Ops / Decision  
-**Source:** Human + Agent  
+**Type:** App / AI / Backend / Privacy / Tests / Docs / Ops / Decision
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/lib/serverAiProvider.ts`
@@ -1314,8 +1754,8 @@ Completed a broad prototype-hardening run: added an OpenAI-compatible server-sid
 
 ## 2026-06-23 — Simulated Prototype Trial Completed
 
-**Type:** Research / Tests / Ops  
-**Source:** Human + Agent  
+**Type:** Research / Tests / Ops
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/07-ops/SIMULATED-PROTOTYPE-TRIAL-2026-06-23.md`
@@ -1335,8 +1775,8 @@ Ran a simulated prototype trial against the core app flow using 10 people and 25
 
 ## 2026-06-23 — AI Route Shell And Review Wiring Added
 
-**Type:** AI / App / Decision  
-**Source:** Human + Agent  
+**Type:** AI / App / Decision
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/06-decisions/0006-ai-backend-shape.md`
@@ -1360,8 +1800,8 @@ Chose a framework-neutral extractor route/controller core as the first AI backen
 
 ## 2026-06-23 — AI Extractor Schema Validation Added
 
-**Type:** AI / Tests  
-**Source:** Human + Agent  
+**Type:** AI / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/lib/aiExtractorSchema.ts`
@@ -1381,8 +1821,8 @@ Added a dependency-free validator for future Memory Extractor AI output. The val
 
 ## 2026-06-22 — Review Workflow, Playability Pass, And Trial Harness Added
 
-**Type:** App / Research / Docs  
-**Source:** Human + Agent  
+**Type:** App / Research / Docs
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -1404,8 +1844,8 @@ Completed three sequential prototype-readiness runs: strengthened the source-bac
 
 ## 2026-06-22 — Real AI Integration Boundary Planned
 
-**Type:** AI / Architecture  
-**Source:** Human + Agent  
+**Type:** AI / Architecture
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/AI_INTEGRATION_BOUNDARY.md`
@@ -1428,8 +1868,8 @@ Documented the future server-side AI boundary, including the Memory Extractor ro
 
 ## 2026-06-22 — Export And Delete Privacy UX Added
 
-**Type:** App / Privacy  
-**Source:** Human + Agent  
+**Type:** App / Privacy
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`
@@ -1451,8 +1891,8 @@ Added individual note deletion, source-backed cleanup for deleted notes, visible
 
 ## 2026-06-22 — Local CRUD And Delete Coverage Tightened
 
-**Type:** App / Tests  
-**Source:** Human + Agent  
+**Type:** App / Tests
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/lib/crm.ts`
@@ -1473,8 +1913,8 @@ Extracted core CRM state mutations into testable helpers, wired the app to use t
 
 ## 2026-06-22 — Project Brain Audit And Initial ADRs Added
 
-**Type:** Docs / Decision  
-**Source:** Human + Agent  
+**Type:** Docs / Decision
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/07-ops/PROJECT-BRAIN-AUDIT.md`
@@ -1500,8 +1940,8 @@ Completed the Milestone 0 project brain audit and captured the foundational deci
 
 ## 2026-06-22 — Whole-Project Plan Added
 
-**Type:** Ops / Docs  
-**Source:** Human + Agent  
+**Type:** Ops / Docs
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/07-ops/PROJECT-PLAN.md`
@@ -1519,8 +1959,8 @@ Added a whole-project milestone plan and expanded the parked backlog so future w
 
 ## 2026-06-22 — Project Operating System Added
 
-**Type:** Ops / Docs  
-**Source:** Human + Agent  
+**Type:** Ops / Docs
+**Source:** Human + Agent
 **Related Files:**
 
 - `docs/07-ops/NEXT-IN-HOPPER.md`
@@ -1544,8 +1984,8 @@ Added a lightweight project operating system so future human and AI work can sta
 
 ## 2026-06-22 — Initial Local-First MVP Scaffold Added
 
-**Type:** App / Docs  
-**Source:** Human + Agent  
+**Type:** App / Docs
+**Source:** Human + Agent
 **Related Files:**
 
 - `src/App.tsx`

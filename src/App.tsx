@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { FormEvent, type RefObject, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Avatar } from "./components/Avatar";
+import { HostedSyncPanel } from "./components/HostedSyncPanel";
 import { PersonRail } from "./components/PersonRail";
 import { PlotBoard } from "./components/PlotBoard";
 import { ReflectionLog } from "./components/ReflectionLog";
@@ -381,7 +382,14 @@ function App() {
             onDeleteNote={deleteNote}
           />
         )}
-        {view === "settings" && <SettingsView data={data} onReset={clearAndSeed} onImport={importData} />}
+        {view === "settings" && (
+          <SettingsView
+            data={data}
+            onReset={clearAndSeed}
+            onImport={importData}
+            hostedSyncPanel={<HostedSyncPanel data={data} onReplaceLocalData={importData} />}
+          />
+        )}
       </main>
 
       {isMobileRailActive && (
