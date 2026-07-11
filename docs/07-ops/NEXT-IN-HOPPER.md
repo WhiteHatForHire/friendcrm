@@ -71,7 +71,7 @@ Verify the implemented mobile real-use repair pass on a real iPhone and catch an
 
 ## 2. Mobile App Store Copy Safety Pass
 
-**Status:** Ready
+**Status:** Implemented / Blocked On Physical Device Install
 **Priority:** P0
 **Type:** Mobile / UX Copy / App Store
 
@@ -81,12 +81,19 @@ Apply the safest high-priority recommendations from `docs/07-ops/COPY-AUDIT-APP-
 
 ### Acceptance Criteria
 
-- Primary mobile actions no longer use `suspect`, `interrogate`, `snooping`, or `target`.
-- Evidence includes a plain local-only/no-scraping/no-auto-outreach disclaimer.
-- Review flow keeps explicit approval language for memories, open loops, and next moves.
-- Cheeky parody copy remains in secondary labels, empty states, receipts, and flavor text rather than trust-critical destructive actions.
-- `cd apps/mobile && npm run check` passes.
-- Local iPhone build is pushed before the next TestFlight build.
+- [x] Primary mobile actions no longer use `suspect`, `interrogate`, `snooping`, or `target`.
+- [x] Evidence includes a plain local-only/no-scraping/no-auto-outreach disclaimer.
+- [x] Review flow keeps explicit approval language for memories, open loops, and next moves.
+- [x] Cheeky parody copy remains in secondary labels, empty states, receipts, and flavor text rather than trust-critical destructive actions.
+- [x] `cd apps/mobile && npm run check` passes.
+- [ ] Local iPhone build is pushed before the next TestFlight build.
+
+### 2026-07-11 Codex Receipt
+
+- Mobile copy safety implementation landed in `apps/mobile/App.tsx`.
+- Risky-term scan across `apps/mobile/App.tsx` and `apps/mobile/src` found no remaining `suspect`, `interrogate`, `snooping`, `target`, or `Clear Local Evidence` strings.
+- `cd apps/mobile && npm run check` passed.
+- `cd apps/mobile && npm run ios:device:dev` was attempted, but Xcode could not find physical device destination `00008110-000475662EF2601E`. Reconnect/unlock the iPhone before retrying.
 
 ## 3. TestFlight Processing Check And Internal Tester Setup
 

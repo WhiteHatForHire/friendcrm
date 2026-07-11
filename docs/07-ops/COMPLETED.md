@@ -32,6 +32,30 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-11 — Mobile App Store Copy Safety Pass Implemented
+
+**Type:** Mobile / UX Copy / App Store
+**Source:** Human + Codex
+**Related Files:**
+
+- `apps/mobile/App.tsx`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Implemented the mobile App Store copy safety pass. Primary mobile actions and labels no longer use higher-risk language such as `suspect`, `interrogate`, `snooping`, `target`, or `Clear Local Evidence`. The Evidence Locker now includes a plain local-only/no-scraping/no-auto-outreach privacy boundary, Debrief review copy emphasizes explicit approval, and Plot Board/People/Dossier labels now use safer person-file/card language while preserving the bureau parody voice.
+
+Validation passed:
+
+- `cd apps/mobile && npm run check`
+
+Local iPhone install was attempted with `cd apps/mobile && npm run ios:device:dev`, but Xcode could not find the configured physical device destination `00008110-000475662EF2601E`. No TestFlight build was cut.
+
+**Follow-Ups:**
+
+- [ ] Reconnect/unlock the physical iPhone and rerun `cd apps/mobile && npm run ios:device:dev`.
+- [ ] Human-smoke Evidence, People, Dossier, Debrief, and Plot Board copy on-device before TestFlight.
+
 ## 2026-07-11 — App Store-Safe Parody Copy Audit
 
 **Type:** Docs / UX / Product

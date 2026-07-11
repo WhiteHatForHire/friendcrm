@@ -61,7 +61,7 @@ const moveStatusLabels: Record<NextMove["status"], string> = {
   dismissed: "Never Mind"
 };
 const plotColumnHelp: Record<NextMove["status"], string> = {
-  idea: "Raw idea. Maybe brilliant, maybe a federal case for awkwardness.",
+  idea: "Raw idea. Maybe brilliant, maybe a paperwork problem for future-you.",
   queued: "Chosen next moves. These are the ones future-you is actually meant to do.",
   done: "Handled. Applause, but keep it tasteful.",
   dismissed: "Retired schemes. Sometimes restraint is the whole personality."
@@ -108,7 +108,7 @@ export default function App() {
         setSelectedPersonId(null);
         setPlotPersonId(null);
         setNotePersonIds([]);
-        setNotice("The bureau tripped over old local storage. It recovered with an empty desk.");
+        setNotice("Local storage failed to load, so the bureau opened an empty desk.");
       });
   }, []);
 
@@ -273,7 +273,7 @@ export default function App() {
     };
 
     updateData((current) => ({ ...current, nextMoves: [move, ...current.nextMoves] }));
-    setNotice("Next move loaded. Smooth, normal, definitely not over-managed.");
+    setNotice("Next move filed. Smooth, normal, definitely not over-managed.");
     return true;
   }
 
@@ -281,7 +281,7 @@ export default function App() {
     const draft = plotDraft.trim();
     const personId = plotPersonId ?? data?.people[0]?.id;
     if (!data || !personId || !draft) {
-      Alert.alert("Plot Board needs a target", "Add a person and write the move before filing the scheme.");
+      Alert.alert("Plot Board needs a person", "Open a person file and write the move before filing the card.");
       return;
     }
 
@@ -300,7 +300,7 @@ export default function App() {
     setPlotDraft("");
     setPlotRationale("");
     setPlotRisk("low");
-    setNotice("New move filed under Bad Idea? until future-you promotes it.");
+    setNotice("New move card filed under Bad Idea? until future-you promotes it.");
   }
 
   function toggleNotePerson(personId: string) {
@@ -406,10 +406,10 @@ export default function App() {
                 setNotePersonIds([]);
                 setReviewDrafts([]);
                 setReviewSourceNoteId(null);
-                setNotice("Local evidence cleared. The People desk is empty on purpose. Evidence has reset controls when you need them.");
+                setNotice("Local data cleared. The People desk is empty on purpose. Evidence has reset controls when you need them.");
               })
               .catch(() => {
-                Alert.alert("Clear failed", "The local storage drawer refused to open. Try again or reinstall the build.");
+                Alert.alert("Clear failed", "Local storage refused the paperwork. Try again or reinstall the build.");
               });
           }
         }
@@ -427,7 +427,7 @@ export default function App() {
       }
       setNotice("Local JSON export shared or copied. Still local; still your problem, beautifully.");
     } catch {
-      setNotice("Export failed. The evidence locker coughed up a hairball.");
+      setNotice("Export failed. The evidence locker jammed. Nothing was deleted.");
       Alert.alert("Export failed", "Could not open the local share sheet.");
     }
   }
@@ -595,11 +595,11 @@ function PeopleScreen({
 
   return (
     <View style={styles.stack}>
-      <HeroTitle title="The People" subtitle={`${data.people.length} people, ${data.openLoops.filter((loop) => loop.status !== "done").length} unfinished threads.`} />
+      <HeroTitle title="People Files" subtitle={`${data.people.length} people, ${data.openLoops.filter((loop) => loop.status !== "done").length} unfinished threads.`} />
       {hasLocalData ? (
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Clear Demo Data</Text>
-          <Text style={styles.bodyText}>Want a clean desk? Clear the local demo bureau here. Reset, import, and export controls live in Evidence.</Text>
+          <Text style={styles.bodyText}>Want a clean desk? Clear the local demo files here. Reset, import, and export live in Evidence.</Text>
           <Pressable style={styles.dangerButton} onPress={clearData}>
             <Text style={styles.dangerButtonText}>Clear Demo Data</Text>
           </Pressable>
@@ -610,7 +610,7 @@ function PeopleScreen({
         <TextInput
           value={newPersonName}
           onChangeText={setNewPersonName}
-          placeholder="Add a suspect"
+          placeholder="Open a new file"
           placeholderTextColor="#6b7280"
           returnKeyType="done"
           onSubmitEditing={addPerson}
@@ -624,7 +624,7 @@ function PeopleScreen({
       {!data.people.length ? (
         <View style={styles.emptyPanel}>
           <Text style={styles.cardTitle}>Empty Desk Confirmed</Text>
-          <Text style={styles.bodyText}>Local evidence is clear. Add one person above, or use Evidence when you want to reload the fake bureau.</Text>
+          <Text style={styles.bodyText}>Local data is clear. Open a new file above, or use Evidence when you want to reload the fake demo bureau.</Text>
         </View>
       ) : null}
       {data.people.length > 0 && !filtered.length ? <Empty text="No people match that search." /> : null}
@@ -641,7 +641,7 @@ function EmptyBureauScreen() {
       <HeroTitle title="Empty Bureau" subtitle="The files are gone on purpose. The loading screen is not invited." />
       <View style={styles.card}>
         <Text style={styles.cardTitle}>No Person Selected</Text>
-        <Text style={styles.bodyText}>Local evidence was cleared, so there is no dossier to open. Add a person from The People, or use Evidence for reset and restore controls.</Text>
+        <Text style={styles.bodyText}>Local data was cleared, so there is no dossier to open. Open a person file from People Files, or use Evidence for reset and restore controls.</Text>
       </View>
     </View>
   );
@@ -714,7 +714,7 @@ function DossierScreen({
         <View style={styles.emptyPanel}>
           <Text style={styles.cardTitle}>New File Needs Receipts</Text>
           <Text style={styles.bodyText}>
-            This person exists, but the bureau has no evidence yet. Capture a debrief or quick-add one remembered fact, loose thread, or next move below.
+            This person exists, but the bureau has no receipts yet. Capture a debrief or quick-add one remembered fact, loose thread, or next move below.
           </Text>
           <Pressable style={styles.secondaryButton} onPress={() => openDebriefForPerson(person.id)}>
             <Text style={styles.secondaryButtonText}>Capture Debrief</Text>
@@ -723,7 +723,7 @@ function DossierScreen({
       ) : null}
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Pre-Meeting Intel</Text>
+        <Text style={styles.cardTitle}>Pre-Meeting Brief</Text>
         <Text style={styles.bodyText}>{brief.snapshot}</Text>
         <Text style={styles.sectionLabel}>Remember</Text>
         {brief.remember.length ? (
@@ -783,8 +783,8 @@ function QuickAddRecords({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.cardTitle}>Quick Add Official Stuff</Text>
-      <Text style={styles.bodyText}>For a new person, this is the fast path: add one fact, one loose thread, or one next move. No algorithmic mind-reading required.</Text>
+      <Text style={styles.cardTitle}>Quick File</Text>
+      <Text style={styles.bodyText}>Add one remembered thing, loose thread, or next move. No mind-reading, no scraping, just user-entered receipts.</Text>
 
       <View style={styles.quickAddBox}>
         <Text style={styles.sectionLabel}>Remembered Thing</Text>
@@ -872,7 +872,7 @@ function QuickAddRecords({
             }
           }}
         >
-          <Text style={styles.primaryButtonText}>Load Next Move</Text>
+          <Text style={styles.primaryButtonText}>Add Next Move</Text>
         </Pressable>
       </View>
     </View>
@@ -906,7 +906,7 @@ function DebriefScreen({
 }) {
   return (
     <View style={styles.stack}>
-      <HeroTitle title="Debrief Booth" subtitle="Write it down before the social alibi evaporates." />
+      <HeroTitle title="Debrief Booth" subtitle="Write it down before future-you starts improvising." />
       {!data.people.length ? (
         <View style={styles.emptyPanel}>
           <Text style={styles.cardTitle}>No One To Debrief</Text>
@@ -914,7 +914,7 @@ function DebriefScreen({
         </View>
       ) : null}
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Who Was In The Room?</Text>
+        <Text style={styles.cardTitle}>Who Was Involved?</Text>
         <View style={styles.wrapRow}>
           {data.people.map((person) => (
             <Pressable
@@ -932,24 +932,24 @@ function DebriefScreen({
           value={noteText}
           onChangeText={setNoteText}
           multiline
-          placeholder="What happened? What did they reveal? What did you foolishly promise?"
+          placeholder="What happened? What mattered? What did you promise before thinking?"
           placeholderTextColor="#6b7280"
           style={[styles.input, styles.largeTextArea]}
         />
         <KeyboardDoneButton />
         <Pressable style={styles.primaryButton} onPress={captureNote}>
-          <Text style={styles.primaryButtonText}>Capture And Interrogate</Text>
+          <Text style={styles.primaryButtonText}>Save Debrief</Text>
         </Pressable>
       </View>
 
       {reviewDrafts.length ? (
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Review Before It Becomes Lore</Text>
-          <Text style={styles.bodyText}>The note is saved. Nothing below becomes durable memory until you approve it.</Text>
+          <Text style={styles.cardTitle}>Review Before It Becomes Official</Text>
+          <Text style={styles.bodyText}>Note saved. Nothing becomes memory or unfinished business until you approve it.</Text>
           {reviewDrafts.map((draft) => (
             <View key={draft.id} style={styles.reviewCard}>
               <View style={styles.rowBetween}>
-                <Text style={styles.sectionLabel}>{draft.kind === "memory" ? "Memory Attempt" : "Unfinished Business"}</Text>
+                <Text style={styles.sectionLabel}>{draft.kind === "memory" ? "Possible Memory" : "Possible Unfinished Business"}</Text>
                 <Pressable
                   style={[styles.miniButton, draft.approved && styles.miniButtonActive]}
                   onPress={() => updateReviewDraft(draft.id, { approved: !draft.approved })}
@@ -1011,13 +1011,13 @@ function PlotScreen({
 
   return (
     <View style={styles.stack}>
-      <HeroTitle title="Plot Board" subtitle={`${liveMoves} live schemes. Create one, then move it from Bad Idea? to Loaded to Handled.`} />
+      <HeroTitle title="Plot Board" subtitle={`${liveMoves} live moves. Create one, then move it from Bad Idea? to Loaded to Handled.`} />
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>File A New Scheme</Text>
-        <Text style={styles.bodyText}>Mobile does not drag cards around. It uses big obvious controls, like a civilized pocket bureaucracy.</Text>
+        <Text style={styles.cardTitle}>File A New Move</Text>
+        <Text style={styles.bodyText}>Mobile skips dragging. Use the buttons. Very official.</Text>
         {data.people.length ? (
           <>
-            <Text style={styles.label}>Target File</Text>
+            <Text style={styles.label}>Person File</Text>
             <View style={styles.wrapRow}>
               {data.people.map((person) => (
                 <Pressable
@@ -1054,7 +1054,7 @@ function PlotScreen({
             </Pressable>
           </>
         ) : (
-          <Empty text="No people yet. Add a person before plotting thoughtful nonsense." />
+          <Empty text="No people yet. Open a file before planning thoughtful nonsense." />
         )}
       </View>
       {moveStatuses.map((status) => {
@@ -1120,26 +1120,32 @@ function EvidenceScreen({
     <View style={styles.stack}>
       <HeroTitle title="Evidence Locker" subtitle="Fake data, local storage, visible exits." />
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Prototype Trial Targets</Text>
+        <Text style={styles.cardTitle}>Privacy Boundary</Text>
+        <Text style={styles.bodyText}>
+          Friend CRM stores user-entered relationship notes on this device. It does not scrape messages, contacts, social accounts, or send outreach for you.
+        </Text>
+      </View>
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Demo Readiness</Text>
         <View style={styles.statGrid}>
           <Stat label="People" value={String(data.people.length)} />
           <Stat label="Notes" value={String(data.notes.length)} />
           <Stat label="Memories" value={String(data.memories.length)} />
         </View>
-        <Text style={styles.bodyText}>This mobile prototype stores data on this device through AsyncStorage. No Supabase, no provider calls, no real secrets.</Text>
+        <Text style={styles.bodyText}>This mobile build stores data on this device through AsyncStorage. No Supabase, no provider calls, no real secrets.</Text>
       </View>
 
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Local Controls</Text>
         <Text style={styles.bodyText}>Reset, export, import, and full local clearing live here so the People screen can stay focused on people.</Text>
         <Pressable style={styles.primaryButton} onPress={resetDemo}>
-          <Text style={styles.primaryButtonText}>Reset To Fresh Fake Friends</Text>
+          <Text style={styles.primaryButtonText}>Restore Fake Demo Friends</Text>
         </Pressable>
         <Pressable style={styles.secondaryButton} onPress={shareExport}>
           <Text style={styles.secondaryButtonText}>Share Local JSON Export</Text>
         </Pressable>
         <Pressable style={styles.dangerButton} onPress={clearData}>
-          <Text style={styles.dangerButtonText}>Clear Local Evidence</Text>
+          <Text style={styles.dangerButtonText}>Clear Local Data</Text>
         </Pressable>
       </View>
 
@@ -1179,7 +1185,7 @@ function PersonCard({ data, person, onPress }: { data: CrmData; person: Person; 
           <Badge text={`${person.trust}/5 trust`} />
           <Badge text={person.sensitivity} />
           <Badge text={`${loops.length} loose`} />
-          <Badge text={`${days} last seen`} />
+          <Badge text={`${days} last contact`} />
         </View>
       </View>
     </Pressable>
