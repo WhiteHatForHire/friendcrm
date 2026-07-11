@@ -418,6 +418,59 @@ Validation passed:
 - [ ] Add document-picker/file-system import/export if the mobile prototype continues.
 - [ ] Extract shared core package if web and mobile both keep evolving.
 
+## 2026-07-08 — Full App QA Self-Audit Completed
+
+**Type:** QA / Ops
+**Source:** Human + Codex
+**Related Files:**
+
+- `docs/07-ops/FULL_APP_QA_SELF_AUDIT_DIRECTIVE_2026-07-07.md`
+- `docs/07-ops/full-app-qa-2026-07-07.md`
+- `docs/07-ops/full-app-qa-2026-07-07-screens/`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+- `docs/07-ops/COMPLETED.md`
+
+**Summary:**
+
+Ran the full local app QA self-audit requested by the 2026-07-07 directive using seeded fake people and synthetic data only. Static/unit, build, demo readiness, desktop/mobile/tablet browser regressions, full browser audit, UI smoke, logic-level synthetic trial, and browser-level synthetic trial all passed. The temporary local Vite server was started with provider env vars unset and stopped after QA.
+
+The audit found no blockers, no source/privacy violations, and no provider-backed AI run. Medium UI follow-ups remain around the narrow mobile classified tagline/top strip and the cramped right-rail generated next-move input row.
+
+**Follow-Ups:**
+
+- [ ] Resolve the full-app QA medium UI warnings before a private real-data trial.
+
+## 2026-07-01 — Portfolio Screenshot Package Captured
+
+**Type:** Design / QA / Portfolio
+**Source:** Human + Codex
+**Related Files:**
+
+- `docs/07-ops/portfolio-screenshots-2026-06-29/SHOT-LIST.md`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/01-desktop-people-desk.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/02-desktop-person-brief.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/03-desktop-review-panel.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/04-desktop-plot-board.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/05-desktop-poster-lab.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/06-desktop-evidence-locker.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/07-mobile-people-drawer.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/08-mobile-plot-board.png`
+- `docs/07-ops/portfolio-screenshots-2026-06-29/09-tablet-people-editor.png`
+
+**Summary:**
+
+Booted the local Friend CRM Vite app and captured the missing nine-shot
+portfolio screenshot package requested for the Symposium Studios Friend CRM
+product page. The package covers desktop People Desk, person briefing, review
+panel, Plot Board, Poster Lab, Evidence Locker, mobile dossier, mobile Plot
+Board, and tablet people editor. Browser audit scripts completed with no
+blocker findings; medium warnings remain around a mobile tagline control that
+may clip vertically.
+
+**Follow-Ups:**
+
+- [ ] Fix or soften the mobile classified-tagline control clipping warning in a future UI polish pass.
+
 ## 2026-06-29 — Portfolio README And Case Study
 
 **Type:** Docs / Portfolio
@@ -426,17 +479,6 @@ Validation passed:
 
 - `README.md`
 - `docs/PORTFOLIO_CASE_STUDY.md`
-
-## 2026-07-08 - Full App QA Self-Audit Completed
-
-**Type:** QA / Ops
-**Source:** Human + Codex
-**Related Files:**
-
-- `docs/07-ops/FULL_APP_QA_SELF_AUDIT_DIRECTIVE_2026-07-07.md`
-- `docs/07-ops/full-app-qa-2026-07-07.md`
-- `docs/07-ops/full-app-qa-2026-07-07-screens/`- `docs/07-ops/NEXT-IN-HOPPER.md`
-- `docs/07-ops/COMPLETED.md`
 
 **Summary:**
 
@@ -487,44 +529,6 @@ Created a Symposium Studios portfolio plan that positions Friend CRM as a tongue
 - [ ] Create or update the public README and repo-native case study.
 - [ ] Pick a hosted demo target and publish the deterministic fake-data demo.
 
-Ran the full local app QA self-audit requested by the 2026-07-07 directive using seeded fake people and synthetic data only. Static/unit, build, demo readiness, desktop/mobile/tablet browser regressions, full browser audit, UI smoke, logic-level synthetic trial, and browser-level synthetic trial all passed. The temporary local Vite server was started with provider env vars unset and stopped after QA.
-
-The audit found no blockers, no source/privacy violations, and no provider-backed AI run. Medium UI follow-ups remain around the narrow mobile classified tagline/top strip and the cramped right-rail generated next-move input row.
-
-**Follow-Ups:**
-
-- [ ] Resolve the full-app QA medium UI warnings before a private real-data trial.
-
-## 2026-07-01 - Portfolio Screenshot Package Captured
-
-**Type:** Design / QA / Portfolio
-**Source:** Human + Codex
-**Related Files:**
-
-- `docs/07-ops/portfolio-screenshots-2026-06-29/SHOT-LIST.md`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/01-desktop-people-desk.png`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/02-desktop-person-brief.png`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/03-desktop-review-panel.png`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/04-desktop-plot-board.png`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/05-desktop-poster-lab.png`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/06-desktop-evidence-locker.png`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/07-mobile-people-drawer.png`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/08-mobile-plot-board.png`
-- `docs/07-ops/portfolio-screenshots-2026-06-29/09-tablet-people-editor.png`
-
-**Summary:**
-
-Booted the local Friend CRM Vite app and captured the missing nine-shot
-portfolio screenshot package requested for the Symposium Studios Friend CRM
-product page. The package covers desktop People Desk, person briefing, review
-panel, Plot Board, Poster Lab, Evidence Locker, mobile dossier, mobile Plot
-Board, and tablet people editor. Browser audit scripts completed with no
-blocker findings; medium warnings remain around a mobile tagline control that
-may clip vertically.
-
-**Follow-Ups:**
-
-- [ ] Fix or soften the mobile classified-tagline control clipping warning in a future UI polish pass.
 ## 2026-06-25 — Launch-Demo Confidence Swarm Completed
 
 **Type:** App / Design / QA / AI / Ops
