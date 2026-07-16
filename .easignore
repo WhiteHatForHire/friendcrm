@@ -1,0 +1,27 @@
+# Keep EAS mobile build uploads small without hiding the Expo app itself.
+.git/
+node_modules/
+dist/
+build/
+coverage/
+docs/
+scripts/
+supabase/
+
+apps/mobile/node_modules/
+apps/mobile/.expo/
+apps/mobile/dist/
+apps/mobile/web-build/
+apps/mobile/ios/
+apps/mobile/android/
+
+.env
+.env.local
+.env.*.local
+apps/mobile/.env
+apps/mobile/.env.local
+apps/mobile/.env.*.local
+
+*.log
+*.tsbuildinfo
+.DS_Store

@@ -1,0 +1,27 @@
+{
+  "baseUrl": "http://127.0.0.1:5188",
+  "screenshots": [
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-people.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-person-brief.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-generated-moves.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-poster-lab.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-delete-panel.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-radar.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-plot-board-before-drag.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-plot-board-after-drag.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-reflection-log.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-review-panel.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-settings.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/desktop-import-preview.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-people-closed-drawer.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-person-drawer.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-person-brief-drawer.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-people-after-close.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-radar.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-plot-board.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-reflection-log.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-review-panel.png",
+    "docs/07-ops/full-qa-2026-07-09/screenshots/mobile-settings.png"
+  ],
+  "findings": []
+}

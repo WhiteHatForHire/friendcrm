@@ -34,6 +34,8 @@ Phase 1 / early Phase 2:
 - Browser UI can use development AI HTTP routes for extraction, briefs, and generated next moves, with local fallback behavior.
 - OpenAI-compatible server-side provider adapters exist for development/server use when a server-side key is configured.
 - Desktop, mobile, and tablet browser regression checks are part of the local demo readiness baseline.
+- Expo TypeScript mobile app prototype exists under `apps/mobile/` with local fake-data persistence and reset controls.
+- Supabase hosted persistence foundation exists as optional schema/client work, with a hosted `friendcrm` Supabase project linked, the initial migration pushed, and a guarded web auth/sync UI in Settings.
 - A repeatable synthetic real-use trial can exercise 25 fake notes across the seed people through the core logic paths.
 - A browser-level synthetic trial can exercise a fake 10-person / 25-note dataset through the playable UI.
 - Mobile person detail opens as a drawer instead of a permanently stacked rail on narrow screens.
@@ -47,10 +49,11 @@ Phase 1 / early Phase 2:
 ## Current Technical Direction
 
 - Frontend: Vite React TypeScript.
+- Mobile: Expo React Native TypeScript prototype under `apps/mobile/`.
 - Styling: custom CSS for the current MVP.
 - Data: local browser storage for the current prototype.
 - Export/import: schema-versioned JSON envelopes with backward-compatible raw-data import and an explicit migration registry.
-- Persistence: stay local-first; add backup/restore before hosted persistence.
+- Persistence: stay local-first by default; optional Supabase hosted persistence foundation exists for future authenticated sync, with the hosted schema currently applied in Supabase project `mjrqxmcicoreeovitscy` and web sync kept behind sign-in plus an explicit write arming switch.
 - AI: deterministic source-backed suggestions plus validated route shells and Vite development HTTP transport; real provider calls must stay server-side and keep deterministic fallback.
 - Auth: none for local demo.
 - Tests: Vitest for focused logic coverage.
@@ -63,6 +66,7 @@ Reference docs:
 - [`AI_INTEGRATION_BOUNDARY.md`](docs/AI_INTEGRATION_BOUNDARY.md)
 - [`AI_HTTP_TRANSPORT.md`](docs/AI_HTTP_TRANSPORT.md)
 - [`BACKUP_RESTORE.md`](docs/BACKUP_RESTORE.md)
+- [`SUPABASE_BACKEND.md`](docs/SUPABASE_BACKEND.md)
 - [`DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md)
 - [`PROMPTS.md`](docs/PROMPTS.md)
 - [`BUILD_PLAN.md`](docs/BUILD_PLAN.md)
@@ -82,6 +86,7 @@ Current accepted decisions:
 - [`ADR 0005 - Server-Side AI Integration Boundary`](docs/06-decisions/0005-server-side-ai-boundary.md)
 - [`ADR 0006 - AI Backend Shape`](docs/06-decisions/0006-ai-backend-shape.md)
 - [`ADR 0007 - Local-First Persistence Before Hosted Backend`](docs/06-decisions/0007-local-first-persistence-before-hosted-backend.md)
+- [`ADR 0008 - Optional Supabase Hosted Persistence`](docs/06-decisions/0008-optional-supabase-hosted-persistence.md)
 
 ---
 
@@ -92,7 +97,7 @@ Current accepted decisions:
 - No multi-user accounts.
 - No social graph visualization beyond a simple board.
 - No calendar/email integrations.
-- No mobile app.
+- No production mobile release.
 - No sentiment surveillance.
 - No production infrastructure until explicitly requested.
 - No real API keys, credentials, private data, or user data in the repo.

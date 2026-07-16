@@ -1,4 +1,5 @@
 import { Download, FileText, RotateCcw, Shield, Upload } from "lucide-react";
+import type { ReactNode } from "react";
 import { useState } from "react";
 import { seedData } from "../data/seed";
 import { parseCrmDataJson, summarizeCrmData } from "../lib/dataValidation";
@@ -8,11 +9,13 @@ import type { CrmData } from "../types";
 export function SettingsView({
   data,
   onReset,
-  onImport
+  onImport,
+  hostedSyncPanel
 }: {
   data: CrmData;
   onReset: () => void;
   onImport: (data: CrmData) => void;
+  hostedSyncPanel?: ReactNode;
 }) {
   const sensitiveNotes = data.notes.filter((note) => note.sensitivity !== "normal").length;
   const sensitiveMemories = data.memories.filter((memory) => memory.sensitivity !== "normal").length;
@@ -123,6 +126,7 @@ export function SettingsView({
         </section>
       </div>
       {exportMessage && <p className="settings-note action-feedback" aria-live="polite">{exportMessage}</p>}
+      {hostedSyncPanel}
       <section className="readiness-panel">
         <h2>Prototype Trial Targets, Because Apparently We Need Goals</h2>
         <div className="readiness-grid">

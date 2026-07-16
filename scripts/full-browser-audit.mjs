@@ -203,7 +203,11 @@ async function scanLayout(page, screen) {
         });
       }
 
-      if (element.scrollWidth > element.clientWidth + 2 && ["BUTTON", "INPUT", "SELECT", "TEXTAREA"].includes(element.tagName)) {
+      if (
+        element.scrollWidth > element.clientWidth + 2 &&
+        ["BUTTON", "INPUT", "SELECT", "TEXTAREA"].includes(element.tagName) &&
+        !isBrowserNativeInputNoise(element)
+      ) {
         localFindings.push({
           severity: "medium",
           screen: screenName,
@@ -233,6 +237,17 @@ async function scanLayout(page, screen) {
     }
 
     return localFindings;
+
+    function isBrowserNativeInputNoise(element) {
+      if (!(element instanceof HTMLInputElement)) return false;
+      if (["checkbox", "radio", "date", "file", "hidden", "range", "color"].includes(element.type)) return true;
+      return !(
+        element.value ||
+        element.placeholder ||
+        element.getAttribute("aria-label") ||
+        element.getAttribute("title")
+      );
+    }
   }, screen);
 }
 

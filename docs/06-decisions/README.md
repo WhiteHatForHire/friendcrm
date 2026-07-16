@@ -15,6 +15,7 @@ Read these before changing architecture, privacy posture, AI behavior, product d
 - [ADR 0005 - Server-Side AI Integration Boundary](0005-server-side-ai-boundary.md)
 - [ADR 0006 - AI Backend Shape](0006-ai-backend-shape.md)
 - [ADR 0007 - Local-First Persistence Before Hosted Backend](0007-local-first-persistence-before-hosted-backend.md)
+- [ADR 0008 - Optional Supabase Hosted Persistence](0008-optional-supabase-hosted-persistence.md)
 
 ---
 
