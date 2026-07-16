@@ -107,3 +107,15 @@ Every meaningful PR should update one of:
 - `docs/07-ops/COMPLETED.md`
 
 Do not let completed work remain as active work in the hopper.
+
+## Symposium Publishing Boundary
+
+- This repo may contribute public-safe artifacts to `symposiumstudios.ai`, but
+  it must never deploy or alias the shared production domain.
+- Use a transfer brief and merge the contribution into
+  `../symposium-studios`; that repo is the sole production publisher.
+- Preview URLs may remain isolated. Never run `vercel --prod`,
+  `vercel deploy --prod`, or `vercel alias` for the Symposium project here or
+  from a temporary snapshot.
+- Read `../../standards/symposium-production-deployment.md` before public web
+  publishing work.
