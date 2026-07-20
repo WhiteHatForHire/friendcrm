@@ -22,7 +22,7 @@ const simulatedNotes: Array<Omit<RelationshipNote, "id" | "createdAt">> = [
     personIds: ["p-ada"],
     occurredAt: "2026-06-01",
     sourceType: "call",
-    rawText: "Ada prefers a written agenda before strategy calls. Promised to send a draft by Friday.",
+    rawText: "Claire prefers a written agenda before strategy calls. Promised to send a draft by Friday.",
     sensitivity: "normal"
   },
   {
@@ -50,7 +50,7 @@ const simulatedNotes: Array<Omit<RelationshipNote, "id" | "createdAt">> = [
     personIds: ["p-sana"],
     occurredAt: "2026-06-05",
     sourceType: "call",
-    rawText: "Sana likes context before intros. Promised to send the one-paragraph note this week.",
+    rawText: "Maya likes context before intros. Promised to send the one-paragraph note this week.",
     sensitivity: "normal"
   },
   {
@@ -64,14 +64,14 @@ const simulatedNotes: Array<Omit<RelationshipNote, "id" | "createdAt">> = [
     personIds: ["p-lena"],
     occurredAt: "2026-06-07",
     sourceType: "call",
-    rawText: "Lena loves garden updates. Do not turn emotional support into a task list.",
+    rawText: "Lauren loves garden updates. Do not turn emotional support into a task list.",
     sensitivity: "private"
   },
   {
     personIds: ["p-ravi"],
     occurredAt: "2026-06-08",
     sourceType: "meeting",
-    rawText: "Ravi prefers written scope before calls. Promised to send the revised outline tomorrow.",
+    rawText: "Evan prefers written scope before calls. Promised to send the revised outline tomorrow.",
     sensitivity: "sensitive"
   },
   {
@@ -92,7 +92,7 @@ const simulatedNotes: Array<Omit<RelationshipNote, "id" | "createdAt">> = [
     personIds: ["p-ada", "p-sana"],
     occurredAt: "2026-06-11",
     sourceType: "meeting",
-    rawText: "Ada and Sana both prefer tight context. Promised to send intro framing by Friday.",
+    rawText: "Claire and Maya both prefer tight context. Promised to send intro framing by Friday.",
     sensitivity: "normal"
   },
   {
@@ -120,14 +120,14 @@ const simulatedNotes: Array<Omit<RelationshipNote, "id" | "createdAt">> = [
     personIds: ["p-lena"],
     occurredAt: "2026-06-15",
     sourceType: "memory",
-    rawText: "Lena prefers care without pressure. Promise to send a small photo from the walk this week.",
+    rawText: "Lauren prefers care without pressure. Promise to send a small photo from the walk this week.",
     sensitivity: "private"
   },
   {
     personIds: ["p-ravi"],
     occurredAt: "2026-06-16",
     sourceType: "call",
-    rawText: "Ravi likes explicit timelines. Need to follow up by Friday with the scope note.",
+    rawText: "Evan likes explicit timelines. Need to follow up by Friday with the scope note.",
     sensitivity: "normal"
   },
   {
@@ -148,7 +148,7 @@ const simulatedNotes: Array<Omit<RelationshipNote, "id" | "createdAt">> = [
     personIds: ["p-sana"],
     occurredAt: "2026-06-19",
     sourceType: "meeting",
-    rawText: "Sana prefers no-surprise asks. Remember to include why the intro helps both sides.",
+    rawText: "Maya prefers no-surprise asks. Remember to include why the intro helps both sides.",
     sensitivity: "normal"
   },
   {
@@ -162,7 +162,7 @@ const simulatedNotes: Array<Omit<RelationshipNote, "id" | "createdAt">> = [
     personIds: ["p-ada", "p-mira"],
     occurredAt: "2026-06-21",
     sourceType: "meeting",
-    rawText: "Ada wants a tiny agenda before the next strategy chat. Mira needs the decision tree by Monday.",
+    rawText: "Claire wants a tiny agenda before the next strategy chat. Mira needs the decision tree by Monday.",
     sensitivity: "normal"
   },
   {
@@ -183,7 +183,7 @@ const simulatedNotes: Array<Omit<RelationshipNote, "id" | "createdAt">> = [
     personIds: ["p-ravi"],
     occurredAt: "2026-06-24",
     sourceType: "meeting",
-    rawText: "Ravi said contract budget talk is sensitive. Owed him a clean scope by 2026-06-28.",
+    rawText: "Evan said contract budget talk is sensitive. Owed him a clean scope by 2026-06-28.",
     sensitivity: "sensitive"
   },
   {
@@ -320,7 +320,7 @@ describe("simulated prototype trial", () => {
     expect(generatedMoves.moves.moves.length).toBeGreaterThanOrEqual(2);
     expect(generatedMoves.moves.sensitivityWarning).toBeDefined();
     expect(markdown).toContain("# Friend CRM Export");
-    expect(markdown).toContain("Ada Nkrumah");
+    expect(markdown).toContain("Claire Dawson");
     expect(exported).toContain('"schemaVersion": 1');
     expect(parsedExport.ok).toBe(true);
     expect(beforeNoteDeleteRecords).toBeGreaterThan(0);

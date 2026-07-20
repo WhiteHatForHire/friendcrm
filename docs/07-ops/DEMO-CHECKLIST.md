@@ -78,9 +78,9 @@ Before testing destructive flows:
 Recommended repeatable flow:
 
 1. First load: confirm the local fake sample dataset appears and the sidebar navigation is reachable.
-2. People: search/select **Ada Nkrumah**, scan the person rail, and confirm notes, memories, open loops, next moves, and contact details are readable.
-3. People setup: add a synthetic person, edit relationship labels/contact details, verify the row updates, then return to Ada for the core demo path.
-4. Note Capture: open **Debrief Booth**, select Ada, capture a synthetic note with one preference and one promise.
+2. People: search/select **Claire Dawson**, scan the person rail, and confirm notes, memories, open loops, next moves, and contact details are readable.
+3. People setup: add a synthetic person, edit relationship labels/contact details, verify the row updates, then return to Claire for the core demo path.
+4. Note Capture: open **Debrief Booth**, select Claire, capture a synthetic note with one preference and one promise.
 5. Review Panel: confirm the saved note is source-backed, edit or accept a memory, reject one suggestion if useful, then click **Make It Canon**.
 6. People verification: return to People and verify the confirmed memory appears while rejected material does not become durable record.
 7. Brief: click **Brief Me**, generate a pre-meeting brief, and point out the source/fallback label.
@@ -90,7 +90,7 @@ Recommended repeatable flow:
 11. Poster Lab: click **Fake Dossier Art**, show **Poster Lab**, open **Context Receipt**, shuffle/copy harmless poster copy, then close it.
 12. Evidence Locker / Settings export: export **Backup JSON** and **Readable Markdown**.
 13. Saved-export restore: import a known synthetic JSON export, inspect **Check the Saved Export Before Restore**, click **Make Panic Copy Of Current File**, then **Restore This Saved Export**.
-14. Sample restore: use **Restore Built-In Fake Friends** / **Restore Sample Friends** to return to the built-in fake dataset and confirm Ada/Jules reappear.
+14. Sample restore: use **Restore Built-In Fake Friends** / **Restore Sample Friends** to return to the built-in fake dataset and confirm Claire/Jules reappear.
 
 ---
 

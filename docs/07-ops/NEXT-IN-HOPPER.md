@@ -41,7 +41,7 @@ Verify the implemented mobile real-use repair pass on a real iPhone and catch an
 
 ### Acceptance Criteria
 
-- `Friend CRM Dev` is installed from the latest local build.
+- [x] `Friend CRM Dev` is installed from the latest local build.
 - Create a new fake person from People.
 - Confirm the add-person keyboard can be dismissed and does not trap the submit action.
 - Open the new person's Dossier and confirm sparse/new-file copy is useful.

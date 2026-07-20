@@ -14,7 +14,7 @@ const note: RelationshipNote = {
   personIds: ["p-ada"],
   occurredAt: "2026-06-23",
   sourceType: "manual",
-  rawText: "Ada prefers tight memos. Promised to send the intro this week.",
+  rawText: "Claire prefers tight memos. Promised to send the intro this week.",
   sensitivity: "normal",
   createdAt: "2026-06-23T00:00:00.000Z"
 };
@@ -24,21 +24,21 @@ describe("extractor route shell", () => {
     const request = buildExtractMemoryRequest(note, seedData.people);
 
     expect(request.people).toHaveLength(1);
-    expect(request.people[0]).toMatchObject({ id: "p-ada", name: "Ada Nkrumah" });
+    expect(request.people[0]).toMatchObject({ id: "p-ada", name: "Claire Dawson" });
     expect("contactMethods" in request.people[0]).toBe(false);
   });
 
   it("validates provider output before returning success", async () => {
     const request = buildExtractMemoryRequest(note, seedData.people);
     const response: ExtractMemoryResponse = {
-      summary: "Ada prefers tight memos.",
+      summary: "Claire prefers tight memos.",
       suggestions: [
         {
           kind: "memory",
           personId: "p-ada",
           text: "Prefers tight memos.",
           category: "preference",
-          basis: "Ada prefers tight memos.",
+          basis: "Claire prefers tight memos.",
           confidence: "high",
           sensitivity: "normal"
         }
@@ -66,7 +66,7 @@ describe("extractor route shell", () => {
 
   it("maps validated responses to editable review suggestions", () => {
     const suggestions = mapExtractMemoryResponseToSuggestions({
-      summary: "Ada prefers tight memos.",
+      summary: "Claire prefers tight memos.",
       suggestions: [
         {
           kind: "openLoop",

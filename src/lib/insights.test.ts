@@ -8,7 +8,7 @@ describe("radar", () => {
     const signal = radar(seedData);
 
     expect(signal.overdueLoops.map((loop) => loop.title)).toContain("Send two founder intros");
-    expect(signal.protect.map((person) => person.name)).toContain("Lena Okafor");
+    expect(signal.protect.map((person) => person.name)).toContain("Lauren Whitaker");
   });
 });
 
@@ -19,7 +19,7 @@ describe("extractSuggestions", () => {
       personIds: ["p-ada"],
       occurredAt: "2026-06-22",
       sourceType: "manual",
-      rawText: "Ada prefers tight memos. Promised to send the intro this week.",
+      rawText: "Claire prefers tight memos. Promised to send the intro this week.",
       sensitivity: "normal",
       createdAt: "2026-06-22T00:00:00.000Z"
     };

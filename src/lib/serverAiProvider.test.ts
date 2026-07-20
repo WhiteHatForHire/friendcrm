@@ -51,7 +51,7 @@ describe("server AI provider adapter", () => {
       store: false,
       text: { format: { type: "json_schema", strict: true } }
     });
-    expect(serialized).toContain("Ada Nkrumah");
+    expect(serialized).toContain("Claire Dawson");
     expect(serialized).not.toContain("mira@example.com");
     expect(serialized).not.toContain("555-0134");
   });

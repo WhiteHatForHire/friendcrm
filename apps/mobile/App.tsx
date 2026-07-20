@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Alert,
+  Animated,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -93,6 +94,7 @@ export default function App() {
   const [plotRationale, setPlotRationale] = useState("");
   const [plotRisk, setPlotRisk] = useState<NextMove["risk"]>("low");
   const [notice, setNotice] = useState("Demo bureau ready. Fake data only.");
+  const noticeOpacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     loadData()
@@ -117,6 +119,26 @@ export default function App() {
       void saveData(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (!notice) return;
+
+    noticeOpacity.setValue(1);
+    const timer = setTimeout(() => {
+      Animated.timing(noticeOpacity, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true
+      }).start(({ finished }) => {
+        if (finished) setNotice("");
+      });
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+      noticeOpacity.stopAnimation();
+    };
+  }, [notice, noticeOpacity]);
 
   useEffect(() => {
     if (!data) return;
@@ -457,14 +479,11 @@ export default function App() {
             <Text style={styles.brandKicker}>FRIEND CRM 3000</Text>
             <Text style={styles.brandTitle}>Private Friend Bureau</Text>
           </View>
-          <View style={styles.statusPill}>
-            <Text style={styles.statusPillText}>LOCAL ONLY</Text>
-          </View>
         </View>
 
-        <View style={styles.notice}>
+        <Animated.View style={[styles.notice, { opacity: noticeOpacity }]}>
           <Text style={styles.noticeText}>{notice}</Text>
-        </View>
+        </Animated.View>
 
         <ScrollView
           style={styles.screen}
@@ -1334,19 +1353,6 @@ const styles = StyleSheet.create({
     marginTop: 6,
     color: "#ffffff",
     fontSize: 18,
-    fontWeight: "900"
-  },
-  statusPill: {
-    borderWidth: 2,
-    borderColor: colors.yellow,
-    borderRadius: 999,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    backgroundColor: "#18213a"
-  },
-  statusPillText: {
-    color: colors.yellow,
-    fontSize: 11,
     fontWeight: "900"
   },
   notice: {

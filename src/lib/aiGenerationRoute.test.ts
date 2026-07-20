@@ -28,7 +28,7 @@ describe("generation route shells", () => {
     const request = buildGenerateBriefRequest(seedData, ada);
     const serialized = JSON.stringify(request);
 
-    expect(request.person).toMatchObject({ id: "p-ada", name: "Ada Nkrumah" });
+    expect(request.person).toMatchObject({ id: "p-ada", name: "Claire Dawson" });
     expect(request.memories.length).toBeGreaterThan(0);
     expect(request.recentNotes.length).toBeGreaterThan(0);
     expect(serialized).not.toContain("mira@example.com");
@@ -66,7 +66,7 @@ describe("generation route shells", () => {
   it("validates provider-backed briefs", async () => {
     const request = buildGenerateBriefRequest(seedData, ada);
     const result = await runGenerateBriefRoute(request, () => ({
-      snapshot: "Ada likes concise context.",
+      snapshot: "Claire likes concise context.",
       remember: ["Prefers a tight memo before calls."],
       openLoops: ["Send two founder intros"],
       avoid: [],
@@ -128,7 +128,7 @@ describe("generation route shells", () => {
       {
         person: {
           id: "p-ada",
-          name: "Ada Nkrumah",
+          name: "Claire Dawson",
           relationshipTypes: ["friend"],
           sensitivity: "normal"
         },
@@ -139,7 +139,7 @@ describe("generation route shells", () => {
         moves: [
           {
             type: "message",
-            draft: "Send Ada the two names.",
+            draft: "Send Claire the two names.",
             rationale: "She asked for specific intros.",
             risk: "low",
             riskReason: "Specific and expected."

@@ -32,6 +32,40 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-20 — U.S.-Grounded Demo Roster And Fresh iPhone Dev Install
+
+**Type:** App / Mobile / QA
+**Source:** Human + Codex
+**Related Files:**
+
+- `src/data/seed.ts`
+- `apps/mobile/src/core/seed.ts`
+- `docs/07-ops/DEMO-CHECKLIST.md`
+
+**Summary:**
+
+Refreshed the built-in synthetic people roster so the demo reads as a more
+natural U.S.-market relationship desk while retaining a few varied
+international names. The web and mobile seed data now use the same roster,
+including Claire Dawson, Maya Kline, Lauren Whitaker, and Evan Park; related
+notes, exports, tests, and demo instructions were updated to match.
+
+Both prior Friend CRM installs were removed from the connected iPhone before a
+fresh local `Friend CRM Dev` build was installed and launched. The production
+bundle is not installed; only `com.symposiumstudios.friendcrm.dev` remains.
+
+Validation passed:
+
+- `npm test` — 80 tests
+- `npm run build`
+- `npm run mobile:check`
+- Web/mobile seed-roster parity check
+
+**Follow-Ups:**
+
+- [ ] Human-smoke the fresh iPhone build with the reset synthetic dataset.
+
+
 ## 2026-07-11 — Mobile App Store Copy Safety Pass Implemented
 
 **Type:** Mobile / UX Copy / App Store

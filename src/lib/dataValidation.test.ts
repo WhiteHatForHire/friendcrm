@@ -213,7 +213,7 @@ describe("CRM data validation", () => {
       sensitiveMemories: 2,
       sensitiveOpenLoops: 1,
       sensitiveOrPrivate: 10,
-      firstPeople: ["Ada Nkrumah", "Jules Moreno", "Mira Chen", "Niko Alvarez", "Sana Patel"],
+      firstPeople: ["Claire Dawson", "Jules Moreno", "Mira Chen", "Niko Alvarez", "Maya Kline"],
       oldestNoteDate: "2026-04-19",
       newestNoteDate: "2026-06-13"
     });

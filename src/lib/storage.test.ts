@@ -16,15 +16,15 @@ describe("exports", () => {
     const markdown = exportMarkdown(seedData);
 
     expect(markdown).toContain("# Friend CRM Export");
-    expect(markdown).toContain("## Ada Nkrumah");
+    expect(markdown).toContain("## Claire Dawson");
     expect(markdown).toContain("### Memories");
     expect(markdown).toContain("Prefers a tight memo before calls.");
     expect(markdown).toContain("### Open Loops");
     expect(markdown).toContain("Send two founder intros");
     expect(markdown).toContain("### Next Moves");
-    expect(markdown).toContain("Send Ada a short note");
+    expect(markdown).toContain("Send Claire a short note");
     expect(markdown).toContain("### Notes");
-    expect(markdown).toContain("Ada is exploring a small advisory group");
+    expect(markdown).toContain("Claire is exploring a small advisory group");
   });
 
   it("preserves sensitivity labels in Markdown exports", () => {

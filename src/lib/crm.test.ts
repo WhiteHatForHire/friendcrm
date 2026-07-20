@@ -135,7 +135,7 @@ describe("person records", () => {
 
     expect(impact).toMatchObject({
       personId: "p-ada",
-      personName: "Ada Nkrumah",
+      personName: "Claire Dawson",
       notesRemoved: 1,
       memoriesRemoved: 1,
       openLoopsRemoved: 1,
