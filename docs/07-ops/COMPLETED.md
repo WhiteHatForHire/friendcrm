@@ -58,6 +58,10 @@ clear controls while hiding inactive hosted-sync, trial, and developer
 surfaces. Fixed the onboarding dialog state so it unmounts after a choice and
 does not remain exposed to assistive technology.
 
+Follow-up release repair: raised the custom cursor trail above every app and
+modal layer while keeping it non-interactive, so the visible pointer remains
+usable during the first-run chooser.
+
 Validation passed:
 
 - `npm test` — 80 tests
