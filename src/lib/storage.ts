@@ -4,6 +4,7 @@ import { createCrmDataExport, parseCrmDataExport } from "./dataValidation";
 
 const STORAGE_KEY = "friend-crm:data:v1";
 const DEMO_START_KEY = "friend-crm:demo-start:v1";
+const CURSOR_EFFECTS_KEY = "friend-crm:cursor-effects:v1";
 
 export type DemoStartChoice = "tour" | "blank";
 
@@ -14,6 +15,14 @@ export function loadDemoStartChoice(): DemoStartChoice | null {
 
 export function saveDemoStartChoice(choice: DemoStartChoice) {
   window.localStorage.setItem(DEMO_START_KEY, choice);
+}
+
+export function loadCursorEffectsEnabled() {
+  return window.localStorage.getItem(CURSOR_EFFECTS_KEY) !== "off";
+}
+
+export function saveCursorEffectsEnabled(enabled: boolean) {
+  window.localStorage.setItem(CURSOR_EFFECTS_KEY, enabled ? "on" : "off");
 }
 
 export function loadData(): CrmData {

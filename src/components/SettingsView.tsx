@@ -12,7 +12,9 @@ export function SettingsView({
   onRestoreSample,
   onImport,
   hostedSyncPanel,
-  isPublicDemo = false
+  isPublicDemo = false,
+  cursorEffectsEnabled,
+  onCursorEffectsChange
 }: {
   data: CrmData;
   onClear: () => void;
@@ -20,6 +22,8 @@ export function SettingsView({
   onImport: (data: CrmData) => void;
   hostedSyncPanel?: ReactNode;
   isPublicDemo?: boolean;
+  cursorEffectsEnabled: boolean;
+  onCursorEffectsChange: (enabled: boolean) => void;
 }) {
   const sensitiveNotes = data.notes.filter((note) => note.sensitivity !== "normal").length;
   const sensitiveMemories = data.memories.filter((memory) => memory.sensitivity !== "normal").length;
@@ -78,6 +82,21 @@ export function SettingsView({
           <p className="view-guide">First move: export anything you want to keep, then clear or restore the fictional sample safely.</p>
         </div>
       </header>
+      <section className="display-settings" aria-labelledby="display-settings-title">
+        <div>
+          <span className="settings-action-kicker">Display</span>
+          <h2 id="display-settings-title">Cursor effects</h2>
+          <p>Use the rainbow pointer trail, or keep your normal system cursor. This preference stays in this browser.</p>
+        </div>
+        <label className="effect-toggle">
+          <input
+            type="checkbox"
+            checked={cursorEffectsEnabled}
+            onChange={(event) => onCursorEffectsChange(event.target.checked)}
+          />
+          <span>Rainbow cursor trail</span>
+        </label>
+      </section>
       <section className="export-warning">
         <Shield size={18} />
         <div>

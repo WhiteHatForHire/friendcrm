@@ -35,12 +35,14 @@ import {
 import { daysBetween, personName, radar } from "./lib/insights";
 import {
   clearData,
+  loadCursorEffectsEnabled,
   loadData,
   loadDemoStartChoice,
   makeId,
   newPerson,
   resetData,
   saveData,
+  saveCursorEffectsEnabled,
   saveDemoStartChoice,
   type DemoStartChoice
 } from "./lib/storage";
@@ -119,6 +121,7 @@ function App() {
   const [taglineIndex, setTaglineIndex] = useState(0);
   const [reflectionFocusSignal, setReflectionFocusSignal] = useState(0);
   const [isDemoStartOpen, setIsDemoStartOpen] = useState(() => loadDemoStartChoice() === null);
+  const [cursorEffectsEnabled, setCursorEffectsEnabled] = useState(() => loadCursorEffectsEnabled());
   const isPublicDemo = import.meta.env.VITE_PUBLIC_DEMO === "1";
   const quickAddRef = useRef<HTMLInputElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
@@ -130,6 +133,11 @@ function App() {
   useEffect(() => {
     saveData(data);
   }, [data]);
+
+  useEffect(() => {
+    document.body.classList.toggle("cursor-effects-enabled", cursorEffectsEnabled);
+    return () => document.body.classList.remove("cursor-effects-enabled");
+  }, [cursorEffectsEnabled]);
 
   useEffect(() => {
     if (!selectedPersonId && data.people[0]) {
@@ -369,7 +377,7 @@ function App() {
             aria-label="Cycle classified tagline"
             onClick={() => setTaglineIndex((current) => (current + 1) % brandTaglines.length)}
           >
-            <img src="/brand-logo.png" alt="Friend CRM logo" />
+            <span aria-hidden="true">F</span>
           </button>
           <div>
             <strong>Friend CRM</strong>
@@ -431,6 +439,11 @@ function App() {
             onImport={importData}
             hostedSyncPanel={isPublicDemo ? undefined : <HostedSyncPanel data={data} onReplaceLocalData={importData} />}
             isPublicDemo={isPublicDemo}
+            cursorEffectsEnabled={cursorEffectsEnabled}
+            onCursorEffectsChange={(enabled) => {
+              setCursorEffectsEnabled(enabled);
+              saveCursorEffectsEnabled(enabled);
+            }}
           />
         )}
       </main>
@@ -488,7 +501,7 @@ function App() {
         />
       )}
       {isDemoStartOpen && <DemoStartDialog onChoose={chooseDemoStart} />}
-      <CursorTrail />
+      <CursorTrail enabled={cursorEffectsEnabled} />
     </div>
   );
 }
@@ -1138,14 +1151,17 @@ function label(value: string) {
   return value.replace(/_/g, " ").replace(/\b\w/g, (letter: string) => letter.toUpperCase());
 }
 
-function CursorTrail() {
+function CursorTrail({ enabled }: { enabled: boolean }) {
   const [points, setPoints] = useState<Array<{ id: number; x: number; y: number }>>([]);
   const nextPointId = useRef(0);
 
   useEffect(() => {
     const finePointer = window.matchMedia("(pointer: fine)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!finePointer || reducedMotion) return;
+    if (!enabled || !finePointer || reducedMotion) {
+      setPoints([]);
+      return;
+    }
 
     function handlePointerMove(event: PointerEvent) {
       nextPointId.current += 1;
@@ -1154,7 +1170,7 @@ function CursorTrail() {
 
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, []);
+  }, [enabled]);
 
   if (points.length === 0) return null;
 

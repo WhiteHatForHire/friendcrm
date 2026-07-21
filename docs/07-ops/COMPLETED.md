@@ -62,6 +62,12 @@ Follow-up release repair: raised the custom cursor trail above every app and
 modal layer while keeping it non-interactive, so the visible pointer remains
 usable during the first-run chooser.
 
+Follow-up desktop repair: added a persistent Evidence Locker cursor-effects
+preference that restores the normal system cursor when disabled, replaced the
+image logo with a clean native `F` badge, and corrected the right dossier rail
+to start at the true top of the viewport now that the obsolete app chrome is
+gone.
+
 Validation passed:
 
 - `npm test` — 80 tests
