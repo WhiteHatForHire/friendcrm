@@ -32,6 +32,37 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-21 — Mobile Demo-Control State Repair
+
+**Type:** Mobile / UX / Bug Fix
+**Source:** Human + Codex
+**Related Files:**
+
+- `apps/mobile/App.tsx`
+- `apps/mobile/src/core/storage.ts`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Fixed the People-screen `Clear Demo Data` card so it appears only while one or
+more bundled sample people are present. Previously, any local person record,
+including a person added after the sample desk was cleared, made the app claim
+that demo data still existed. Evidence Locker retains the intentional full
+local-data clear, reset, import, and export controls.
+
+Validation passed:
+
+- `npm run mobile:check`
+- `npm test -- --run` — 80 tests
+- `npm run build`
+
+**Follow-Ups:**
+
+- [ ] Include this fix in the next approved TestFlight build and confirm the
+  People screen remains free of the demo-clear card after adding a local person.
+- [x] Simulator smoke completed on iPhone 17 / iOS 26.5. See
+  `docs/07-ops/MOBILE-SIMULATOR-SMOKE-2026-07-21.md`.
+
 ## 2026-07-21 — Front-Facing Demo Release Readiness
 
 **Type:** App / Demo UX / QA / Release

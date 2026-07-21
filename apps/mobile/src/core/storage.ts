@@ -21,6 +21,16 @@ export function demoData(): CrmData {
   return cloneData(seedData);
 }
 
+/**
+ * Keeps demo-only controls tied to the bundled sample people, not merely to
+ * the presence of any local record. A person added after clearing the sample
+ * desk is real local work and must not make the app claim demo data returned.
+ */
+export function hasDemoPeople(data: CrmData) {
+  const samplePersonIds = new Set(seedData.people.map((person) => person.id));
+  return data.people.some((person) => samplePersonIds.has(person.id));
+}
+
 export async function loadData(): Promise<CrmData> {
   const stored = await AsyncStorage.getItem(MOBILE_STORAGE_KEY);
   if (!stored) return demoData();

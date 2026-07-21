@@ -20,6 +20,7 @@ import { acceptSuggestion, buildBrief, daysBetween, extractSuggestions, personNa
 import {
   clearLocalData,
   exportJson,
+  hasDemoPeople,
   importJson,
   loadData,
   makeId,
@@ -502,6 +503,7 @@ export default function App() {
             addPerson={addPerson}
             choosePerson={choosePerson}
             clearData={clearData}
+            hasDemoPeople={hasDemoPeople(data)}
           />
         ) : null}
 
@@ -587,7 +589,8 @@ function PeopleScreen({
   setNewPersonName,
   addPerson,
   choosePerson,
-  clearData
+  clearData,
+  hasDemoPeople
 }: {
   data: CrmData;
   search: string;
@@ -597,25 +600,17 @@ function PeopleScreen({
   addPerson: () => void;
   choosePerson: (personId: string) => void;
   clearData: () => void;
+  hasDemoPeople: boolean;
 }) {
   const filtered = data.people.filter((person) => {
     const query = search.trim().toLowerCase();
     if (!query) return true;
     return [person.name, person.city, person.summary, person.relationshipTypes.join(" ")].join(" ").toLowerCase().includes(query);
   });
-  const hasLocalData = Boolean(
-    data.people.length ||
-      data.notes.length ||
-      data.memories.length ||
-      data.openLoops.length ||
-      data.nextMoves.length ||
-      data.interactions.length
-  );
-
   return (
     <View style={styles.stack}>
       <HeroTitle title="People Files" subtitle={`${data.people.length} people, ${data.openLoops.filter((loop) => loop.status !== "done").length} unfinished threads.`} />
-      {hasLocalData ? (
+      {hasDemoPeople ? (
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Clear Demo Data</Text>
           <Text style={styles.bodyText}>Want a clean desk? Clear the local demo files here. Reset, import, and export live in Evidence.</Text>

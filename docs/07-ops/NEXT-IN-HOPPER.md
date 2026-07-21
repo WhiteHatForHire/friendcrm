@@ -67,7 +67,14 @@ Verify the implemented mobile real-use repair pass on a real iPhone and catch an
 
 - Mobile demo-data controls were tightened so People only exposes `Clear Demo Data` while local data exists, and fake-friend reset/import/export controls live in Evidence.
 - `cd apps/mobile && npm run check` passed.
-- Remaining touch check: clear local demo data on-device and confirm the People clear-data card disappears immediately.
+- 2026-07-21 follow-up repair: People now identifies demo data by the bundled
+  sample-person IDs rather than by the presence of any local record. After the
+  samples are cleared, adding a personal contact no longer brings back the
+  `Clear Demo Data` card. `npm run mobile:check` passed; the fix needs the
+  next TestFlight build and an on-device confirmation.
+- Simulator smoke passed on 2026-07-21, including clear → add-person → relaunch
+  persistence and sample-data restore. Receipt:
+  `docs/07-ops/MOBILE-SIMULATOR-SMOKE-2026-07-21.md`.
 
 ## 2. Mobile App Store Copy Safety Pass
 
