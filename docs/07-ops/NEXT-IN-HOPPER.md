@@ -158,7 +158,7 @@ Run the Expo mobile prototype on the iOS simulator with a Friend CRM Metro serve
 
 ## 6. Hosted Fake-Data Demo Packaging
 
-**Status:** Ready
+**Status:** Release Candidate Prepared / Awaiting Symposium Publication
 **Priority:** P1
 **Type:** Portfolio / Demo / Release
 
@@ -169,7 +169,8 @@ Prepare Friend CRM for a public fake-data hosted demo so the Symposium page has 
 ### Acceptance Criteria
 
 - Confirm deterministic demo mode works without real provider keys.
-- Add deployment notes for Vercel/Netlify or chosen static host.
+- [x] Package the deterministic web build with relative static assets for the
+  Symposium public demo route.
 - Ensure `.env.local` and any real provider keys stay ignored.
 - Add public-demo warning copy if needed.
 - Run `FRIEND_CRM_DISABLE_PROVIDER=1 npm run demo:check`.

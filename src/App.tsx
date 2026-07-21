@@ -964,10 +964,9 @@ function AppChrome({ data, view }: { data: CrmData; view: View }) {
 
   return (
     <div className="app-chrome" aria-label="Local private desk status">
-      <span className="chrome-badge">FRIEND CRM 3000</span>
+      <span className="chrome-badge">FRIEND CRM</span>
       <span>USER: LOCAL_OPERATOR</span>
       <span>MODE: {viewLabels[view].toUpperCase()}</span>
-      <span>SYNC: LOCAL ONLY</span>
       <span>NO SCRAPING DETECTED</span>
       <span className="chrome-hide-sm">{activeLoops} UNFINISHED SOCIAL RECEIPTS</span>
       <span className="chrome-marquee">TODAY'S ALIBI: ACT NORMAL, THEN WRITE IT DOWN</span>

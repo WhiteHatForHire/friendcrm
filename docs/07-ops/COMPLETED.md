@@ -32,6 +32,35 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-21 — Plain Friend CRM Product Name And Public-Demo Release Package
+
+**Type:** App / Mobile / Release
+**Source:** Human + Codex
+**Related Files:**
+
+- `src/App.tsx`
+- `apps/mobile/App.tsx`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Updated the visible application product name from `Friend CRM 3000` to plain
+`Friend CRM` across the web and mobile top chrome. The distinct BuddyScan 3000
+feature label remains as product flavor. Rebuilt the web client as a static,
+relative-asset package for the Symposium public demo, using only deterministic
+fake data and local browser storage.
+
+Validation passed:
+
+- `npm run build -- --base=./`
+- `npm test` — 80 tests
+- `npm run mobile:check`
+
+**Follow-Ups:**
+
+- [ ] Publish the staged Symposium product, demo, privacy, and contact routes
+  once its canonical production branch is clean and synchronized.
+
 ## 2026-07-20 — U.S.-Grounded Demo Roster And Fresh iPhone Dev Install
 
 **Type:** App / Mobile / QA

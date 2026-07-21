@@ -163,7 +163,7 @@ export default function App() {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.loading}>
-          <Text style={styles.brandKicker}>FRIEND CRM 3000</Text>
+          <Text style={styles.brandKicker}>FRIEND CRM</Text>
           <Text style={styles.title}>Loading private bureau...</Text>
           <StatusBar style="light" />
         </View>
@@ -476,7 +476,7 @@ export default function App() {
       <KeyboardAvoidingView style={styles.appShell} behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <View style={styles.topBar}>
           <View>
-            <Text style={styles.brandKicker}>FRIEND CRM 3000</Text>
+            <Text style={styles.brandKicker}>FRIEND CRM</Text>
             <Text style={styles.brandTitle}>Private Friend Bureau</Text>
           </View>
         </View>
