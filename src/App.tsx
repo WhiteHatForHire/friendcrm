@@ -6,11 +6,13 @@ import {
   LayoutDashboard,
   Plus,
   Radar,
+  RotateCcw,
   Search,
   Shield,
+  Trash2,
   UsersRound
 } from "lucide-react";
-import { FormEvent, type RefObject, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, type CSSProperties, type RefObject, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Avatar } from "./components/Avatar";
 import { HostedSyncPanel } from "./components/HostedSyncPanel";
 import { PersonRail } from "./components/PersonRail";
@@ -31,7 +33,17 @@ import {
   upsertPersonRecord
 } from "./lib/crm";
 import { daysBetween, personName, radar } from "./lib/insights";
-import { loadData, makeId, newPerson, resetData, saveData } from "./lib/storage";
+import {
+  clearData,
+  loadData,
+  loadDemoStartChoice,
+  makeId,
+  newPerson,
+  resetData,
+  saveData,
+  saveDemoStartChoice,
+  type DemoStartChoice
+} from "./lib/storage";
 import type {
   CrmData,
   ContactMethod,
@@ -92,14 +104,6 @@ const brandTaglines = [
   "Classified-ish"
 ];
 
-const viewLabels: Record<View, string> = {
-  people: "people files",
-  radar: "attention radar",
-  plot: "soft schemes",
-  reflection: "debrief booth",
-  settings: "evidence locker"
-};
-
 type PendingReview = ReviewPanelState & {
   note: RelationshipNote;
 };
@@ -114,7 +118,10 @@ function App() {
   const [pendingReview, setPendingReview] = useState<PendingReview | null>(null);
   const [taglineIndex, setTaglineIndex] = useState(0);
   const [reflectionFocusSignal, setReflectionFocusSignal] = useState(0);
+  const [isDemoStartOpen, setIsDemoStartOpen] = useState(() => loadDemoStartChoice() === null);
+  const isPublicDemo = import.meta.env.VITE_PUBLIC_DEMO === "1";
   const quickAddRef = useRef<HTMLInputElement>(null);
+  const workspaceRef = useRef<HTMLElement>(null);
 
   const selectedPerson = data.people.find((person) => person.id === selectedPersonId) ?? data.people[0];
   const shouldShowPersonRail = selectedPerson && view !== "settings";
@@ -283,7 +290,7 @@ function App() {
     patchData((current) => addNextMoveRecord(current, { ...move, id: makeId("x"), status: "idea" }));
   }
 
-  function clearAndSeed() {
+  function restoreDemoData() {
     if (
       !window.confirm(
         "Restore the built-in fake sample dataset? This replaces the current local browser data. Export first if anything here matters."
@@ -295,6 +302,40 @@ function App() {
     setData(seeded);
     setSelectedPersonId(seeded.people[0]?.id ?? "");
     setMobileRailOpen(false);
+    changeView("people");
+  }
+
+  function chooseDemoStart(choice: DemoStartChoice) {
+    setIsDemoStartOpen(false);
+    saveDemoStartChoice(choice);
+    setMobileRailOpen(false);
+    setPendingReview(null);
+    changeView("people");
+    window.setTimeout(() => workspaceRef.current?.focus(), 0);
+
+    if (choice === "blank") {
+      setData(clearData());
+      setSelectedPersonId("");
+      return;
+    }
+
+    const seeded = resetData();
+    setData(seeded);
+    setSelectedPersonId(seeded.people.find((person) => person.id === "p-ada")?.id ?? seeded.people[0]?.id ?? "");
+  }
+
+  function clearDemoData() {
+    if (
+      !window.confirm(
+        "Clear all fake demo data from this browser? The demo will be empty until you restore the sample friends."
+      )
+    ) {
+      return;
+    }
+    setData(clearData());
+    setSelectedPersonId("");
+    setMobileRailOpen(false);
+    setPendingReview(null);
     changeView("people");
   }
 
@@ -320,7 +361,6 @@ function App() {
 
   return (
     <div className={`app-shell view-${view}`}>
-      <AppChrome data={data} view={view} />
       <aside className="sidebar">
         <div className="brand">
           <button
@@ -353,9 +393,10 @@ function App() {
           })}
         </nav>
         <QuickAddPerson inputRef={quickAddRef} onAdd={addPerson} />
+        <DemoDataControl hasDemoData={data.people.length > 0} onClear={clearDemoData} onRestore={restoreDemoData} />
       </aside>
 
-      <main className="workspace">
+      <main ref={workspaceRef} className="workspace" tabIndex={-1}>
         {view === "people" && (
           <PeopleView
             data={data}
@@ -385,9 +426,11 @@ function App() {
         {view === "settings" && (
           <SettingsView
             data={data}
-            onReset={clearAndSeed}
+            onClear={clearDemoData}
+            onRestoreSample={restoreDemoData}
             onImport={importData}
-            hostedSyncPanel={<HostedSyncPanel data={data} onReplaceLocalData={importData} />}
+            hostedSyncPanel={isPublicDemo ? undefined : <HostedSyncPanel data={data} onReplaceLocalData={importData} />}
+            isPublicDemo={isPublicDemo}
           />
         )}
       </main>
@@ -444,6 +487,7 @@ function App() {
           onSave={saveAcceptedSuggestions}
         />
       )}
+      {isDemoStartOpen && <DemoStartDialog onChoose={chooseDemoStart} />}
       <CursorTrail />
     </div>
   );
@@ -461,11 +505,33 @@ function QuickAddPerson({ inputRef, onAdd }: { inputRef: RefObject<HTMLInputElem
 
   return (
     <form className="quick-add" onSubmit={submit}>
-      <input ref={inputRef} value={name} onChange={(event) => setName(event.target.value)} placeholder="Add a suspect" />
-      <button type="submit" title="Add suspect">
+      <input ref={inputRef} value={name} onChange={(event) => setName(event.target.value)} placeholder="Add a person" />
+      <button type="submit" title="Add person">
         <Plus size={16} />
       </button>
     </form>
+  );
+}
+
+function DemoStartDialog({ onChoose }: { onChoose: (choice: DemoStartChoice) => void }) {
+  return (
+    <div className="demo-start-backdrop" role="presentation">
+      <section className="demo-start-dialog" role="dialog" aria-modal="true" aria-labelledby="demo-start-title">
+        <span className="classified-kicker">Friend CRM Demo</span>
+        <h2 id="demo-start-title">How should the desk open?</h2>
+        <p>Everything here is fictional and stays in this browser. Choose a guided sample or a clean desk.</p>
+        <div className="demo-start-actions">
+          <button className="primary-button" type="button" onClick={() => onChoose("tour")}>
+            Take the 60-second tour
+            <small>Open a curated file with a promise, a boundary, and a next move.</small>
+          </button>
+          <button type="button" onClick={() => onChoose("blank")}>
+            Open a blank desk
+            <small>Start with no sample people or notes.</small>
+          </button>
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -510,6 +576,7 @@ function PeopleView({
             {data.people.length} people, {data.openLoops.filter((loop) => loop.status !== "done").length} unresolved
             social debts.
           </p>
+          <ViewGuide>First move: open Claire Dawson to follow a real promise from note to next move.</ViewGuide>
         </div>
         <div className="filters">
           <label className="search-field">
@@ -581,6 +648,8 @@ function PeopleView({
           );
         })}
       </div>
+
+      {data.people.length > 0 && <DemoStoryBreadcrumbs data={data} onSelect={onSelect} />}
 
       {filtered.length === 0 && (
         <ClassifiedEmptyState
@@ -903,6 +972,7 @@ function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: str
             {signal.neglected.length} going cold, {signal.overdueLoops.length} social debts overdue,{" "}
             {signal.protect.length} protected files.
           </p>
+          <ViewGuide>First move: open one signal, then decide whether it needs care, a plan, or nothing at all.</ViewGuide>
         </div>
       </header>
       <div className="radar-grid">
@@ -959,17 +1029,60 @@ function RadarView({ data, onSelect }: { data: CrmData; onSelect: (personId: str
   );
 }
 
-function AppChrome({ data, view }: { data: CrmData; view: View }) {
-  const activeLoops = data.openLoops.filter((loop) => loop.status !== "done" && loop.status !== "dropped").length;
+function DemoStoryBreadcrumbs({ data, onSelect }: { data: CrmData; onSelect: (personId: string) => void }) {
+  const stories = [
+    { personId: "p-ada", label: "A promise", copy: "Claire is waiting on two founder introductions." },
+    { personId: "p-lena", label: "A boundary", copy: "Lauren's file shows why low-pressure care matters." },
+    { personId: "p-sana", label: "An opening", copy: "Maya has a collaboration path with a clear next step." }
+  ].filter((story) => data.people.some((person) => person.id === story.personId));
+
+  if (!stories.length) return null;
 
   return (
-    <div className="app-chrome" aria-label="Local private desk status">
-      <span className="chrome-badge">FRIEND CRM</span>
-      <span>USER: LOCAL_OPERATOR</span>
-      <span>MODE: {viewLabels[view].toUpperCase()}</span>
-      <span>NO SCRAPING DETECTED</span>
-      <span className="chrome-hide-sm">{activeLoops} UNFINISHED SOCIAL RECEIPTS</span>
-      <span className="chrome-marquee">TODAY'S ALIBI: ACT NORMAL, THEN WRITE IT DOWN</span>
+    <section className="demo-story-breadcrumbs" aria-label="Guided sample stories">
+      <div>
+        <span className="classified-kicker">Try these three files</span>
+        <h2>See the desk make context usable</h2>
+      </div>
+      <div className="story-grid">
+        {stories.map((story) => (
+          <button key={story.personId} type="button" onClick={() => onSelect(story.personId)}>
+            <strong>{story.label}</strong>
+            <span>{story.copy}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ViewGuide({ children }: { children: React.ReactNode }) {
+  return <p className="view-guide">{children}</p>;
+}
+
+function DemoDataControl({
+  hasDemoData,
+  onClear,
+  onRestore
+}: {
+  hasDemoData: boolean;
+  onClear: () => void;
+  onRestore: () => void;
+}) {
+  return (
+    <div className="demo-data-control">
+      <span>Demo data</span>
+      {hasDemoData ? (
+        <button type="button" onClick={onClear}>
+          <Trash2 size={14} />
+          Clear demo
+        </button>
+      ) : (
+        <button type="button" onClick={onRestore}>
+          <RotateCcw size={14} />
+          Restore demo
+        </button>
+      )}
     </div>
   );
 }
@@ -1036,7 +1149,7 @@ function CursorTrail() {
 
     function handlePointerMove(event: PointerEvent) {
       nextPointId.current += 1;
-      setPoints((current) => [{ id: nextPointId.current, x: event.clientX, y: event.clientY }, ...current].slice(0, 9));
+      setPoints((current) => [{ id: nextPointId.current, x: event.clientX, y: event.clientY }, ...current].slice(0, 18));
     }
 
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
@@ -1050,12 +1163,15 @@ function CursorTrail() {
       {points.map((point, index) => (
         <span
           key={`${point.id}-${index}`}
-          style={{
-            left: point.x,
-            top: point.y,
-            opacity: Math.max(0, 1 - index * 0.11),
-            transform: `translate(-50%, -50%) scale(${Math.max(0.28, 1 - index * 0.08)})`
-          }}
+          style={
+            {
+              left: point.x,
+              top: point.y,
+              opacity: Math.max(0, 1 - index * 0.055),
+              transform: `translate(-14%, -12%) scale(${Math.max(0.28, 1 - index * 0.05)})`,
+              "--trail-hue": `${(index * 27) % 360}deg`
+            } as CSSProperties
+          }
         />
       ))}
     </div>

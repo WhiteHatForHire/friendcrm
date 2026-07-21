@@ -1,4 +1,4 @@
-import { Download, FileText, RotateCcw, Shield, Upload } from "lucide-react";
+import { Download, FileText, RotateCcw, Shield, Trash2, Upload } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { seedData } from "../data/seed";
@@ -8,14 +8,18 @@ import type { CrmData } from "../types";
 
 export function SettingsView({
   data,
-  onReset,
+  onClear,
+  onRestoreSample,
   onImport,
-  hostedSyncPanel
+  hostedSyncPanel,
+  isPublicDemo = false
 }: {
   data: CrmData;
-  onReset: () => void;
+  onClear: () => void;
+  onRestoreSample: () => void;
   onImport: (data: CrmData) => void;
   hostedSyncPanel?: ReactNode;
+  isPublicDemo?: boolean;
 }) {
   const sensitiveNotes = data.notes.filter((note) => note.sensitivity !== "normal").length;
   const sensitiveMemories = data.memories.filter((memory) => memory.sensitivity !== "normal").length;
@@ -71,6 +75,7 @@ export function SettingsView({
         <div>
           <h1>Evidence Locker</h1>
           <p>{data.people.length} people, {data.notes.length} notes, {data.memories.length} memories.</p>
+          <p className="view-guide">First move: export anything you want to keep, then clear or restore the fictional sample safely.</p>
         </div>
       </header>
       <section className="export-warning">
@@ -126,8 +131,8 @@ export function SettingsView({
         </section>
       </div>
       {exportMessage && <p className="settings-note action-feedback" aria-live="polite">{exportMessage}</p>}
-      {hostedSyncPanel}
-      <section className="readiness-panel">
+      {!isPublicDemo && hostedSyncPanel}
+      {!isPublicDemo && <section className="readiness-panel">
         <h2>Prototype Trial Targets, Because Apparently We Need Goals</h2>
         <div className="readiness-grid">
           <ReadinessMetric label="People" value={data.people.length} target={10} />
@@ -140,8 +145,8 @@ export function SettingsView({
             target={3}
           />
         </div>
-      </section>
-      <section className="shortcut-panel">
+      </section>}
+      {!isPublicDemo && <section className="shortcut-panel">
         <h2>Keyboard Mischief</h2>
         <div className="shortcut-grid">
           <span><kbd>1</kbd> The People</span>
@@ -149,11 +154,11 @@ export function SettingsView({
           <span><kbd>3</kbd> Plot Board</span>
           <span><kbd>4</kbd> Debrief Booth</span>
           <span><kbd>5</kbd> Evidence Locker</span>
-          <span><kbd>N</kbd> Add a suspect</span>
-          <span><kbd>C</kbd> Capture fresh intel</span>
+          <span><kbd>N</kbd> Add a person</span>
+          <span><kbd>C</kbd> Capture a note</span>
         </div>
-      </section>
-      <section className="data-action-guide">
+      </section>}
+      {!isPublicDemo && <section className="data-action-guide">
         <h2>Local Data Desk, Now With Fewer Mystery Buttons</h2>
         <div className="data-action-grid">
           <article>
@@ -169,7 +174,7 @@ export function SettingsView({
             <p>Replaces current local data with the built-in fake demo friends after confirmation.</p>
           </article>
         </div>
-      </section>
+      </section>}
       <section className="sample-restore-panel">
         <div>
           <h2>Restore Built-In Fake Friends</h2>
@@ -184,12 +189,22 @@ export function SettingsView({
             because there is no server in this demo.
           </p>
         </div>
-        <button className="danger-button" type="button" onClick={onReset}>
+        <button className="danger-button" type="button" onClick={onRestoreSample}>
           <RotateCcw size={16} />
           Restore Sample Friends
         </button>
       </section>
-      {pendingSummary && (
+      <section className="clear-demo-panel">
+        <div>
+          <h2>Clear Fake Demo Data</h2>
+          <p>Empty the current browser demo and start with a blank desk. You can restore the sample friends at any time.</p>
+        </div>
+        <button className="danger-link" type="button" onClick={onClear}>
+          <Trash2 size={16} />
+          Clear Demo Data
+        </button>
+      </section>
+      {!isPublicDemo && pendingSummary && (
         <section className="import-preview">
           <h2>Check the Saved Export Before Restore</h2>
           <p>This replaces the current local browser dataset after confirmation. Read before you rewrite history.</p>

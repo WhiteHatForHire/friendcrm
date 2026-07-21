@@ -32,6 +32,84 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-21 — Front-Facing Demo Release Readiness
+
+**Type:** App / Demo UX / QA / Release
+**Source:** Human + Codex
+**Related Files:**
+
+- `src/App.tsx`
+- `src/components/PersonRail.tsx`
+- `src/components/PlotBoard.tsx`
+- `src/components/ReflectionLog.tsx`
+- `src/components/SettingsView.tsx`
+- `src/lib/storage.ts`
+- `src/styles.css`
+- `docs/07-ops/FRONT-FACING-RELEASE-DIRECTIVE-2026-07-21.md`
+
+**Summary:**
+
+Implemented the approved front-facing release pass with a persistent first-run
+choice, a 60-second curated tour, a genuinely blank desk option, guided sample
+story breadcrumbs, purpose and first-action cues across the desk, and
+progressive dossier detail. The public static build now uses
+`VITE_PUBLIC_DEMO=1` to retain the privacy boundary, exports, restore, and
+clear controls while hiding inactive hosted-sync, trial, and developer
+surfaces. Fixed the onboarding dialog state so it unmounts after a choice and
+does not remain exposed to assistive technology.
+
+Validation passed:
+
+- `npm test` — 80 tests
+- `npm run build`
+- `npm run mobile:check`
+- `VITE_PUBLIC_DEMO=1 npx tsc && VITE_PUBLIC_DEMO=1 npx vite build --base ./`
+- `git diff --check`
+- Fresh browser smoke for first-run tour, public Evidence Locker, desktop
+  overflow, cursor behavior, and console errors
+
+**Follow-Ups:**
+
+- [ ] Complete the project browser-regression gate after the local Playwright
+  browser cache finishes installing.
+
+## 2026-07-21 — Desktop Demo Polish And Front-Facing Audit
+
+**Type:** App / Demo UX / QA
+**Source:** Human + Codex
+**Related Files:**
+
+- `src/App.tsx`
+- `src/components/SettingsView.tsx`
+- `src/lib/storage.ts`
+- `src/styles.css`
+- `docs/07-ops/FRONT-FACING-DEMO-AUDIT-2026-07-21.md`
+- `docs/07-ops/NEXT-IN-HOPPER.md`
+
+**Summary:**
+
+Removed the dense desktop telemetry strip so Friend CRM opens directly into the
+working desk. Added one-click sample-data clear and restore controls in the
+sidebar and Evidence Locker. Replaced the old cursor dot trail with a rainbow
+trail of arrow pointers while hiding the system cursor for desktop mouse input.
+Completed a front-facing demo audit and recorded the highest-value next steps:
+first-run tour, simplified public Evidence Locker, curated sample stories,
+progressive dossier detail, and clearer first actions per destination.
+
+Validation passed:
+
+- `npm test` — 80 tests
+- `npm run build`
+- `npm run mobile:check`
+- `git diff --check`
+- Local browser clear and restore smoke, including restoration of 10 seeded
+  people
+
+**Follow-Ups:**
+
+- [ ] Approve and implement the public-demo simplification and guided-tour
+  scope before regenerating the Symposium static package.
+
 ## 2026-07-21 — Plain Friend CRM Product Name And Public-Demo Release Package
 
 **Type:** App / Mobile / Release

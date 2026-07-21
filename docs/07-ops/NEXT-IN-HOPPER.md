@@ -171,9 +171,21 @@ Prepare Friend CRM for a public fake-data hosted demo so the Symposium page has 
 - Confirm deterministic demo mode works without real provider keys.
 - [x] Package the deterministic web build with relative static assets for the
   Symposium public demo route.
+- [x] Add one-click clear and restore controls for deterministic sample data.
+- [x] Remove dense desktop demo telemetry chrome from the primary desk.
+- [x] Add a first-run guided tour and blank-desk choice.
+- [x] Simplify the public Evidence Locker through a public-build flag.
 - Ensure `.env.local` and any real provider keys stay ignored.
 - Add public-demo warning copy if needed.
 - Run `FRIEND_CRM_DISABLE_PROVIDER=1 npm run demo:check`.
+
+### 2026-07-21 Codex Receipt
+
+- Desktop demo polish and a front-facing audit are recorded in
+  `docs/07-ops/FRONT-FACING-DEMO-AUDIT-2026-07-21.md`.
+- Remaining publication decision: approve whether the hosted demo should ship
+  a guided first-run tour and a simplified Evidence Locker before its static
+  Symposium package is regenerated.
 
 ## 7. Walkthrough Video / GIF Capture
 

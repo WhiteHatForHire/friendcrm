@@ -3,6 +3,18 @@ import type { CrmData, Person } from "../types";
 import { createCrmDataExport, parseCrmDataExport } from "./dataValidation";
 
 const STORAGE_KEY = "friend-crm:data:v1";
+const DEMO_START_KEY = "friend-crm:demo-start:v1";
+
+export type DemoStartChoice = "tour" | "blank";
+
+export function loadDemoStartChoice(): DemoStartChoice | null {
+  const choice = window.localStorage.getItem(DEMO_START_KEY);
+  return choice === "tour" || choice === "blank" ? choice : null;
+}
+
+export function saveDemoStartChoice(choice: DemoStartChoice) {
+  window.localStorage.setItem(DEMO_START_KEY, choice);
+}
 
 export function loadData(): CrmData {
   const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -25,6 +37,19 @@ export function saveData(data: CrmData) {
 export function resetData() {
   window.localStorage.removeItem(STORAGE_KEY);
   return seedData;
+}
+
+export function clearData(): CrmData {
+  const emptyData: CrmData = {
+    people: [],
+    notes: [],
+    memories: [],
+    openLoops: [],
+    nextMoves: [],
+    interactions: []
+  };
+  saveData(emptyData);
+  return emptyData;
 }
 
 export function makeId(prefix: string) {

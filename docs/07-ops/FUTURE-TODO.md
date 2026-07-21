@@ -136,6 +136,10 @@ Items below are parked until they are ready to move into `NEXT-IN-HOPPER.md`. Th
 - Add a compact "Today's Signals" strip if real use confirms it helps orientation.
 - Polish dense table/list scanning states after the first UI/UX audit fixes land.
 - Refine empty states around real use, not marketing copy.
+- Consider a small cursor-effects setting after front-facing demo feedback:
+  - Keep the system cursor hidden only for fine-pointer devices when the effect
+    is enabled.
+  - Preserve the existing reduced-motion guardrail and visible keyboard focus.
 
 ## Engineering
 

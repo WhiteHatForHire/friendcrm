@@ -66,8 +66,9 @@ export function ReflectionLog({
         <div>
           <h1>Debrief Booth</h1>
           <p>
-            {data.notes.length} captured notes. {selectedIds.length} selected for interrogation.
+            {data.notes.length} captured notes. {selectedIds.length} selected for this debrief.
           </p>
+          <p className="view-guide">First move: choose who was there, then capture what actually happened.</p>
         </div>
       </header>
 

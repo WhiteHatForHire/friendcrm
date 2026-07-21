@@ -267,27 +267,6 @@ export function PersonRail({
         <span className="classified-stamp">LOCAL ONLY</span>
       </section>
 
-      <section className="rail-section receipt-panel">
-        <div className="receipt-head">
-          <h3>Social Debt Receipt</h3>
-          <span>PAY WITH ATTENTION</span>
-        </div>
-        <dl>
-          <div>
-            <dt>Unfinished business</dt>
-            <dd>{activeLoops.length}</dd>
-          </div>
-          <div>
-            <dt>Moves on desk</dt>
-            <dd>{activeMoves.length}</dd>
-          </div>
-          <div>
-            <dt>Last seen</dt>
-            <dd>{person.lastContactAt ? `${daysBetween(person.lastContactAt)}d ago` : "Unknown"}</dd>
-          </div>
-        </dl>
-      </section>
-
       <div className="rail-actions">
         <button type="button" onClick={() => void openBrief()} disabled={briefLoading}>
           <Brain size={15} />
@@ -385,6 +364,47 @@ export function PersonRail({
       </section>
 
       <section className="rail-section">
+        <h3>Add a note</h3>
+        <form className="mini-form stacked" onSubmit={submitNote}>
+          <textarea
+            value={note}
+            onChange={(event) => setNote(event.target.value)}
+            disabled={noteSaving}
+            placeholder="What happened? Be specific. Weird is useful."
+          />
+          <button className="primary-button" type="submit" disabled={!note.trim() || noteSaving}>
+            <Brain size={15} />
+            {noteSaving ? "Saving..." : "Save note"}
+          </button>
+        </form>
+        {actionMessage && <p className="action-feedback" aria-live="polite">{actionMessage}</p>}
+      </section>
+
+      <details className="rail-disclosure">
+        <summary>Open the full relationship file</summary>
+        <div className="rail-disclosure-content">
+          <section className="rail-section receipt-panel">
+            <div className="receipt-head">
+              <h3>Social Debt Receipt</h3>
+              <span>PAY WITH ATTENTION</span>
+            </div>
+            <dl>
+              <div>
+                <dt>Unfinished business</dt>
+                <dd>{activeLoops.length}</dd>
+              </div>
+              <div>
+                <dt>Moves on desk</dt>
+                <dd>{activeMoves.length}</dd>
+              </div>
+              <div>
+                <dt>Last seen</dt>
+                <dd>{person.lastContactAt ? `${daysBetween(person.lastContactAt)}d ago` : "Unknown"}</dd>
+              </div>
+            </dl>
+          </section>
+
+      <section className="rail-section">
         <h3>Things You Swore You'd Remember</h3>
         {memories.slice(0, 5).map((memory) => (
           <article key={memory.id} className="memory-item">
@@ -480,23 +500,6 @@ export function PersonRail({
         ))}
       </section>
 
-      <section className="rail-section">
-        <h3>Add Fresh Intel</h3>
-        <form className="mini-form stacked" onSubmit={submitNote}>
-          <textarea
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-            disabled={noteSaving}
-            placeholder="What happened? Be specific. Weird is useful."
-          />
-          <button className="primary-button" type="submit" disabled={!note.trim() || noteSaving}>
-            <Brain size={15} />
-            {noteSaving ? "Filing..." : "Interrogate Note"}
-          </button>
-        </form>
-        {actionMessage && <p className="action-feedback" aria-live="polite">{actionMessage}</p>}
-      </section>
-
       <section className="rail-section timeline compact">
         <h3>Paper Trail</h3>
         {personNotes.slice(0, 5).map((item) => (
@@ -529,6 +532,8 @@ export function PersonRail({
           </div>
         )}
       </section>
+        </div>
+      </details>
 
       {posterLabOpen && <DossierPosterLab data={data} person={person} onClose={() => setPosterLabOpen(false)} />}
     </aside>

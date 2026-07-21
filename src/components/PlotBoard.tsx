@@ -91,6 +91,7 @@ export function PlotBoard({
         <div>
           <h1>Plot Board</h1>
           <p>{liveMoves} live next moves. Soft schemes only.</p>
+          <p className="view-guide">First move: drag one small next move into the state that matches reality.</p>
         </div>
       </header>
       <div className="board">
