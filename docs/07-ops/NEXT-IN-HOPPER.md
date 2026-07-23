@@ -112,6 +112,12 @@ Apply the safest high-priority recommendations from `docs/07-ops/COPY-AUDIT-APP-
 
 Confirm Apple has finished processing the uploaded Friend CRM binary and complete internal TestFlight tester setup.
 
+### 2026-07-22 Release-Candidate Note
+
+- The next candidate must include the mobile demo-control repair and the Expo
+  SDK 57 dependency alignment. `expo-doctor` now passes all 20 checks and a
+  production-style embedded iOS bundle succeeds locally.
+
 ### Acceptance Criteria
 
 - App Store Connect Evidence/Plot Board fix build `1.0.0 (11)` finishes processing.

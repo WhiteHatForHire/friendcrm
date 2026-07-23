@@ -32,6 +32,34 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-22 — Expo Release Dependency Alignment
+
+**Type:** Mobile / Release Hygiene
+**Source:** Codex
+**Related Files:**
+
+- `apps/mobile/package.json`
+- `apps/mobile/package-lock.json`
+
+**Summary:**
+
+Aligned the mobile release dependencies with Expo SDK 57's required patch
+versions: Expo `57.0.7` and Expo Status Bar `57.0.1`. This removes the final
+Expo Doctor warning before the next EAS/TestFlight candidate.
+
+Validation passed:
+
+- `npx expo-doctor` — 20 of 20 checks passed
+- `npx expo export:embed --eager --platform ios --dev false`
+- `npm run check`
+- `npm test -- --run` — 80 tests
+- `npm run build`
+
+**Follow-Ups:**
+
+- [ ] Build the next approved production TestFlight candidate with the mobile
+  demo-control repair and these aligned dependencies.
+
 ## 2026-07-21 — Mobile Demo-Control State Repair
 
 **Type:** Mobile / UX / Bug Fix
