@@ -32,6 +32,41 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-23 — Clean Local iPhone Install
+
+**Type:** Mobile / QA / Release Hygiene
+**Source:** Human + Codex
+**Related Files:**
+
+- `apps/mobile/scripts/local-ios-device-dev-build.sh`
+
+**Summary:**
+
+Removed the existing `Friend CRM` TestFlight install and prior `Friend CRM Dev`
+install from the connected iPhone, then built, installed, and launched a fresh
+local `Friend CRM Dev` build (`com.symposiumstudios.friendcrm.dev`, version
+`1.0.0`, build `1`). Device inventory confirms this is now the sole Friend CRM
+app on the phone.
+
+The local-device helper now explicitly unlocks and routes Xcode to the
+HQ-local signing keychain. It continues to use the installed offline
+development profile without `-allowProvisioningUpdates`.
+
+Validation passed:
+
+- HQ iOS signing preflight for team `Q9B7K2SJ4D`
+- `bash -n apps/mobile/scripts/local-ios-device-dev-build.sh`
+- `git diff --check`
+- Release iPhone build, install, and launch
+- `xcrun devicectl device info apps` confirms only `Friend CRM Dev` remains
+
+No EAS or TestFlight build was created.
+
+**Follow-Ups:**
+
+- [ ] Run the touch-by-touch physical-device smoke in Hopper task 1 before
+  spending an EAS/TestFlight build.
+
 ## 2026-07-22 — Expo Release Dependency Alignment
 
 **Type:** Mobile / Release Hygiene

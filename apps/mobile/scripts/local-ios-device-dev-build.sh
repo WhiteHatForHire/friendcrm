@@ -9,6 +9,35 @@ TEAM_ID="${TEAM_ID:-Q9B7K2SJ4D}"
 BUILD_CONFIGURATION="${BUILD_CONFIGURATION:-Release}"
 DERIVED_DATA_PATH="${DERIVED_DATA_PATH:-$APP_DIR/.local/ios-device-build/DerivedData}"
 
+find_hq_signing_keychain() {
+  local cursor="$APP_DIR"
+  while [[ "$cursor" != "/" ]]; do
+    if [[ -f "$cursor/repo_manifest.yaml" ]]; then
+      printf '%s' "$cursor/.local/apple-signing/symposium-ios.keychain-db"
+      return 0
+    fi
+    cursor="$(dirname "$cursor")"
+  done
+}
+
+DEFAULT_SIGNING_KEYCHAIN_PATH="$(find_hq_signing_keychain || true)"
+SIGNING_KEYCHAIN_PATH="${SIGNING_KEYCHAIN_PATH:-$DEFAULT_SIGNING_KEYCHAIN_PATH}"
+SIGNING_IDENTITY="${SIGNING_IDENTITY:-Apple Development}"
+XCODE_SIGNING_ARGS=()
+if [[ -n "$SIGNING_KEYCHAIN_PATH" && -f "$SIGNING_KEYCHAIN_PATH" ]]; then
+  SIGNING_KEYCHAIN_PASSWORD_FILE="${SIGNING_KEYCHAIN_PASSWORD_FILE:-$(dirname "$SIGNING_KEYCHAIN_PATH")/keychain-password}"
+  if [[ -f "$SIGNING_KEYCHAIN_PASSWORD_FILE" ]]; then
+    security unlock-keychain -p "$(<"$SIGNING_KEYCHAIN_PASSWORD_FILE")" "$SIGNING_KEYCHAIN_PATH"
+  fi
+  SIGNING_IDENTITIES="$(security find-identity -v -p codesigning "$SIGNING_KEYCHAIN_PATH")"
+  if ! awk '/Apple Development/ && $0 !~ /CERT_REVOKED|REVOKED/ { found = 1 } END { exit(found ? 0 : 1) }' <<<"$SIGNING_IDENTITIES"; then
+    echo "No valid code-signing identity found in $SIGNING_KEYCHAIN_PATH." >&2
+    exit 1
+  fi
+  XCODE_SIGNING_ARGS+=("OTHER_CODE_SIGN_FLAGS=--keychain $SIGNING_KEYCHAIN_PATH")
+  echo "Using dedicated signing keychain: $SIGNING_KEYCHAIN_PATH"
+fi
+
 mkdir -p "$APP_DIR/.local/ios-device-build"
 
 CONFIG_JSON="$APP_DIR/.local/ios-device-build/expo-config.json"
@@ -93,7 +122,8 @@ NODE_ENV=production xcodebuild \
   -derivedDataPath "$DERIVED_DATA_PATH" \
   DEVELOPMENT_TEAM="$TEAM_ID" \
   CODE_SIGN_STYLE=Automatic \
-  CODE_SIGN_IDENTITY="Apple Development" \
+  CODE_SIGN_IDENTITY="$SIGNING_IDENTITY" \
+  "${XCODE_SIGNING_ARGS[@]}" \
   build
 
 APP_PATH="$(find "$DERIVED_DATA_PATH/Build/Products/$BUILD_CONFIGURATION-iphoneos" -maxdepth 1 -name '*.app' -type d | head -n 1)"

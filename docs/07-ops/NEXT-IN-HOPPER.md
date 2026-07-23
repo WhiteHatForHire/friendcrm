@@ -75,6 +75,10 @@ Verify the implemented mobile real-use repair pass on a real iPhone and catch an
 - Simulator smoke passed on 2026-07-21, including clear → add-person → relaunch
   persistence and sample-data restore. Receipt:
   `docs/07-ops/MOBILE-SIMULATOR-SMOKE-2026-07-21.md`.
+- 2026-07-23: clean local device lane passed. Existing TestFlight and dev
+  installs were removed, then a fresh local `Friend CRM Dev` build was
+  installed and launched. Device inventory confirms it is the only Friend CRM
+  app on the iPhone. No EAS/TestFlight build was used.
 
 ## 2. Mobile App Store Copy Safety Pass
 
@@ -93,7 +97,7 @@ Apply the safest high-priority recommendations from `docs/07-ops/COPY-AUDIT-APP-
 - [x] Review flow keeps explicit approval language for memories, open loops, and next moves.
 - [x] Cheeky parody copy remains in secondary labels, empty states, receipts, and flavor text rather than trust-critical destructive actions.
 - [x] `cd apps/mobile && npm run check` passes.
-- [ ] Local iPhone build is pushed before the next TestFlight build.
+- [x] Local iPhone build is pushed before the next TestFlight build.
 
 ### 2026-07-11 Codex Receipt
 
@@ -101,6 +105,9 @@ Apply the safest high-priority recommendations from `docs/07-ops/COPY-AUDIT-APP-
 - Risky-term scan across `apps/mobile/App.tsx` and `apps/mobile/src` found no remaining `suspect`, `interrogate`, `snooping`, `target`, or `Clear Local Evidence` strings.
 - `cd apps/mobile && npm run check` passed.
 - `cd apps/mobile && npm run ios:device:dev` was attempted, but Xcode could not find physical device destination `00008110-000475662EF2601E`. Reconnect/unlock the iPhone before retrying.
+- 2026-07-23: fresh local `Friend CRM Dev` was built, installed, and launched
+  on that device after removing earlier Friend CRM installs. No EAS/TestFlight
+  quota was used.
 
 ## 3. TestFlight Processing Check And Internal Tester Setup
 
