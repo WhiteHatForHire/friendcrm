@@ -94,7 +94,6 @@ NODE_ENV=production xcodebuild \
   DEVELOPMENT_TEAM="$TEAM_ID" \
   CODE_SIGN_STYLE=Automatic \
   CODE_SIGN_IDENTITY="Apple Development" \
-  -allowProvisioningUpdates \
   build
 
 APP_PATH="$(find "$DERIVED_DATA_PATH/Build/Products/$BUILD_CONFIGURATION-iphoneos" -maxdepth 1 -name '*.app' -type d | head -n 1)"
