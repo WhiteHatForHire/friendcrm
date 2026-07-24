@@ -7,32 +7,32 @@ import type { CrmData, NextMove } from "../types";
 const columns: NextMove["status"][] = ["idea", "queued", "done", "dismissed"];
 
 const columnLabels: Record<NextMove["status"], string> = {
-  idea: "Bad Idea?",
-  queued: "Loaded",
-  done: "Handled",
-  dismissed: "Never Mind"
+  idea: "Next",
+  queued: "Later",
+  done: "Complete",
+  dismissed: "Archived"
 };
 
 const emptyCopy: Record<NextMove["status"], { title: string; copy: string; stamp: string }> = {
   idea: {
-    title: "WANTED: One Specific Plan",
-    copy: "No bad ideas here yet. Consider inventing a harmless little maneuver.",
-    stamp: "SCHEMELESS"
+    title: "No Next Moves Yet",
+    copy: "Add one small, specific follow-up for someone you care about.",
+    stamp: "READY WHEN YOU ARE"
   },
   queued: {
-    title: "MISSING: Loaded Next Move",
-    copy: "Nothing is queued. Peaceful, technically. Suspicious, emotionally.",
-    stamp: "LOAD SOON"
+    title: "Nothing For Later",
+    copy: "Save a useful follow-up here when now is not the right time.",
+    stamp: "NO RUSH"
   },
   done: {
-    title: "FOUND: Zero Logged Wins",
-    copy: "No handled moves yet. The applause department is standing by with a clipboard.",
-    stamp: "UNCLAPPED"
+    title: "Nothing Complete Yet",
+    copy: "Completed follow-ups stay here as useful context.",
+    stamp: "IN PROGRESS"
   },
   dismissed: {
-    title: "PUBLIC NOTICE: No Abandoned Schemes",
-    copy: "No discarded maneuvers. Growth, or a lack of imagination. Hard to say.",
-    stamp: "TOO CLEAN"
+    title: "Nothing Archived",
+    copy: "Archive a move when it is no longer useful. It remains in the local record.",
+    stamp: "ALL CLEAR"
   }
 };
 
@@ -47,7 +47,7 @@ export function PlotBoard({
 }) {
   const [draggedMoveId, setDraggedMoveId] = useState<string | null>(null);
   const [dragOverStatus, setDragOverStatus] = useState<NextMove["status"] | null>(null);
-  const liveMoves = data.nextMoves.filter((move) => move.status !== "dismissed").length;
+  const liveMoves = data.nextMoves.filter((move) => move.status === "idea" || move.status === "queued").length;
 
   function startDrag(event: DragEvent<HTMLElement>, move: NextMove) {
     event.dataTransfer.effectAllowed = "move";
@@ -89,9 +89,9 @@ export function PlotBoard({
     <section className="view">
       <header className="view-header">
         <div>
-          <h1>Plot Board</h1>
-          <p>{liveMoves} live next moves. Soft schemes only.</p>
-          <p className="view-guide">First move: drag one small next move into the state that matches reality.</p>
+          <h1>Next Moves</h1>
+          <p>{liveMoves} active follow-ups.</p>
+          <p className="view-guide">Add a small next step, then move it between Next, Later, Complete, or Archived as reality changes.</p>
         </div>
       </header>
       <div className="board">
@@ -111,7 +111,7 @@ export function PlotBoard({
               <h2>{columnLabels[status]}</h2>
               {moves.length === 0 && (
                 <div className="empty-state small classified-empty">
-                  <span className="classified-kicker">Plot Board Classifieds</span>
+                  <span className="classified-kicker">Next Moves</span>
                   <strong>{emptyCopy[status].title}</strong>
                   <p>{emptyCopy[status].copy}</p>
                   <span className="classified-stamp">{emptyCopy[status].stamp}</span>
@@ -133,8 +133,8 @@ export function PlotBoard({
                     <span
                       className="drag-handle"
                       draggable
-                      title="Drag this scheme"
-                      aria-label="Drag this scheme"
+                      title="Drag this next move"
+                      aria-label="Drag this next move"
                       onDragStart={(event) => startDrag(event, move)}
                     >
                       Move me
@@ -143,7 +143,7 @@ export function PlotBoard({
                   <p>{move.draft}</p>
                   <small>{move.rationale}</small>
                   <label className="move-status-control">
-                    <span>Reclassify this maneuver</span>
+                    <span>Change status</span>
                     <select
                       aria-label={`Move ${personName(data, move.personId)} next move to`}
                       value={status}

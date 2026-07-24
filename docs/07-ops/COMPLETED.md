@@ -32,6 +32,89 @@ Use this format for each completed item:
 
 # Completed Work
 
+## 2026-07-23 — Mobile Color Modes And Presentation Polish
+
+**Type:** Mobile / Design / Demo UX
+**Source:** Human + Codex
+**Related Files:**
+
+- `apps/mobile/App.tsx`
+- `apps/mobile/src/core/storage.ts`
+
+**Summary:**
+
+Added persistent mobile display modes in Settings: Bureau, Neon Pulse, Hacker
+Terminal, Sunset FM, and Candy Signal. Animated modes use a subtle header glow
+while keeping the relationship data and workflow unchanged. Simplified the
+visual chrome after review so each screen has one intentional spectrum detail
+on its hero rather than competing rainbow dividers.
+
+Completed the semantic-theme pass after device review: the selected palette now
+flows through case-file cards, empty states, quick-add panels, inputs,
+placeholders, person and move cards, selection chips, badges, buttons, and the
+tab bar. Each mode keeps its own contrast pair for selected and destructive
+actions, so Hacker Terminal is an actual green-screen desk rather than a dark
+header sitting above Bureau-colored controls.
+
+Validation passed:
+
+- `npm run mobile:check`
+- `npx expo export:embed --eager --platform ios --dev false`
+- HQ iOS signing preflight
+- Fresh local signed build installed and launched on the connected iPhone
+
+No EAS or TestFlight build was created.
+
+**Follow-Ups:**
+
+- [ ] Human visual check of all five modes on device for readability and motion
+  comfort.
+
+## 2026-07-23 — Relationship Workspace Rework
+
+**Type:** Mobile / Web / Product UX
+**Source:** Human + Codex
+**Related Files:**
+
+- `docs/07-ops/RELATIONSHIP-WORKSPACE-REWORK-DIRECTIVE-2026-07-23.md`
+- `apps/mobile/App.tsx`
+- `src/components/PlotBoard.tsx`
+- `src/components/ReflectionLog.tsx`
+- `src/components/SettingsView.tsx`
+
+**Summary:**
+
+Implemented the approved product rework that makes the primary workflow clear:
+People opens an intentional Dossier, Debrief captures post-contact context,
+Next Moves tracks small follow-ups, and Settings owns privacy and local-data
+controls.
+
+The mobile Dossier tab now opens a neutral picker with recent-person shortcuts
+instead of silently reopening the last active person. Existing stored move
+statuses remain compatible while the UI presents them as `Next`, `Later`,
+`Complete`, and `Archived`. The browser demo now uses the same language.
+Mobile tab changes now reset the scroll position to the top, and internal
+relationship enum values such as `weak_tie` are formatted as readable labels.
+The mobile surface now carries the desktop's visual language through a rainbow
+signal rail, section-colored active tabs, tactile card edges and offset
+shadows, color-coded move states, and varied person-file accents.
+
+Validation passed:
+
+- `npm run mobile:check`
+- `npx expo export:embed --eager --platform ios --dev false`
+- `npm test` — 80 tests
+- `npm run build`
+- HQ iOS signing preflight
+- Fresh local iPhone build, install, launch, and app inventory verification
+
+No EAS or TestFlight build was created.
+
+**Follow-Ups:**
+
+- [ ] Complete the physical-device smoke for the new Dossier, Debrief, Next
+  Moves, and Settings flow before a TestFlight candidate.
+
 ## 2026-07-23 — Clean Local iPhone Install
 
 **Type:** Mobile / QA / Release Hygiene

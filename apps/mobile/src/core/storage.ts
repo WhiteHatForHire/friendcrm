@@ -4,7 +4,12 @@ import { seedData } from "./seed";
 import type { CrmData, Person } from "./types";
 
 export const MOBILE_STORAGE_KEY = "friend-crm:mobile:data:v1";
+export const MOBILE_DISPLAY_MODE_KEY = "friend-crm:mobile:display-mode:v1";
 export const MOBILE_EXPORT_SCHEMA_VERSION = 1;
+
+export type MobileDisplayMode = "bureau" | "neon" | "terminal" | "sunset" | "candy";
+
+const displayModes: MobileDisplayMode[] = ["bureau", "neon", "terminal", "sunset", "candy"];
 
 export type MobileExportEnvelope = {
   schemaVersion: typeof MOBILE_EXPORT_SCHEMA_VERSION;
@@ -48,6 +53,15 @@ export async function loadData(): Promise<CrmData> {
 
 export async function saveData(data: CrmData) {
   await AsyncStorage.setItem(MOBILE_STORAGE_KEY, JSON.stringify(data));
+}
+
+export async function loadDisplayMode(): Promise<MobileDisplayMode> {
+  const stored = await AsyncStorage.getItem(MOBILE_DISPLAY_MODE_KEY);
+  return displayModes.includes(stored as MobileDisplayMode) ? (stored as MobileDisplayMode) : "bureau";
+}
+
+export async function saveDisplayMode(mode: MobileDisplayMode) {
+  await AsyncStorage.setItem(MOBILE_DISPLAY_MODE_KEY, mode);
 }
 
 export async function resetToDemoData() {

@@ -30,7 +30,7 @@ Phase 1 / early Phase 2:
 - Vite React TypeScript app exists.
 - Seeded fake people exist.
 - Local browser storage exists.
-- People, Person Detail, Radar, Plot Board, Reflection Log, Settings, export/reset, validated extraction shell, deterministic fallback, and deterministic briefs exist.
+- People, Person Detail, Radar, Next Moves, Debrief, Settings, export/reset, validated extraction shell, deterministic fallback, and deterministic briefs exist.
 - Browser UI can use development AI HTTP routes for extraction, briefs, and generated next moves, with local fallback behavior.
 - OpenAI-compatible server-side provider adapters exist for development/server use when a server-side key is configured.
 - Desktop, mobile, and tablet browser regression checks are part of the local demo readiness baseline.
@@ -38,7 +38,7 @@ Phase 1 / early Phase 2:
 - Supabase hosted persistence foundation exists as optional schema/client work, with a hosted `friendcrm` Supabase project linked, the initial migration pushed, and a guarded web auth/sync UI in Settings.
 - A repeatable synthetic real-use trial can exercise 25 fake notes across the seed people through the core logic paths.
 - A browser-level synthetic trial can exercise a fake 10-person / 25-note dataset through the playable UI.
-- Mobile person detail opens as a drawer instead of a permanently stacked rail on narrow screens.
+- Mobile Dossier opens intentionally from a person selection; its direct tab starts with a neutral picker rather than a persisted active person.
 - Mobile People editing is grouped into compact profile sections on narrow screens.
 - Briefs and next-move drafts handle sparse/private context more gracefully, with direct, warmer, and careful next-move options.
 - Real provider-backed AI is not deployed to a production route yet.

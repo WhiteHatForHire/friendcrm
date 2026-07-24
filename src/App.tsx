@@ -93,9 +93,9 @@ const maxProfilePhotoBytes = 350_000;
 const navItems = [
   { id: "people" as const, label: "The People", icon: UsersRound },
   { id: "radar" as const, label: "The Radar", icon: Radar },
-  { id: "plot" as const, label: "Plot Board", icon: LayoutDashboard },
-  { id: "reflection" as const, label: "Debrief Booth", icon: ClipboardList },
-  { id: "settings" as const, label: "Evidence Locker", icon: Archive }
+  { id: "plot" as const, label: "Next Moves", icon: LayoutDashboard },
+  { id: "reflection" as const, label: "Debrief", icon: ClipboardList },
+  { id: "settings" as const, label: "Settings", icon: Archive }
 ];
 
 const brandTaglines = [

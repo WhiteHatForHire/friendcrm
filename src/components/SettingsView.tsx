@@ -77,7 +77,7 @@ export function SettingsView({
     <section className="view">
       <header className="view-header">
         <div>
-          <h1>Evidence Locker</h1>
+          <h1>Settings</h1>
           <p>{data.people.length} people, {data.notes.length} notes, {data.memories.length} memories.</p>
           <p className="view-guide">First move: export anything you want to keep, then clear or restore the fictional sample safely.</p>
         </div>
@@ -170,9 +170,9 @@ export function SettingsView({
         <div className="shortcut-grid">
           <span><kbd>1</kbd> The People</span>
           <span><kbd>2</kbd> The Radar</span>
-          <span><kbd>3</kbd> Plot Board</span>
-          <span><kbd>4</kbd> Debrief Booth</span>
-          <span><kbd>5</kbd> Evidence Locker</span>
+          <span><kbd>3</kbd> Next Moves</span>
+          <span><kbd>4</kbd> Debrief</span>
+          <span><kbd>5</kbd> Settings</span>
           <span><kbd>N</kbd> Add a person</span>
           <span><kbd>C</kbd> Capture a note</span>
         </div>

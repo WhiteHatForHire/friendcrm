@@ -113,7 +113,7 @@ export function PersonRail({
       risk: person.sensitivity === "private" ? "medium" : "low"
     });
     setMoveDraft("");
-    setActionMessage("Manual move added to the Plot Board. A small scheme has paperwork now.");
+    setActionMessage("Next move added. It is ready when you are.");
   }
 
   async function openBrief() {
@@ -160,7 +160,7 @@ export function PersonRail({
           : result.moves.sensitivityWarning ?? "Drafts only. Do not outsource your personality."
       );
     } catch {
-      setGeneratedMoveNote("Move generation failed. Nothing was added to the Plot Board.");
+      setGeneratedMoveNote("Move generation failed. Nothing was added to Next Moves.");
     } finally {
       setMovesLoading(false);
     }
@@ -176,8 +176,8 @@ export function PersonRail({
       risk: move.risk
     });
     setGeneratedMoves((current) => current.filter((_move, moveIndex) => moveIndex !== index));
-    setGeneratedMoveNote("Added to the Plot Board. The scheme has paperwork now.");
-    setActionMessage("Draft added to the Plot Board. Still editable, still your fault.");
+    setGeneratedMoveNote("Added to Next Moves. It stays editable.");
+    setActionMessage("Draft added to Next Moves. Still editable, still yours.");
   }
 
   function editGeneratedMove(index: number, draft: string) {

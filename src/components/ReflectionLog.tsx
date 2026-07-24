@@ -64,7 +64,7 @@ export function ReflectionLog({
     <section className="view">
       <header className="view-header">
         <div>
-          <h1>Debrief Booth</h1>
+          <h1>Debrief</h1>
           <p>
             {data.notes.length} captured notes. {selectedIds.length} selected for this debrief.
           </p>
@@ -135,10 +135,10 @@ export function ReflectionLog({
             <span>{selectedIds.length} people</span>
             <span>
               {isCapturing
-                ? "Bagging the evidence"
+                ? "Saving your note"
                 : readyToCapture
-                  ? "Ready for interrogation"
-                  : "Need a person and a tiny confession"}
+                  ? "Ready to save"
+                  : "Choose a person and add a note"}
             </span>
             <SensitivityBadge sensitivity={sensitivity} />
           </div>
@@ -147,7 +147,7 @@ export function ReflectionLog({
           </div>
           <button className="primary-button" type="submit" disabled={!readyToCapture}>
             <Brain size={16} />
-            {isCapturing ? "Preparing the File" : "Capture & Interrogate"}
+            {isCapturing ? "Saving" : "Save Debrief"}
           </button>
         </div>
       </form>
@@ -155,10 +155,10 @@ export function ReflectionLog({
       <section className="timeline">
         {data.notes.length === 0 && (
           <div className="empty-state classified-empty">
-            <span className="classified-kicker">Debrief Classifieds</span>
-            <strong>WANTED: One Tiny Social Red Flag</strong>
-            <p>Capture an interaction, promise, preference, boundary, or oddly specific coffee order.</p>
-            <span className="classified-stamp">START PAPERWORK</span>
+            <span className="classified-kicker">Start a debrief</span>
+            <strong>Nothing captured yet</strong>
+            <p>After an interaction, write down what happened, what matters, and anything worth following up on.</p>
+            <span className="classified-stamp">KEEP THE CONTEXT</span>
           </div>
         )}
         {data.notes.slice(0, 12).map((note) => (

@@ -79,6 +79,15 @@ Verify the implemented mobile real-use repair pass on a real iPhone and catch an
   installs were removed, then a fresh local `Friend CRM Dev` build was
   installed and launched. Device inventory confirms it is the only Friend CRM
   app on the iPhone. No EAS/TestFlight build was used.
+- 2026-07-23: Relationship Workspace Rework installed locally on the iPhone.
+  Direct Dossier opens must show the neutral person picker, while People,
+  Debrief, and Next Moves may intentionally open a selected person's Dossier.
+  Confirm the renamed `Next`, `Later`, `Complete`, and `Archived` move flow
+  feels natural during the physical smoke.
+- 2026-07-23: display-theme revision installed locally. Confirm one pass
+  through Bureau, Neon Pulse, Hacker Terminal, Sunset FM, and Candy Signal,
+  including a text field, an unselected chip, a selected chip, and a destructive
+  action, for device-level readability before the next TestFlight candidate.
 
 ## 2. Mobile App Store Copy Safety Pass
 
